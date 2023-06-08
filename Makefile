@@ -12,7 +12,7 @@
 
 NAME = minishell
 
-SRCS = 
+SRCS = src/builtins/echo.c
 
 OBJS = ${SRCS:.c=.o}
 
@@ -33,8 +33,8 @@ clean:
 				@rm -f ${OBJS}
 
 fclean:			clean
-						@cd P.A. && rm -f ${NAME}
-						@rm -f ${NAME}
+						@cd src && rm -f ${NAME}
+						@cd libft && rm -f ${NAME}
 						@echo "All clean!"
 
 re: fclean all

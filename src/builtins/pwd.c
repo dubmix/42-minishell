@@ -1,26 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstsize.c                                       :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pdelanno <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/08 15:33:50 by pdelanno          #+#    #+#             */
-/*   Updated: 2022/12/21 18:16:54 by pdelanno         ###   ########.fr       */
+/*   Created: 2023/06/08 15:06:21 by pdelanno          #+#    #+#             */
+/*   Updated: 2023/06/08 15:06:25 by pdelanno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
 
-int	ft_lstsize(t_token *lst)
+int    pwd(void)
 {
-	int	i;
+    char    *cwd;
 
-	i = 0;
-	while (lst)
-	{
-		lst = lst->next;
-		i++;
-	}
-	return (i);
+    if (getcwd(cwd, _PC_PATH_MAX))
+    {
+        printf("%s", cwd);
+        return (1);
+    }
+    else
+        return (0);
 }

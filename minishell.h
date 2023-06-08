@@ -18,4 +18,20 @@
 # include <stdio.h>
 # include <signal.h>
 
+typedef struct s_token 
+{
+    char    *str;
+    int     type;
+    struct s_token *next;
+    struct s_token *prev;
+} t_token;
+
+typedef struct s_env
+{
+    char *value;
+    struct s_env *next;
+} t_env;
+
+int	ft_strcmp(const char *str1, const char *str2);
+
 #endif

@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../minishell.h"
 
-t_list	*ft_lstlast(t_list *lst)
+t_token	*ft_lstlast(t_token *lst)
 {
 	while (lst != 0)
 	{

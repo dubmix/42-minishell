@@ -10,14 +10,14 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../minishell.h"
 
-t_list	*ft_lstnew(void	*content)
+t_token	*ft_lstnew(void	*content)
 
 {
-	t_list	*newnode;
+	t_token	*newnode;
 
-	newnode = (t_list *)malloc(sizeof(*newnode));
+	newnode = (t_token *)malloc(sizeof(*newnode));
 	if (newnode == 0)
 		return (NULL);
 	newnode->content = content;

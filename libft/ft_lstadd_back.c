@@ -10,11 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../minishell.h"
 
-void	ft_lstadd_back(t_list **lst, t_list *new)
+void	ft_lstadd_back(t_token **lst, t_token *new)
 {
-	t_list	*last;
+	t_token	*last;
 
 	if (lst != 0)
 	{

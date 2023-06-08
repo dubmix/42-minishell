@@ -10,11 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../minishell.h"
 
-void	ft_lstclear(t_list **lst, void (*del)(void*))
+void	ft_lstclear(t_token **lst, void (*del)(void*))
 {
-	t_list	*tmp;
+	t_token	*tmp;
 
 	if (*del == 0)
 		return ;

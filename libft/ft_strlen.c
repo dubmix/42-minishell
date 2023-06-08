@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../minishell.h"
 
 size_t	ft_strlen(char const *str)
 {
@@ -21,12 +21,3 @@ size_t	ft_strlen(char const *str)
 		i++;
 	return (i);
 }
-
-/*int	main(int argc, char *argv[])
-{
-	char *str;
-
-	argc = 2;
-	printf("%d\n", ft_strlen(argv[1]));
-	return (0);
-}*/

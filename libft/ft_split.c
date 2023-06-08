@@ -10,8 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-//#include <stdio.h>
+#include "../minishell.h"
 
 int	nb_of_strs(char const *s, char c)
 {

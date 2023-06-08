@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../minishell.h"
 
-void	ft_lstiter(t_list *lst, void (*f)(void*))
+void	ft_lstiter(t_token *lst, void (*f)(void*))
 {
 	if (f == 0)
 		return ;
