@@ -1,4 +1,6 @@
-Refs
+# ![image](https://github.com/dubmix/minishell/assets/104844198/86b445b1-2f59-41c0-9dec-614f4c8e17fa)
+ WORK IN PROGRESS ![image](https://github.com/dubmix/minishell/assets/104844198/a0911260-2317-4f96-9c0a-1e432ca26879)
+
 
 Writing your own shell : https://www.cs.purdue.edu/homes/grr/SystemsProgrammingBook/Book/Chapter5-WritingYourOwnShell.pdf
 Bash guide for beginners : https://tldp.org/LDP/Bash-Beginners-Guide/html/index.html
