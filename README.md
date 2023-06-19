@@ -39,6 +39,8 @@ these look like good tutorials:
 
 [http://www.dmulholl.com/lets-build/a-command-line-shell.html](http://www.dmulholl.com/lets-build/a-command-line-shell.html)
 
+https://brennan.io/2015/01/16/write-a-shell-in-c/
+
 Videos:
 
 [https://youtu.be/4jYFqFsu03A](https://youtu.be/4jYFqFsu03A)
