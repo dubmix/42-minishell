@@ -3,39 +3,45 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pdelanno <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/04 15:42:08 by pdelanno          #+#    #+#             */
-/*   Updated: 2022/12/21 17:58:35 by pdelanno         ###   ########.fr       */
+/*   Created: 2022/12/08 16:26:04 by edrouot           #+#    #+#             */
+/*   Updated: 2023/05/27 15:26:36 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "libft.h"
 
-char	*ft_strjoin(char const *s1, char const *s2)
+size_t	lengthcombine(char const *s1, char const *s2)
 {
-	char	*str;
-	size_t	i;
-	size_t	j;
+	size_t		l1;
+	size_t		l2;
+	size_t		l3;
 
-	str = malloc(sizeof(*s1) * (ft_strlen(s1) + ft_strlen(s2) + 1));
-	if (str == 0)
+	l1 = ft_strlen(s1);
+	l2 = ft_strlen(s2);
+	l3 = l1 + l2;
+	return (l3);
+}
+
+char	*ft_strjoin(char *s1, char *s2)
+{
+	size_t		l3;
+	char		*s3;
+	int			sindex;
+	size_t		bindex;
+
+	l3 = lengthcombine(s1, s2);
+	s3 = (char *)malloc(sizeof(char) * (l3 + 1));
+	if (!s3)
 		return (NULL);
-	i = 0;
-	j = 0;
-	while (s1[i] != '\0')
-	{
-		str[j] = s1[i];
-		j++;
-		i++;
-	}
-	i = 0;
-	while (s2[i] != '\0')
-	{
-		str[j] = s2[i];
-		j++;
-		i++;
-	}
-	str[j] = 0;
-	return (str);
+	sindex = 0;
+	bindex = 0;
+	while (bindex < ft_strlen(s1))
+		s3[bindex++] = s1[sindex++];
+	sindex = 0;
+	while (bindex < l3)
+		s3[bindex++] = s2[sindex++];
+	s3[bindex] = '\0';
+	return (s3);
 }
