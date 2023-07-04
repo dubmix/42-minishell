@@ -6,7 +6,7 @@
 #    By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/26 12:53:21 by edrouot           #+#    #+#              #
-#    Updated: 2023/06/26 13:02:46 by edrouot          ###   ########.fr        #
+#    Updated: 2023/07/04 10:26:46 by edrouot          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,8 +15,11 @@ NAME	= minishell
 
 LIBFT = ./libft/libft.a
 
-SRCS	= minishell.c
-
+SRCS	= minishell.c \
+		lexer_utils.c \
+		lexer_token.c \
+		lexer_envp.c 
+			
 OBJS	= $(SRCS:.c=.o)
 
 CC 	= cc
