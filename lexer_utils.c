@@ -11,13 +11,12 @@ void    print_list(t_env *env) // print the envp
     }
 }
 
-void    print_list_tok(t_token **tok)
+void    print_list_tok(t_token *tok)
 {
-    t_token tmp = tok;
-    int i = 0;
-    while (i < 5)
+    t_token *tmp = tok;
+    while (tmp)
     {
-        printf("node is %s, number is %d\n", tmp->command, tmp->nb);
+        printf("node is %s, number is %d, state is %d, type is %d\n", tmp->command, tmp->nb, tmp->state, tmp->type);
         tmp = tmp->next;
     }
 }

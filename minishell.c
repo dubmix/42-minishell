@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 11:16:23 by edrouot           #+#    #+#             */
-/*   Updated: 2023/07/04 13:12:45 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/07/05 13:46:11 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,15 @@ int minishell_start(char **envp)
     (void)envp;
     t_shell *cmd;
     cmd = malloc(sizeof(t_shell));
+    if (!cmd)
+        return (0);
     cmd->envir = init_envp(envp);
 //    print_list(cmd->envir);
     while (1)
     {
         cmd->line_command = readline(">");
-        cmd->tokens=tokenization(cmd);
-        printf("BEFORE %s %d\n", cmd->tokens->command, cmd->tokens->type);
-        expand_var(cmd);
+        cmd->tokens = tokenization(cmd);
+        expand_var(cmd);        
         print_list_tok(cmd->tokens);
     }
 }

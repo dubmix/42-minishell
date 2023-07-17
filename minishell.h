@@ -5,7 +5,7 @@
     # include <stdio.h>
     # include <readline/readline.h>
     # include <readline/history.h>
-    # include "libft/libft.h"
+    // # include "libft/libft.h"
     # include <string.h>
     # include <unistd.h>
 
@@ -55,7 +55,7 @@ int minishell_start(char **envp);
 
 /* lexer_utils.c */
 void    print_list(t_env *env); // print the envp
-void    print_list_tok(t_token **tok); // print the token list
+void    print_list_tok(t_token *tok); // print the token list
 
 /* lexer_token.c */
 void add_stack_back_tok(t_token **tok_lst, t_token *new);
@@ -72,8 +72,17 @@ t_env *init_envp(char **envp);
 void look_into_envir(t_shell *cmd, t_token *var);
 void expand_var(t_shell *cmd);
 char *look_into_envir_quote(t_shell *cmd, char *variable);
+void    copy_expand_var(t_shell *cmd, t_token *var, int start, int i);
 
-
+/* libft */
+int	countsubstr(char const *s, char c);
+char	**ft_split(char const *s, char c);
+char	*ft_strdup(const char *s);
+size_t	ft_strlen(const char *s);
+int	ft_strncmp(const char *s1, const char *s2, size_t n);
+char	*checksub(void);
+char	*ft_substr(char const *s, unsigned int start, size_t len);
+char	*ft_strjoin(char *s1, char *s2);
 
 /* TO DO 
 error handling, usually I put error in the printf statement 
