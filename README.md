@@ -39,6 +39,8 @@ these look like good tutorials:
 
 [http://www.dmulholl.com/lets-build/a-command-line-shell.html](http://www.dmulholl.com/lets-build/a-command-line-shell.html)
 
+https://brennan.io/2015/01/16/write-a-shell-in-c/
+
 Videos:
 
 [https://youtu.be/4jYFqFsu03A](https://youtu.be/4jYFqFsu03A)
@@ -73,16 +75,21 @@ SIMILAR TO (?)
 
 [https://pubs.opengroup.org/onlinepubs/7908799/xcu/chap2.html#tag_001_003](https://pubs.opengroup.org/onlinepubs/7908799/xcu/chap2.html#tag_001_003)
 
-OR THIS WAY
-
-I made a special ft_split that tracks quotes (boolean) to know so it doesn't split when quotes are activated.
-
-Could use that to split on ";" for example.Then expand env variables with the same logic of going through the strings and activating quote booleans to know when not to expand.Then you can just easily "execute" each string
 
 OR
 
 [https://mywiki.wooledge.org/BashParser](https://mywiki.wooledge.org/BashParser)
 
+TESTS :
+https://docs.google.com/spreadsheets/u/0/d/1uJHQu0VPsjjBkR4hxOeCMEt3AOM1Hp_SmUzPFhAH-nA/htmlview?lsrp=1#gid=0
+https://docs.google.com/spreadsheets/d/1TDwyd-S0WBAXehgkrKQtBJ6zquQ4p6k7JfE5g3jICNA/edit#gid=0
+
+
+
+SEPARATION DU TRAVAIL
+mimi ; lexer + parser
+PA : signaux, builtins, heredoc, $?
+TBD : history + 
 Readline:
 
 signal handling: [https://docs.rtems.org/releases/4.5.1-pre3/toolsdoc/gdb-5.0-docs/readline/readline00030.html](https://docs.rtems.org/releases/4.5.1-pre3/toolsdoc/gdb-5.0-docs/readline/readline00030.html)
