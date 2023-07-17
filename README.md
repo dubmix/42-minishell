@@ -80,6 +80,12 @@ OR
 
 [https://mywiki.wooledge.org/BashParser](https://mywiki.wooledge.org/BashParser)
 
+TESTS :
+https://docs.google.com/spreadsheets/u/0/d/1uJHQu0VPsjjBkR4hxOeCMEt3AOM1Hp_SmUzPFhAH-nA/htmlview?lsrp=1#gid=0
+https://docs.google.com/spreadsheets/d/1TDwyd-S0WBAXehgkrKQtBJ6zquQ4p6k7JfE5g3jICNA/edit#gid=0
+
+
+
 SEPARATION DU TRAVAIL
 mimi ; lexer + parser
 PA : signaux, builtins, heredoc, $?
