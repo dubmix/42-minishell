@@ -1,4 +1,4 @@
-#include "minishell.h"
+#include "../../minishell.h"
 
 
 void add_stack_back_tok(t_token **tok_lst, t_token *new)

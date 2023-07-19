@@ -1,4 +1,4 @@
-#include "minishell.h"
+#include "../../minishell.h"
 
 void    adjust_number(t_shell *cmd)
 {
