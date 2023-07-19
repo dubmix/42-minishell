@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:46:21 by edrouot           #+#    #+#             */
-/*   Updated: 2023/07/19 12:04:31 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/07/19 12:43:44 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,13 @@ void	single_command(t_shell *cmd)
 	creation of three independent things :
 	- command and options (have to be separated with a space)
 	- args
-	*/
+	*/int o;
+	int c;
+	o = open("file1", O_RDONLY);
+	c = open("file2", O_CREAT | O_WRONLY | O_TRUNC, 0777);
+	dup2(o, STDIN_FILENO);
+	dup2(c, STDOUT_FILENO);
+	
 	arr_cmd = (char **)malloc(sizeof(char *) * (cmd->number_token
 			- cmd->redir_in - cmd->redir_out - cmd->heredoc - cmd->append) + 1);
 	// change the size of the array cmd 
@@ -143,4 +149,5 @@ void	single_command(t_shell *cmd)
 			printf("oupsi");
 		}
 	}
+	close(c);
 }
