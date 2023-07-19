@@ -27,23 +27,23 @@ void    echo(char **args)
     int newline;
     int i;
 
-    newline = 0;
+    newline = 1;
     i = 1;
     if (args_nb(args) > 1)
     {
         if (ft_strncmp(args[i], "-n", 2) == 0)
         {
-            newline = 1;
+            newline = 0;
             i++;
         }
         while(args[i])
         {
             printf("%s", args[i]);
             if (args[i + 1] != NULL)
-                write(1, " ", 1);
+                printf(" ");
             i++;
         }
     }
     if (newline == 1)
-        write(1, "\n", 1);
+        printf("\n");
 }
