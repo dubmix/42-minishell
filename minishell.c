@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 11:16:23 by edrouot           #+#    #+#             */
-/*   Updated: 2023/07/05 13:46:11 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/07/18 17:38:33 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,14 @@ int minishell_start(char **envp)
     cmd = malloc(sizeof(t_shell));
     if (!cmd)
         return (0);
-    cmd->envir = init_envp(envp);
-//    print_list(cmd->envir);
+    cmd->env_lst = init_envp(envp, cmd);
     while (1)
     {
         cmd->line_command = readline(">");
-        cmd->tokens = tokenization(cmd);
+        cmd->tok_lst = tokenization(cmd);
         expand_var(cmd);        
-        print_list_tok(cmd->tokens);
+        parser(cmd);
+
     }
 }
 

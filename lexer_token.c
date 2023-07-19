@@ -28,8 +28,8 @@ void new_token(t_token **tokens, char *command, int nb, enum e_type type)
 	new = malloc(sizeof(t_token));
 	if (!new)
 		return ;
-	new->command = command;
-    new->nb = nb;
+	new->command = ft_strdup(command);
+    new->index = nb;
     new->type = type;
 	new->next = NULL;
     if (new->type == 2)
@@ -40,15 +40,6 @@ void new_token(t_token **tokens, char *command, int nb, enum e_type type)
         new->state = 0;
     add_stack_back_tok(tokens, new);
 	return ;
-}
-
-
-int	special_char(int c)
-{
-	if (c == '|' || c == 34 || c == ' ' || c == '<' || c == '>' || c == 39)
-        return (1);
-	else
-		return (0);
 }
 
 int new_token_var_words(t_token **tokens, char *string, int i, int nb_token)
@@ -103,29 +94,46 @@ t_token *tokenization(t_shell *shell)
     nb_token = 0;
     t_token *tok_lst;
     tok_lst = NULL;
+    shell->redir_in = 0;
+    shell->redir_out = 0;
+    shell->heredoc = 0;
+    shell->append = 0;
+    shell->pipe_number = 0;
+
     while (shell->line_command[i] != '\0')
     {
         if (shell->line_command[i] == '|')
+        {
             new_token(&tok_lst, "|", nb_token, PIPE);
+            shell->pipe_number++;
+        }
         else if (shell->line_command[i] == 39) // single quotes
             i = new_token_quote(&tok_lst, shell->line_command, i, nb_token) - 1;
         else if (shell->line_command[i] == 34) // double quotes
             i = new_token_quote(&tok_lst, shell->line_command, i, nb_token) - 1;
         else if (shell->line_command[i] == '>' && shell->line_command[i+1] != '>') 
+        {
             new_token(&tok_lst, ">", nb_token, REDIRECT_IN);
+            shell->redir_in++;
+        }
         else if (shell->line_command[i] == '<' && shell->line_command[i+1] != '<') 
+        {
             new_token(&tok_lst, "<", nb_token, REDIRECT_OUT);
+            shell->redir_out++;
+        }
         else if (shell->line_command[i] == '>' && shell->line_command[i+1] == '>') 
         {
             new_token(&tok_lst, ">>", nb_token, REDIR_IN_DOUBLE);
+            shell->heredoc++;
             i++;
         }
         else if (shell->line_command[i] == '<' && shell->line_command[i+1] == '<') 
         {
             new_token(&tok_lst, "<<", nb_token, REDIR_OUT_DOUBLE);
+            shell->append++;
             i++;
         }    
-        else if (shell->line_command[i] == ' ') //space
+        else if (shell->line_command[i] == ' ' || shell->line_command[i] == 9) //space and tab
             new_token(&tok_lst, " ", nb_token, SPA);
         else if (shell->line_command[i] == '$')
             i = new_token_var_words(&tok_lst, shell->line_command, i, nb_token) - 1;
@@ -133,6 +141,6 @@ t_token *tokenization(t_shell *shell)
             i = new_token_var_words(&tok_lst, shell->line_command, i, nb_token) - 1;
         i++;
         nb_token++;
-    }
+    }   
     return (tok_lst);
 }

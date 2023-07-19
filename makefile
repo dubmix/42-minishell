@@ -6,7 +6,7 @@
 #    By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/26 12:53:21 by edrouot           #+#    #+#              #
-#    Updated: 2023/07/14 11:27:47 by edrouot          ###   ########.fr        #
+#    Updated: 2023/07/18 15:13:17 by edrouot          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,10 @@ LIBFT = ./libft/libft.a
 SRCS	= minishell.c \
 		lexer_utils.c \
 		lexer_token.c \
-		lexer_envp.c 
+		lexer_envp.c \
+		lexer_envp2.c \
+		parser1.c \
+		parser_single_command.c
 			
 OBJS	= $(SRCS:.c=.o)
 
