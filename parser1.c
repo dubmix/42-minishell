@@ -45,13 +45,13 @@ void    parser(t_shell *cmd)
     triage_space(cmd);
     adjust_number(cmd);
     triage_cmd_redir(cmd);
-    // if (cmd->pipe_number != 0)
-    //     printf("IL Y A DES PIPES, ON FERA CA PLUS TARD");
-    // else
-    //     single_command(cmd);
-    printf("\nPRINTING TOKENS \n");
-    print_list_tok(cmd->tok_lst);
-    printf("\nEND TOKENS \n");
+    if (cmd->pipe_number != 0)
+        printf("IL Y A DES PIPES, ON FERA CA PLUS TARD");
+    else
+        single_command(cmd);
+    // printf("\nPRINTING TOKENS \n");
+    // print_list_tok(cmd->tok_lst);
+    // printf("\nEND TOKENS \n");
 
     // if (cmd->redir_in != 0)
     //     printf("IN : NB REDIR %d\n ARR 1 %s\n ARR 2 %s \n", cmd->redir_in, cmd->redir_in_arr[0], cmd->redir_in_arr[1]);
@@ -64,9 +64,9 @@ void    parser(t_shell *cmd)
     
     /*
     part 1 : check if there is a pipe
-    part 2 : form the command in a new list 
-    part 3 : put all the redirections in a separate struct
-    part 4 : handle two cases : pipes or single command
+    part 2 : form the command in a new list --> list2array
+    part 3 : put all the redirections in a separate struct --> done
+    part 4 : handle two cases : pipes or single command --> single command handled
     part 5 : differentiate if the command are builtin or not
     */
 }

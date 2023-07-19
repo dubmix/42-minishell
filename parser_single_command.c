@@ -84,6 +84,7 @@ void    print_char2(char **arr_string)
 
     return ;
 }
+
 void   single_command(t_shell *cmd)
 {
     /*
@@ -95,27 +96,34 @@ void   single_command(t_shell *cmd)
     - command and options (have to be separated with a space)
     - args
     */
-    // char **string_arr = malloc(sizeof(char *) * 3);
-    // string_arr[0] = ft_strdup("echo");
-    // string_arr[1] = ft_strdup("test");
-    // string_arr[2] = 0;
+
     char **arr_cmd;
     arr_cmd = (char **)malloc(sizeof(char *) * (cmd->number_token - cmd->redir_in - cmd->redir_out - cmd->heredoc - cmd->append) + 1);
-    // arr_cmd = (char **)malloc(sizeof(char *) * 1 + 1);
-
+	// change the size of the array cmd
     if (!arr_cmd)
         return ; // ERROR HANDLING
     arr_cmd = list_to_array(cmd, arr_cmd);
     print_char2(arr_cmd);
     char *path = check_access(cmd->envp_copy, arr_cmd);
-    printf("PATH IS %s", path);
-    if (execve(path, arr_cmd, cmd->envp_copy) == -1)
+	if (ft_strncmp(arr_cmd[0], "echo", 4) == 0)
+		echo(arr_cmd);
+	else if (ft_strncmp(arr_cmd[0], "cd", 2) == 0)
+		printf("It will be the cd builtin");
+	else if (ft_strncmp(arr_cmd[0], "env", 3) == 0)
+		printf("It will be the end builtin");
+	else if (ft_strncmp(arr_cmd[0], "exit", 4) == 0)
+		printf("It will be the exit builtin");
+	else if (ft_strncmp(arr_cmd[0], "export", 6) == 0)
+		printf("It will be the export builtin");
+	else if (ft_strncmp(arr_cmd[0], "pwd", 3) == 0)
+		printf("It will be the pwd builtin");
+	else if (ft_strncmp(arr_cmd[0], "unset", 5) == 0)
+		printf("It will be the unset builtin");
+	else
 	{
-		printf("oupsi");
+		if (execve(path, arr_cmd, cmd->envp_copy) == -1)
+		{
+			printf("oupsi");
+		}
 	}
-
-
-
-
-
 }

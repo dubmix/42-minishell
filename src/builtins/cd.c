@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pdelanno <pdelanno@student.42berlin.d      +#+  +:+       +#+        */
+/*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 12:21:08 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/07/17 12:57:12 by pdelanno         ###   ########.fr       */
+/*   Updated: 2023/07/19 10:45:18 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void change_path()
 
 	getcwd
 }
+
 int cd
 {
 	

@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pdelanno <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 11:55:39 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/06/08 11:55:44 by pdelanno         ###   ########.fr       */
+/*   Updated: 2023/07/19 10:50:45 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-int     args_nb(char **args)
+static int     args_nb(char **args)
 {
     int nb;
 
@@ -31,7 +31,7 @@ void    echo(char **args)
     i = 1;
     if (args_nb(args) > 1)
     {
-        if (ft_strcmp(args[i], "-n") == 0)
+        if (ft_strncmp(args[i], "-n", 2) == 0)
         {
             newline = 1;
             i++;

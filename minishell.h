@@ -112,6 +112,10 @@ void    triage_space(t_shell *cmd);
 /*parser_single_command.c*/
 void   single_command(t_shell *cmd);
 
+/*src/builtin*/
+void    echo(char **args);
+
+
 /* TO DO 
 error handling, usually I put error in the printf statement 
 free all the struct for each new prompt
