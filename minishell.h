@@ -8,6 +8,7 @@
     # include "libft/libft.h"
     # include <string.h>
     # include <unistd.h>
+    # include <limits.h>
 
 enum e_type
 {

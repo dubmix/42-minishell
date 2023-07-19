@@ -14,13 +14,18 @@
 
 int    pwd(void)
 {
-    char    *cwd;
-    cwd = NULL;
-    if (getcwd(cwd, _PC_PATH_MAX))
+    char cwd[PATH_MAX];
+
+    if (getcwd(cwd, sizeof(cwd)) != NULL)
     {
-        printf("%s", cwd);
-        return (1);
+        printf("%s\n", cwd);
+        return (EXIT_SUCCESS);
     }
     else
-        return (0);
+        return (EXIT_FAILURE);
 }
+
+//int main(void)
+//{
+//    return pwd();/
+//}
