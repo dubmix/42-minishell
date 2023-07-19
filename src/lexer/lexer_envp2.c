@@ -1,4 +1,4 @@
-#include "minishell.h"
+#include "../../minishell.h"
 
 char **string_variables(t_shell *cmd, t_token *var)
 {

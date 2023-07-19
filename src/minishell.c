@@ -6,11 +6,11 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 11:16:23 by edrouot           #+#    #+#             */
-/*   Updated: 2023/07/18 17:38:33 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/07/19 11:22:50 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 int minishell_start(char **envp)
 {

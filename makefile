@@ -6,22 +6,21 @@
 #    By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/26 12:53:21 by edrouot           #+#    #+#              #
-#    Updated: 2023/07/19 10:49:51 by edrouot          ###   ########.fr        #
+#    Updated: 2023/07/19 11:21:32 by edrouot          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
-
 
 NAME	= minishell
 
 LIBFT = ./libft/libft.a
 
-SRCS	= minishell.c \
-		lexer_utils.c \
-		lexer_token.c \
-		lexer_envp.c \
-		lexer_envp2.c \
-		parser1.c \
-		parser_single_command.c \
+SRCS	= src/minishell.c \
+		src/lexer/lexer_utils.c \
+		src/lexer/lexer_token.c \
+		src/lexer/lexer_envp.c \
+		src/lexer/lexer_envp2.c \
+		src/parser/parser1.c \
+		src/parser/parser_single_command.c \
 		src/builtins/echo.c
 			
 OBJS	= $(SRCS:.c=.o)

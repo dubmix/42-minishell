@@ -1,4 +1,4 @@
-#include "minishell.h"
+#include "../../minishell.h"
 
 void add_stack_back_env(t_env **env_lst, t_env *new)
 {
