@@ -11,6 +11,7 @@
     # include <sys/types.h>
     # include <sys/wait.h>
     # include <fcntl.h>
+    # include <limits.h>
 
 enum e_type
 {
