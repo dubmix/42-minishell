@@ -6,7 +6,7 @@
 #    By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/26 12:53:21 by edrouot           #+#    #+#              #
-#    Updated: 2023/07/19 11:21:32 by edrouot          ###   ########.fr        #
+#    Updated: 2023/07/19 12:05:00 by edrouot          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,9 @@ SRCS	= src/minishell.c \
 		src/lexer/lexer_envp2.c \
 		src/parser/parser1.c \
 		src/parser/parser_single_command.c \
-		src/builtins/echo.c
+		src/builtins/echo.c \
+		src/builtins/env.c \
+		src/builtins/pwd.c
 			
 OBJS	= $(SRCS:.c=.o)
 

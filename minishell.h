@@ -114,7 +114,8 @@ void   single_command(t_shell *cmd);
 
 /*src/builtin*/
 void    echo(char **args);
-
+int env(t_shell *cmd);
+int    pwd(void);
 
 /* TO DO 
 error handling, usually I put error in the printf statement 

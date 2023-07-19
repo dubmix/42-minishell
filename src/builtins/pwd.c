@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pdelanno <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 15:06:21 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/06/08 15:06:25 by pdelanno         ###   ########.fr       */
+/*   Updated: 2023/07/19 12:14:09 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int    pwd(void)
 {
     char    *cwd;
-
+    cwd = NULL;
     if (getcwd(cwd, _PC_PATH_MAX))
     {
         printf("%s", cwd);
