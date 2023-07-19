@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:45:56 by edrouot           #+#    #+#             */
-/*   Updated: 2023/07/19 12:10:35 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/07/19 14:54:42 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,9 +99,7 @@ t_token	*tokenization(t_shell *shell)
 	int		nb_token;
 	t_token	*tok_lst;
 
-	// int start;
 	i = 0;
-	// start = 0;
 	nb_token = 0;
 	tok_lst = NULL;
 	shell->redir_in = 0;
@@ -139,8 +137,7 @@ t_token	*tokenization(t_shell *shell)
 			shell->heredoc++;
 			i++;
 		}
-		else if (shell->line_command[i] == '<' && shell->line_command[i
-			+ 1] == '<')
+		else if (shell->line_command[i] == '<' && shell->line_command[i+ 1] == '<')
 		{
 			new_token(&tok_lst, "<<", nb_token, REDIR_OUT_DOUBLE);
 			shell->append++;
@@ -150,11 +147,9 @@ t_token	*tokenization(t_shell *shell)
 			// space and tab
 			new_token(&tok_lst, " ", nb_token, SPA);
 		else if (shell->line_command[i] == '$')
-			i = new_token_var_words(&tok_lst, shell->line_command, i, nb_token)
-				- 1;
+			i = new_token_var_words(&tok_lst, shell->line_command, i, nb_token)- 1;
 		else
-			i = new_token_var_words(&tok_lst, shell->line_command, i, nb_token)
-				- 1;
+			i = new_token_var_words(&tok_lst, shell->line_command, i, nb_token)- 1;
 		i++;
 		nb_token++;
 	}
