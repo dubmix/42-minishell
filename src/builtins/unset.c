@@ -44,11 +44,12 @@ int unset(t_shell *cmd)
         printf("minishell: unset: not a valid identifier");
         return (EXIT_FAILURE);
     }
-    str = ft_split(((*tmp)->tok_lst->command), "=");
     if (unset_error(str) == 1)
         return (EXIT_FAILURE);
     else
-        ft_lstdelone((*tmp)->env_lst, str);
-    free_array(str);
+    {
+        
+        deleteNode();
+    }
     return (EXIT_SUCCESS);
 }
