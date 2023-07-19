@@ -26,7 +26,7 @@ int unset_error(char **str, t_shell **tmp)
     {
         if (str[1][i] == '/')
         {    
-            printf(minishell: unset: %s: not a valid identifier, str[1]);
+            printf("minishell: unset: %s: not a valid identifier", str[1]);
             return (EXIT_FAILURE);
         }
     }
@@ -39,17 +39,21 @@ int unset(t_shell *cmd)
     char       **str;
 
     tmp = &cmd;
-    if (ft_findchar((*tmp)->tokens->command, '=' == 0))
+    if (ft_findchar((*tmp)->tok_lst->command, '=' == 0))
     {
         printf("minishell: unset: not a valid identifier");
         return (EXIT_FAILURE);
     }
     if (unset_error(str) == 1)
         return (EXIT_FAILURE);
-    else
+    while ((*tmp)->env_lst)
     {
-        
-        deleteNode();
+        if ((*tmp)->env_lst->name == (*tmp)->tok_lst->command)
+        {
+            deleteNode(&(cmd->env_lst), (*tmp)->env_lst);
+            break ;
+        }
+        (*tmp)->env_lst == (*tmp)->env_lst->next;
     }
     return (EXIT_SUCCESS);
 }

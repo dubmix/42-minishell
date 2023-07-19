@@ -12,4 +12,15 @@
 
 #include "../../minishell.h"
 
+int env(t_shell *cmd)
+{
+    t_shell **tmp;
 
+    tmp = &cmd;
+    while((*tmp)->env_lst)
+    {
+        printf("%s=%s\n", (*tmp)->env_lst->name, (*tmp)->env_lst->value);
+        (*tmp) = (*tmp)->env_lst->next;
+    }
+    return (EXIT_SUCCESS);
+}
