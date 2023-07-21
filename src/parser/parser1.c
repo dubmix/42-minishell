@@ -47,11 +47,12 @@ void	parser(t_shell *cmd)
 	triage_quotes(cmd);
 	triage_space(cmd);
 	adjust_number(cmd);
-	triage_cmd_redir(cmd);
-	if (cmd->pipe_number != 0)
-		printf("IL Y A DES PIPES, ON FERA CA PLUS TARD");
-	else
-		single_command(cmd);
+	number_words_per_pipe(cmd);
+	// triage_cmd_redir(cmd);
+	// if (cmd->pipe_number != 0)
+	// 	printf("IL Y A DES PIPES, ON FERA CA PLUS TARD");
+	// else
+	// 	single_command(cmd);
 	// printf("\nPRINTING TOKENS \n");
 	// print_list_tok(cmd->tok_lst);
 	// printf("\nEND TOKENS \n");
@@ -123,58 +124,276 @@ char	*copy_redir(t_shell *cmd, int nb_node)
 	return (temp->command);
 }
 
-void	triage_cmd_redir(t_shell *cmd)
-{
-	t_token	*temp;
-	int		redir_in;
-	int		redir_out;
-	int		heredoc;
-	int		append;
+// typedef struct s_single_cmd
+// {
+//     char **command;
+//     int redir_in;
+//     char *redir_in_str;
+//     int redir_out;
+//     char *redir_out_str;
+//     int heredoc;
+//     char *heredoc_str;
+//     int append;
+//     char *append_str;
+//     int index; // is the index of the pipe basically
+// } t_single_cmd;
 
-	temp = cmd->tok_lst;
-	redir_in = 0;
-	redir_out = 0;
-	heredoc = 0;
-	append = 0;
-	// should I malloc only in the number are different from 0 ? then different function for it,could put the end with 0 also in it with a different status kinda
-	cmd->redir_in_arr = (char **)malloc(sizeof(char *) * cmd->redir_in + 1);
-	cmd->redir_out_arr = (char **)malloc(sizeof(char *) * cmd->redir_out + 1);
-	cmd->heredoc_arr = (char **)malloc(sizeof(char *) * cmd->heredoc + 1);
-	cmd->append_arr = (char **)malloc(sizeof(char *) * cmd->append + 1);
-	if (!cmd->redir_in_arr || !cmd->redir_out_arr || !cmd->heredoc_arr
-		|| !cmd->append_arr)
+void	add_stack_back_cmd(t_single_cmd **cmd_lst, t_single_cmd *new)
+{
+	t_single_cmd	*tail;
+
+	if (!new)
 		return ;
-	while (temp != NULL)
+	if (!(*cmd_lst))
 	{
-		if (temp->type == REDIRECT_IN)
+		*cmd_lst = new;
+		return ;
+	}
+	tail = *cmd_lst;
+	while (tail->next != NULL)
+	{
+		tail = tail->next;
+	}
+	tail->next = new;
+}
+
+void init_node_cmd(t_single_cmd *new, t_shell *cmd, int index)
+{
+	new = (t_single_cmd *)malloc(sizeof(t_single_cmd));
+	new->command = (char **)malloc(sizeof(char *) * cmd->words_per_pipe[index] + 1);
+	if (!new || !new->command)
+		return ; // error handling
+	new->append_str = ft_strdup("");
+	new->heredoc_str = ft_strdup("");
+	new->redir_in_str = ft_strdup("");
+	new->redir_out_str = ft_strdup("");
+}
+
+void	handle_redir_in(t_single_cmd *new, t_token *temp)
+{
+	int fd;
+	free(new->redir_in_str);
+	fd = open(temp->next->command, O_RDONLY);
+	if (fd < 0)
+		return ; // error handling
+	new->redir_in_str = ft_strdup(temp->next->command);
+	close(fd);
+}
+
+void	handle_redir_out(t_single_cmd *new, t_token *temp, int type)
+{
+	int fd;
+	if (type == 1)
+	{
+		free(new->redir_out_str);
+		fd = open(temp->next->command, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		if (fd < 0)
+				return ; // error handling
+		new->redir_out_str = ft_strdup(temp->next->command);
+	}
+	else
+	{
+		free(new->append_str);
+		fd = open(temp->next->command, O_WRONLY | O_CREAT | O_APPEND, 0644);
+		if (fd < 0)
+				return ; // error handling
+		new->append_str = ft_strdup(temp->next->command);
+	}
+	close(fd);
+}
+temp	**new_node_cmd(t_single_cmd **cmd_lst, int index, t_token **temp, t_shell *cmd)
+{
+	t_single_cmd	*new;
+	t_token	**temp;
+	
+	temp = &(cmd->tok_lst);
+	init_node_cmd(new, cmd, index);
+	int i = 0;
+	while ((*temp) != NULL && (*temp)->type != PIPE)
+	{
+		if ((*temp)->type == WORD && (*temp)->index == 0)
 		{
-			cmd->redir_in_arr[redir_in] = ft_strdup(copy_redir(cmd,
-					temp->index));
-			redir_in++;
+			new->command[i] = ft_strdup((*temp)->command);
+			i++;
 		}
-		else if (temp->type == REDIRECT_OUT)
+		if ((*temp)->type == REDIRECT_IN)
 		{
-			cmd->redir_out_arr[redir_out] = ft_strdup(copy_redir(cmd,
-					temp->index));
-			redir_out++;
+			free(new->redir_in_str);
+			handle_redir_in((*temp)->next);
+			new->redir_in_str = ft_strdup((*temp)->next->command);
+			new->redir_in = 1;
+		}
+		else if (*temp)->type == REDIRECT_OUT)
+		{
+			handle_redir_out((*temp)->next, 1);
+			new->redir_out = 1;
 		}
 		else if (temp->type == REDIR_IN_DOUBLE)
 		{
-			cmd->heredoc_arr[heredoc] = ft_strdup(copy_redir(cmd, temp->index));
-			heredoc++;
+			printf("handle_heredoc((*temp)->next)");
+			new->heredoc = 1;
 		}
 		else if (temp->type == REDIR_OUT_DOUBLE)
 		{
-			cmd->append_arr[append] = ft_strdup(copy_redir(cmd, temp->index));
-			append++;
+			handle_redir_out((*temp)->next, 2);
+			new->append = 1;
 		}
+
+
+
 		temp = temp->next;
 	}
-	cmd->redir_in_arr[redir_in] = 0;
-	cmd->redir_out_arr[redir_out] = 0;
-	cmd->heredoc_arr[heredoc] = 0;
-	cmd->append_arr[append] = 0;
+
+		
+	// new->name = ft_strdup(string[0]);
+	// new->value = ft_strdup(string[1]);
+	// if (!new->name || !new->value)
+	// 	return ; // error handling
+	new->next = NULL;
+	add_stack_back_env(cmd_lst, new);
+	return (temp);
 }
+
+void	number_words_per_pipe(t_shell *cmd)
+{
+	t_token	**temp;
+	
+	temp = &(cmd->tok_lst);
+	
+	if (cmd->pipe_number == 0)
+		return ;
+
+	cmd->words_per_pipe = (int *)malloc(sizeof(int) * (cmd->pipe_number + 1));
+	if (!cmd->words_per_pipe)
+		return ; // error handling
+	int i = 0;
+	int j = 0;
+	while ((*temp) != NULL)
+	{
+		while ((*temp) != NULL && (*temp)->type != PIPE)
+		{
+			if ((*temp)->type == REDIR_IN_DOUBLE || (*temp)->type == REDIR_OUT_DOUBLE || (*temp)->type == REDIRECT_IN || (*temp)->type == REDIRECT_OUT)
+				(*temp) = (*temp)->next->next;
+			if ((*temp)->type == WORD)
+				j++;
+			(*temp) = (*temp)->next;
+		}
+		cmd->words_per_pipe[i] = j;
+		j = 0;
+		i++;
+		if ((*temp) != NULL)
+			(*temp) = (*temp)->next;
+	}
+}
+
+void	triage_cmd_redir(t_shell *cmd)
+{
+	t_token	*temp;
+	t_single_cmd *cmd_lst;
+
+	temp = cmd->tok_lst;
+	int index_node = 0;
+	
+	while (temp != NULL)
+	{
+		//chaque pipe doit créer un new node
+		// toutes les redirections doivent etre ouvertes puis fermees
+		// la derniere de chaque type est stockée dans le noeud
+		temp = new_node_cmd(&cmd_lst, index_node, (*temp))
+		index_node++; 
+
+
+
+
+
+		
+// 		if (temp->type == WORD && temp->index == 0)
+// 		{
+// 			cmd-
+
+
+// 		}
+// 		if (temp->type == REDIRECT_IN)
+// 		{
+// 			cmd->redir_in_arr[redir_in] = ft_strdup(copy_redir(cmd,
+// 					temp->index));
+// 			redir_in++;
+// 		}
+// 		else if (temp->type == REDIRECT_OUT)
+// 		{
+// 			cmd->redir_out_arr[redir_out] = ft_strdup(copy_redir(cmd,
+// 					temp->index));
+// 			redir_out++;
+// 		}
+// 		else if (temp->type == REDIR_IN_DOUBLE)
+// 		{
+// 			cmd->heredoc_arr[heredoc] = ft_strdup(copy_redir(cmd, temp->index));
+// 			heredoc++;
+// 		}
+// 		else if (temp->type == REDIR_OUT_DOUBLE)
+// 		{
+// 			cmd->append_arr[append] = ft_strdup(copy_redir(cmd, temp->index));
+// 			append++;
+// 		}
+
+		temp = temp->next;
+	}
+
+
+}
+
+
+// // void	triage_cmd_redir(t_shell *cmd)
+// // {
+// // 	t_token	*temp;
+// // 	int		redir_in;
+// // 	int		redir_out;
+// // 	int		heredoc;
+// // 	int		append;
+
+// // 	temp = cmd->tok_lst;
+// // 	redir_in = 0;
+// // 	redir_out = 0;
+// // 	heredoc = 0;
+// // 	append = 0;
+// // 	// should I malloc only in the number are different from 0 ? then different function for it,could put the end with 0 also in it with a different status kinda
+// // 	cmd->redir_in_arr = (char **)malloc(sizeof(char *) * cmd->redir_in + 1);
+// // 	cmd->redir_out_arr = (char **)malloc(sizeof(char *) * cmd->redir_out + 1);
+// // 	cmd->heredoc_arr = (char **)malloc(sizeof(char *) * cmd->heredoc + 1);
+// // 	cmd->append_arr = (char **)malloc(sizeof(char *) * cmd->append + 1);
+// // 	if (!cmd->redir_in_arr || !cmd->redir_out_arr || !cmd->heredoc_arr || !cmd->append_arr)
+// // 		return ;
+// // 	while (temp != NULL)
+// // 	{
+// // 		if (temp->type == REDIRECT_IN)
+// // 		{
+// // 			cmd->redir_in_arr[redir_in] = ft_strdup(copy_redir(cmd,
+// // 					temp->index));
+// // 			redir_in++;
+// // 		}
+// // 		else if (temp->type == REDIRECT_OUT)
+// // 		{
+// // 			cmd->redir_out_arr[redir_out] = ft_strdup(copy_redir(cmd,
+// // 					temp->index));
+// // 			redir_out++;
+// // 		}
+// // 		else if (temp->type == REDIR_IN_DOUBLE)
+// // 		{
+// // 			cmd->heredoc_arr[heredoc] = ft_strdup(copy_redir(cmd, temp->index));
+// // 			heredoc++;
+// // 		}
+// // 		else if (temp->type == REDIR_OUT_DOUBLE)
+// // 		{
+// // 			cmd->append_arr[append] = ft_strdup(copy_redir(cmd, temp->index));
+// // 			append++;
+// // 		}
+// // 		temp = temp->next;
+// // 	}
+// // 	cmd->redir_in_arr[redir_in] = 0;
+// // 	cmd->redir_out_arr[redir_out] = 0;
+// // 	cmd->heredoc_arr[heredoc] = 0;
+// // 	cmd->append_arr[append] = 0;
+// // }
 
 void	deleteNode(t_token **head, t_token *nodeToDelete)
 {

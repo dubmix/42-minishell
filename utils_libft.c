@@ -6,7 +6,7 @@
 /*   By: emiliedrouot <emiliedrouot@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 16:00:35 by edrouot           #+#    #+#             */
-/*   Updated: 2023/07/06 11:35:14 by emiliedrouo      ###   ########.fr       */
+/*   Updated: 2023/07/21 15:29:32 by emiliedrouo      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,4 +177,32 @@ char	*ft_strjoin(char *s1, char *s2)
 		s3[bindex++] = s2[sindex++];
 	s3[bindex] = '\0';
 	return (s3);
+}
+
+
+size_t	lengthstr(const char *str)
+{
+	size_t	index;
+
+	index = 0;
+	while (str[index] != '\0')
+		index++;
+	return (index);
+}
+
+size_t	ft_strlcpy(char *dst, const char *src, size_t size)
+{
+	size_t	i;
+
+	i = 0;
+	if (size == 0)
+		return (lengthstr(src));
+	while (i < size - 1 && src[i] != '\0')
+	{
+		dst[i] = src[i];
+		i++;
+	}
+	if (i < size)
+		dst[i] = '\0';
+	return (lengthstr(src));
 }

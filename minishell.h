@@ -42,6 +42,21 @@ typedef struct s_env
     struct s_env *next;
 }   t_env;
 
+typedef struct s_single_cmd
+{
+    char *command;
+    int redir_in;
+    char *redir_in_str;
+    int redir_out;
+    char *redir_out_str;
+    int heredoc;
+    char *heredoc_str;
+    int append;
+    char *append_str;
+    int index; // is the index of the pipe basically
+    struct s_single_cmd *next;
+} t_single_cmd;
+
 typedef struct s_shell
 {
     char *line_command;
@@ -49,18 +64,20 @@ typedef struct s_shell
     int s_quote;
     t_token *tok_lst;
     t_env   *env_lst;
+    t_single_cmd *cmd_lst;
     char **envp_copy; // export function recre2er la char ** // do we really need something else than the path
     int size_arr_var;
-    int redir_in;
-    int redir_out;
-    int heredoc;
-    int append;
-    char **redir_in_arr;
-    char **redir_out_arr;
-    char **heredoc_arr;
-    char **append_arr;
+    int redir_in; // out
+    int redir_out;// out
+    int heredoc;// out
+    int append;// out
+    char **redir_in_arr; // out
+    char **redir_out_arr; // out
+    char **heredoc_arr; // out
+    char **append_arr; // out
     int pipe_number;
     int number_token;
+    int *words_per_pipe;
 } t_shell;
 
 
@@ -111,6 +128,7 @@ void    parser(t_shell *cmd);
 void    triage_cmd_redir(t_shell *cmd);
 void    deleteNode(t_token **head, t_token *nodeToDelete);
 void    triage_space(t_shell *cmd);
+void	number_words_per_pipe(t_shell *cmd);
 
 /*parser_single_command.c*/
 void   single_command(t_shell *cmd);
