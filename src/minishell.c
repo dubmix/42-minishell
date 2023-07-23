@@ -24,6 +24,11 @@ int	minishell_start(char **envp)
 	while (1)
 	{
 		cmd->line_command = readline(">");
+		// if (!cmd->line_command)
+		// {
+		// 	write(STDERR_FILENO, "exit\n", 5);
+		// 	exit(0);
+		// }											MAX signals ^d, empty string
 		cmd->tok_lst = tokenization(cmd);
 		expand_var(cmd);
 		parser(cmd);

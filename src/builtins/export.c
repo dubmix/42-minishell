@@ -72,7 +72,7 @@ int	export(t_shell *cmd)
 	t_shell **tmp;
 
 	tmp = &cmd;
-	while ((*tmp)->tokens != NULL)
+	while ((*tmp)->tok_lst != NULL)
 	{
 		while ((*tmp)->env_lst != NULL)
 		{
@@ -80,7 +80,7 @@ int	export(t_shell *cmd)
 			if (check_param((*tmp)->tok_lst->command) == 0 
 					&& var_ex((*tmp)->env_lst, str[0]) == 0)
 			{
-				new_node_env((*tmp)->envir, str);
+				new_node_env((*tmp)->env_lst, str);
 				free_array(str);
 				break ;
 			}
