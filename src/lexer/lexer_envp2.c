@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:45:38 by edrouot           #+#    #+#             */
-/*   Updated: 2023/07/19 12:11:02 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/07/23 11:05:34 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,8 @@ char	**string_variables(t_shell *cmd, t_token *var)
 	cmd->size_arr_var = j;
 	return (arr_string);
 }
-
+/*  create via string_variables an array with the correct values of the variable 
+then rewrite the command line with str_join, replacing each var $XXX with the correct value*/
 void	double_quote_env(t_shell *cmd, t_token *var)
 {
 	int		i;
@@ -56,7 +57,7 @@ void	double_quote_env(t_shell *cmd, t_token *var)
 	i = 0;
 	j = 0;
 	k = 0;
-	arr_var = string_variables(cmd, var);
+	arr_var = string_variables(cmd, var); 
 	new_string = (char *)malloc(sizeof(char) * (length_arr_var(arr_var, cmd)
 			+ length_string_without_var(var->command)) + 1);
 	if (!new_string)
@@ -82,6 +83,8 @@ void	double_quote_env(t_shell *cmd, t_token *var)
 	// free_arr(arr_var);  // cause issue, to be checked later
 }
 
+/*first function : look for two things : either a type variable ($) or double quote (state)*/
+
 void	expand_var(t_shell *cmde)
 {
 	t_token	*tmp;
@@ -102,7 +105,8 @@ void	expand_var(t_shell *cmde)
 		tmp = tmp->next;
 	}
 }
-
+ /*  we need only what is after the $ ($USER -> USER) and compare with USER with env_lst 
+ and replace the correct value in the tok_lst*/
 void	look_into_envir(t_shell *cmd, t_token *var)
 {
 	t_env	*tmp;

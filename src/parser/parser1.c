@@ -87,32 +87,35 @@ void	add_stack_back_cmd(t_single_cmd **cmd_lst, t_single_cmd *new)
 	tail->next = new;
 }
 
-void init_node_cmd(t_single_cmd *new, t_shell *cmd, int index)
+void init_node_cmd(t_single_cmd **new, t_shell *cmd, int index)
 {
-	new = (t_single_cmd *)malloc(sizeof(t_single_cmd));
-	new->command = (char **)malloc(sizeof(char *) * cmd->words_per_pipe[index] + 1);
-	if (!new || !new->command)
+	(*new) = (t_single_cmd *)malloc(sizeof(t_single_cmd));
+	(*new)->command = (char **)malloc(sizeof(char *) * cmd->words_per_pipe[index] + 1);
+	if (!(*new) || !(*new)->command)
 		return ; // error handling
-	new->append_str = ft_strdup("");
-	new->heredoc_str = ft_strdup("");
-	new->redir_in_str = ft_strdup("");
-	new->redir_out_str = ft_strdup("");
-	write(1, "init", 4);
+	(*new)->append_str = ft_strdup("");
+	(*new)->heredoc_str = ft_strdup("");
+	(*new)->redir_in_str = ft_strdup("");
+	(*new)->redir_out_str = ft_strdup("");
 }
 
-void	handle_redir_in(t_single_cmd *new, t_token *temp)
+void	handle_redir_out(t_single_cmd *new, t_token *temp)
 {
 	int fd;
+	// char *str;
 	free(new->redir_in_str);
-	fd = open(temp->next->command, O_RDONLY);
+	temp = temp->next;
+	
+	new->redir_in_str = ft_strdup(temp->command);
+	write(1, "TEST", 4);
+	fd = open("f1", O_RDONLY);
 	if (fd < 0)
-		return ; // error handling
-	new->redir_in_str = ft_strdup(temp->next->command);
+		printf("ERROR") ; // error handling
 	new->redir_in = 1;
 	close(fd);
 }
 
-void	handle_redir_out(t_single_cmd *new, t_token *temp, int type)
+void	handle_redir_in(t_single_cmd *new, t_token *temp, int type)
 {
 	int fd;
 	if (type == 1)
@@ -137,47 +140,47 @@ void	handle_redir_out(t_single_cmd *new, t_token *temp, int type)
 	close(fd);
 }
 
-t_token	**new_node_cmd(t_single_cmd **cmd_lst, int index, t_token **temp, t_shell *cmd)
+t_token	*new_node_cmd(t_single_cmd **cmd_lst, int index, t_token *tok_lst, t_shell *cmd)
 {
 	t_single_cmd	*new;
 	int i = 0;
-	write(1, "new node\n", 9);
-
+	t_token *temp = tok_lst;
 	new = NULL;
-	init_node_cmd(new, cmd, index);
-	while ((*temp) != NULL && (*temp)->type != PIPE)
+	write(1, &cmd_lst[0], 1);
+	init_node_cmd(&new, cmd, index);
+	while (temp != NULL && temp->type != PIPE)
 	{
-		if ((*temp)->type == WORD)
+		if (temp->type == WORD)
 		{
-			new->command[i] = ft_strdup((*temp)->command);
-			write(1, "new node end\n", 13);
+			new->command[i] = ft_strdup(temp->command);
 			i++;
 		}
-		if ((*temp)->type == REDIRECT_IN)
+		if (temp->type == REDIRECT_OUTPUT)
 		{
-			handle_redir_in(new, (*temp)->next);
+			handle_redir_out(new, temp->next);
 			new->redir_in = 1;
 		}
-		else if ((*temp)->type == REDIRECT_OUT)
-		{
-			handle_redir_out(new, (*temp)->next, 1);
-			new->redir_out = 1;
-		}
-		else if ((*temp)->type == REDIR_IN_DOUBLE)
-		{
-			printf("handle_heredoc((*temp)->next)");
-			new->heredoc = 1;
-		}
-		else if ((*temp)->type == REDIR_OUT_DOUBLE)
-		{
-			handle_redir_out(new, (*temp)->next, 2);
-			new->append = 1;
-		}
-		(*temp) = (*temp)->next;
+		// else if (temp->type == REDIRECT_INPUT)
+		// {
+		// 	handle_redir_in(new, temp->next, 1);
+		// 	new->redir_out = 1;
+		// }
+		// else if (temp->type == REDIR_IN_DOUBLE)
+		// {
+		// 	printf("handle_heredoc((*temp)->next)");
+		// 	new->heredoc = 1;
+		// }
+		// else if (temp->type == REDIR_OUT_DOUBLE)
+		// {
+		// 	handle_redir_in(new, temp->next, 2);
+		// 	new->append = 1;
+		// }
+		if (temp != NULL)
+			temp = temp->next;
 	}
 	new->next = NULL;
-
 	add_stack_back_cmd(cmd_lst, new);
+	write(1, "new node\n", 9);
 	return (temp);
 }
 
@@ -201,7 +204,7 @@ void	number_words_per_pipe(t_shell *cmd)
 	{
 		while (temp != NULL && temp->type != PIPE)
 		{
-			if (temp->type == REDIR_IN_DOUBLE || temp->type == REDIR_OUT_DOUBLE || temp->type == REDIRECT_IN || temp->type == REDIRECT_OUT)
+			if (temp->type == APPEND || temp->type == HEREDOC || temp->type == REDIRECT_OUTPUT || temp->type == REDIRECT_INPUT)
 				temp = temp->next->next;
 			else if (temp->type == WORD)
 				j++;
@@ -224,17 +227,18 @@ void	triage_cmd_redir(t_shell *cmd)
 {
 	t_token	**temp;
 	t_single_cmd *cmd_lst;
+	cmd_lst = NULL;
 
 	temp = &(cmd->tok_lst);
 	// printf("here %s", (*temp)->command);
 	int index_node = 0;
 	write(1, "RT\n", 3);
-	while ((*temp) != NULL)
+	while ((*temp) != NULL && index_node != cmd->pipe_number + 1)
 	{
 		write(2, "NNN", 3);
-		temp = new_node_cmd(&cmd_lst, index_node, temp, cmd);
+		(*temp) = new_node_cmd(&cmd_lst, index_node, *temp, cmd);
 		index_node++;
-		if (temp != NULL)
+		if ((*temp) != NULL)
 			(*temp) = (*temp)->next;
 		else 
 			break;

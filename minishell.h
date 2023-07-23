@@ -20,10 +20,10 @@ enum e_type
 	SPA,	// Space
 	VARIABLE,		//4 $USER
 	PIPE,		//5   |
-	REDIRECT_IN,//6  >
-	REDIRECT_OUT,//7 <
-    REDIR_IN_DOUBLE, // 8  >>
-    REDIR_OUT_DOUBLE, // 9  <<
+	REDIRECT_OUTPUT,//6  >
+	REDIRECT_INPUT,//7 <
+    APPEND, // 8  >>
+    HEREDOC, // 9  <<
 };
 
 typedef struct s_token
@@ -127,10 +127,10 @@ char	*ft_strjoin(char *s1, char *s2);
 void    parser(t_shell *cmd);
 void    triage_cmd_redir(t_shell *cmd);
 void	number_words_per_pipe(t_shell *cmd);
-t_token	**new_node_cmd(t_single_cmd **cmd_lst, int index, t_token **temp, t_shell *cmd);
-void	handle_redir_out(t_single_cmd *new, t_token *temp, int type);
-void	handle_redir_in(t_single_cmd *new, t_token *temp);
-void init_node_cmd(t_single_cmd *new, t_shell *cmd, int index);
+t_token	*new_node_cmd(t_single_cmd **cmd_lst, int index, t_token *temp, t_shell *cmd);
+void	handle_redir_in(t_single_cmd *new, t_token *temp, int type);
+void	handle_redir_out(t_single_cmd *new, t_token *temp);
+void init_node_cmd(t_single_cmd **new, t_shell *cmd, int index);
 void	add_stack_back_cmd(t_single_cmd **cmd_lst, t_single_cmd *new);
 char	*copy_redir(t_shell *cmd, int nb_node);
 

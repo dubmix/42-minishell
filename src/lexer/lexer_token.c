@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:45:56 by edrouot           #+#    #+#             */
-/*   Updated: 2023/07/19 14:54:42 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/07/23 15:29:49 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	add_stack_back_tok(t_token **tok_lst, t_token *new)
 	}
 	tail->next = new;
 }
-
+/* is used to create a new node for single characters and add it to the end of the list */
 void	new_token(t_token **tokens, char *command, int nb, enum e_type type)
 {
 	t_token	*new;
@@ -42,9 +42,9 @@ void	new_token(t_token **tokens, char *command, int nb, enum e_type type)
 	new->index = nb;
 	new->type = type;
 	new->next = NULL;
-	if (new->type == 2)
+	if (new->type == D_QUOTE)
 		new->state = 1;
-	else if (new->type == 1)
+	else if (new->type == S_QUOTE)
 		new->state = 2;
 	else
 		new->state = 0;
@@ -52,6 +52,7 @@ void	new_token(t_token **tokens, char *command, int nb, enum e_type type)
 	return ;
 }
 
+/* is used to create a new node for quotes and then use the new_token*/
 int	new_token_var_words(t_token **tokens, char *string, int i, int nb_token)
 {
 	int		start;
@@ -68,6 +69,8 @@ int	new_token_var_words(t_token **tokens, char *string, int i, int nb_token)
 	return (i);
 }
 
+
+/* is used to create a new node for quotes and then use the new_token with either single quote state or double quote state*/
 int	new_token_quote(t_token **tokens, char *string, int i, int nb_token)
 {
 	int		start;
@@ -92,7 +95,7 @@ int	new_token_quote(t_token **tokens, char *string, int i, int nb_token)
 		new_token(tokens, var, nb_token, D_QUOTE);
 	return (i + 1);
 }
-
+/* Order every type into a list of token (see enum e_type) */
 t_token	*tokenization(t_shell *shell)
 {
 	int		i;
@@ -118,28 +121,25 @@ t_token	*tokenization(t_shell *shell)
 			i = new_token_quote(&tok_lst, shell->line_command, i, nb_token) - 1;
 		else if (shell->line_command[i] == 34) // double quotes
 			i = new_token_quote(&tok_lst, shell->line_command, i, nb_token) - 1;
-		else if (shell->line_command[i] == '>' && shell->line_command[i
-			+ 1] != '>')
+		else if (shell->line_command[i] == '>' && shell->line_command[i+ 1] != '>')
 		{
-			new_token(&tok_lst, ">", nb_token, REDIRECT_IN);
+			new_token(&tok_lst, ">", nb_token, REDIRECT_OUTPUT);
 			shell->redir_in++;
 		}
-		else if (shell->line_command[i] == '<' && shell->line_command[i
-			+ 1] != '<')
+		else if (shell->line_command[i] == '<' && shell->line_command[i+ 1] != '<')
 		{
-			new_token(&tok_lst, "<", nb_token, REDIRECT_OUT);
+			new_token(&tok_lst, "<", nb_token, REDIRECT_INPUT);
 			shell->redir_out++;
 		}
-		else if (shell->line_command[i] == '>' && shell->line_command[i
-			+ 1] == '>')
+		else if (shell->line_command[i] == '>' && shell->line_command[i+ 1] == '>')
 		{
-			new_token(&tok_lst, ">>", nb_token, REDIR_IN_DOUBLE);
+			new_token(&tok_lst, ">>", nb_token, APPEND);
 			shell->heredoc++;
 			i++;
 		}
 		else if (shell->line_command[i] == '<' && shell->line_command[i+ 1] == '<')
 		{
-			new_token(&tok_lst, "<<", nb_token, REDIR_OUT_DOUBLE);
+			new_token(&tok_lst, "<<", nb_token, HEREDOC);
 			shell->append++;
 			i++;
 		}

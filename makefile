@@ -6,7 +6,7 @@
 #    By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/26 12:53:21 by edrouot           #+#    #+#              #
-#    Updated: 2023/07/22 09:28:20 by edrouot          ###   ########.fr        #
+#    Updated: 2023/07/23 12:16:53 by edrouot          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ LIBFT = ./libft/libft.a
 SRCS	= src/minishell.c \
 		src/lexer/lexer_utils.c \
 		src/lexer/lexer_token.c \
-		src/lexer/lexer_envp.c \
+		src/lexer/lexer_init.c \
 		src/lexer/lexer_envp2.c \
 		src/parser/parser1.c \
 		src/parser/parser_single_command.c \
@@ -38,7 +38,7 @@ all:	$(NAME)
 
 ${NAME}: $(OBJS)
 	@make -C ./libft
-	@$(CC) $(OBJS)  $(CFLAGS) -o $(NAME) -lreadline $(LIBFT)
+	@$(CC) $(OBJS) $(CFLAGS) -o $(NAME) -lreadline $(LIBFT)
 	@echo "Compiling complete"
 
 clean: 

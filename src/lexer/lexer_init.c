@@ -1,61 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer_envp.c                                       :+:      :+:    :+:   */
+/*   lexer_init.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edrouot <edrouot@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:45:43 by edrouot           #+#    #+#             */
-/*   Updated: 2023/07/19 11:45:46 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/07/23 11:57:36 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-
-void	add_stack_back_env(t_env **env_lst, t_env *new)
-{
-	t_env	*tail;
-
-	if (!new)
-		return ;
-	if (!(*env_lst))
-	{
-		*env_lst = new;
-		return ;
-	}
-	tail = *env_lst;
-	while (tail->next != NULL)
-	{
-		tail = tail->next;
-	}
-	tail->next = new;
-}
-
-void	new_node_env(t_env **env_list, char **string)
-{
-	t_env	*new;
-
-	new = (t_env *)malloc(sizeof(t_env));
-	if (!new)
-		return ;
-	new->name = ft_strdup(string[0]);
-	new->value = ft_strdup(string[1]);
-	if (!new->name || !new->value)
-		return ; // error handling
-	new->next = NULL;
-	add_stack_back_env(env_list, new);
-}
-
-int	size_envp(char **envp)
-{
-	int	i;
-
-	i = 0;
-	while (envp[i] != NULL)
-		i++;
-	return (i);
-}
-
+int	size_envp(char **envp);
+/* 
+Take the size of the environnement
+alloc char **
+while loop -> alloc each line and create a new node with name and value of each line
+free the split
+*/
 t_env	*init_envp(char **envp, t_shell *cmd)
 {
 	int		i;
@@ -82,6 +44,51 @@ t_env	*init_envp(char **envp, t_shell *cmd)
 		i++;
 	}
 	return (envir);
+}
+
+int	size_envp(char **envp)
+{
+	int	i;
+
+	i = 0;
+	while (envp[i] != NULL)
+		i++;
+	return (i);
+}
+
+void	add_stack_back_env(t_env **env_lst, t_env *new)
+{
+	t_env	*tail;
+
+	if (!new)
+		return ;
+	if (!(*env_lst))
+	{
+		*env_lst = new;
+		return ;
+	}
+	tail = *env_lst;
+	while (tail->next != NULL)
+	{
+		tail = tail->next;
+	}
+	tail->next = new;
+}
+
+/*create a new node, copy in name and value and add it to the back of the list */
+void	new_node_env(t_env **env_list, char **string)
+{
+	t_env	*new;
+
+	new = (t_env *)malloc(sizeof(t_env));
+	if (!new)
+		return ;
+	new->name = ft_strdup(string[0]);
+	new->value = ft_strdup(string[1]);
+	if (!new->name || !new->value)
+		return ; // error handling
+	new->next = NULL;
+	add_stack_back_env(env_list, new);
 }
 
 int	length_arr_var(char **arr_var, t_shell *cmd)

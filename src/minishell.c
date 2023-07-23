@@ -6,11 +6,17 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 11:16:23 by edrouot           #+#    #+#             */
-/*   Updated: 2023/07/22 12:15:20 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/07/23 10:29:41 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+/* alloc shell struc
+initialize the environnement (envp)
+ readline(real function) store in shell->line_command
+ store in cmd->tok_lst all the tokens
+ */
 
 int	minishell_start(char **envp)
 {
@@ -30,6 +36,7 @@ int	minishell_start(char **envp)
 	}
 }
 
+/* launch minishell */
 int	main(int argc, char **argv, char **envp)
 {
 	(void)argv;
