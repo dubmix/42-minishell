@@ -1,46 +1,6 @@
 #include "../../minishell.h"
 
-void	adjust_number(t_shell *cmd)
-{
-	t_token	**temp;
-	int		i;
-
-	temp = &(cmd->tok_lst);
-	i = 0;
-	while (*temp != NULL)
-	{
-		(*temp)->index = i;
-		temp = &((*temp)->next);
-		i++;
-	}
-	cmd->number_token = i;
-}
-
-void	triage_quotes(t_shell *cmd)
-{
-	t_token	**temp;
-	char	**cmd_splitted;
-
-	temp = &(cmd->tok_lst);
-	while (*temp != NULL)
-	{
-		if ((*temp)->state == 1)
-		{
-			cmd_splitted = ft_split((*temp)->command, '\"');
-			free((*temp)->command);
-			(*temp)->command = ft_strdup(cmd_splitted[0]);
-			free_arr(cmd_splitted);
-		}
-		else if ((*temp)->state == 2)
-		{
-			cmd_splitted = ft_split((*temp)->command, '\'');
-			free((*temp)->command);
-			(*temp)->command = ft_strdup(cmd_splitted[0]);
-			free_arr(cmd_splitted);
-		}
-		temp = &((*temp)->next);
-	}
-}
+void	print_list_commands(t_single_cmd *cmd, t_shell *shell);
 
 void	parser(t_shell *cmd)
 {
@@ -48,7 +8,8 @@ void	parser(t_shell *cmd)
 	triage_space(cmd);
 	adjust_number(cmd);
 	number_words_per_pipe(cmd);
-	// triage_cmd_redir(cmd);
+	triage_cmd_redir(cmd);
+	print_list_commands(cmd->cmd_lst, cmd);
 	// if (cmd->pipe_number != 0)
 	// 	printf("IL Y A DES PIPES, ON FERA CA PLUS TARD");
 	// else
@@ -73,57 +34,25 @@ void	parser(t_shell *cmd)
 	*/
 }
 
-void	triage_space(t_shell *cmd)
+void	print_list_commands(t_single_cmd *cmd, t_shell *shell)
 {
-	t_token	**temp;
-	t_token	*nodeToDelete;
-	int		state;
+	t_single_cmd	*tmp;
 
-	temp = &(cmd->tok_lst);
-	nodeToDelete = NULL;
-	state = 0;
-	while (*temp != NULL)
+	tmp = cmd;
+	int i = 0;
+	int j = 0;
+	while (tmp)
 	{
-		if ((*temp)->type == 0)
+		printf("node is %d : \n, redir_in is %d : %s\n, redir_out is %d : %s\n, heredoc is %d : %s, append is %d : %s,\n", tmp->index, tmp->redir_in, tmp->redir_in_str,  tmp->redir_out, tmp->redir_out_str,  tmp->heredoc, tmp->heredoc_str,  tmp->append, tmp->append_str);
+		while (i < shell->words_per_pipe[j])
 		{
-			state = 0;
-			temp = &((*temp)->next);
-		}
-		else if ((*temp)->type == 3 && (state == 1 || state == 2))
-		{
-			nodeToDelete = *temp;
-			deleteNode(&(cmd->tok_lst), nodeToDelete);
-			state = 2;
-		}
-		else
-		{
-			state = 1;
-			temp = &((*temp)->next);
-		}
-	}
-}
-
-char	*copy_redir(t_shell *cmd, int nb_node)
-{
-	int		i;
-	t_token	*temp;
-
-	i = 0;
-	temp = cmd->tok_lst;
-	while (temp != NULL)
-	{
-		while (i < nb_node)
-		{
-			temp = temp->next;
+			printf("%s \n", tmp->command[i]);
 			i++;
 		}
-		if (temp->type == 0)
-			break ;
-		temp = temp->next;
+		j++;
+		tmp = tmp->next;
 	}
-	return (temp->command);
 }
-
 // typedef struct s_single_cmd
 // {
 //     char **command;
@@ -137,6 +66,7 @@ char	*copy_redir(t_shell *cmd, int nb_node)
 //     char *append_str;
 //     int index; // is the index of the pipe basically
 // } t_single_cmd;
+
 
 void	add_stack_back_cmd(t_single_cmd **cmd_lst, t_single_cmd *new)
 {
@@ -167,6 +97,7 @@ void init_node_cmd(t_single_cmd *new, t_shell *cmd, int index)
 	new->heredoc_str = ft_strdup("");
 	new->redir_in_str = ft_strdup("");
 	new->redir_out_str = ft_strdup("");
+	write(1, "init", 4);
 }
 
 void	handle_redir_in(t_single_cmd *new, t_token *temp)
@@ -177,6 +108,7 @@ void	handle_redir_in(t_single_cmd *new, t_token *temp)
 	if (fd < 0)
 		return ; // error handling
 	new->redir_in_str = ft_strdup(temp->next->command);
+	new->redir_in = 1;
 	close(fd);
 }
 
@@ -190,6 +122,7 @@ void	handle_redir_out(t_single_cmd *new, t_token *temp, int type)
 		if (fd < 0)
 				return ; // error handling
 		new->redir_out_str = ft_strdup(temp->next->command);
+		new->redir_out = 1;
 	}
 	else
 	{
@@ -198,223 +131,116 @@ void	handle_redir_out(t_single_cmd *new, t_token *temp, int type)
 		if (fd < 0)
 				return ; // error handling
 		new->append_str = ft_strdup(temp->next->command);
+		new->append = 1;
+
 	}
 	close(fd);
 }
-temp	**new_node_cmd(t_single_cmd **cmd_lst, int index, t_token **temp, t_shell *cmd)
+
+t_token	**new_node_cmd(t_single_cmd **cmd_lst, int index, t_token **temp, t_shell *cmd)
 {
 	t_single_cmd	*new;
-	t_token	**temp;
-	
-	temp = &(cmd->tok_lst);
-	init_node_cmd(new, cmd, index);
 	int i = 0;
+	write(1, "new node\n", 9);
+
+	new = NULL;
+	init_node_cmd(new, cmd, index);
 	while ((*temp) != NULL && (*temp)->type != PIPE)
 	{
-		if ((*temp)->type == WORD && (*temp)->index == 0)
+		if ((*temp)->type == WORD)
 		{
 			new->command[i] = ft_strdup((*temp)->command);
+			write(1, "new node end\n", 13);
 			i++;
 		}
 		if ((*temp)->type == REDIRECT_IN)
 		{
-			free(new->redir_in_str);
-			handle_redir_in((*temp)->next);
-			new->redir_in_str = ft_strdup((*temp)->next->command);
+			handle_redir_in(new, (*temp)->next);
 			new->redir_in = 1;
 		}
-		else if (*temp)->type == REDIRECT_OUT)
+		else if ((*temp)->type == REDIRECT_OUT)
 		{
-			handle_redir_out((*temp)->next, 1);
+			handle_redir_out(new, (*temp)->next, 1);
 			new->redir_out = 1;
 		}
-		else if (temp->type == REDIR_IN_DOUBLE)
+		else if ((*temp)->type == REDIR_IN_DOUBLE)
 		{
 			printf("handle_heredoc((*temp)->next)");
 			new->heredoc = 1;
 		}
-		else if (temp->type == REDIR_OUT_DOUBLE)
+		else if ((*temp)->type == REDIR_OUT_DOUBLE)
 		{
-			handle_redir_out((*temp)->next, 2);
+			handle_redir_out(new, (*temp)->next, 2);
 			new->append = 1;
 		}
-
-
-
-		temp = temp->next;
+		(*temp) = (*temp)->next;
 	}
-
-		
-	// new->name = ft_strdup(string[0]);
-	// new->value = ft_strdup(string[1]);
-	// if (!new->name || !new->value)
-	// 	return ; // error handling
 	new->next = NULL;
-	add_stack_back_env(cmd_lst, new);
+
+	add_stack_back_cmd(cmd_lst, new);
 	return (temp);
 }
 
 void	number_words_per_pipe(t_shell *cmd)
 {
-	t_token	**temp;
+	t_token	*temp;
 	
-	temp = &(cmd->tok_lst);
-	
-	if (cmd->pipe_number == 0)
-		return ;
-
+	temp = cmd->tok_lst;
+	// if (cmd->pipe_number == 0)
+	// {
+	// 	cmd->words_per_pipe = (int *)malloc(sizeof(int) * 1);
+	// 	cmd->words_per_pipe[0] = 1;
+	// 	return ;
+	// }
 	cmd->words_per_pipe = (int *)malloc(sizeof(int) * (cmd->pipe_number + 1));
 	if (!cmd->words_per_pipe)
 		return ; // error handling
 	int i = 0;
 	int j = 0;
-	while ((*temp) != NULL)
+	while (temp != NULL)
 	{
-		while ((*temp) != NULL && (*temp)->type != PIPE)
+		while (temp != NULL && temp->type != PIPE)
 		{
-			if ((*temp)->type == REDIR_IN_DOUBLE || (*temp)->type == REDIR_OUT_DOUBLE || (*temp)->type == REDIRECT_IN || (*temp)->type == REDIRECT_OUT)
-				(*temp) = (*temp)->next->next;
-			if ((*temp)->type == WORD)
+			if (temp->type == REDIR_IN_DOUBLE || temp->type == REDIR_OUT_DOUBLE || temp->type == REDIRECT_IN || temp->type == REDIRECT_OUT)
+				temp = temp->next->next;
+			else if (temp->type == WORD)
 				j++;
-			(*temp) = (*temp)->next;
+			if (temp != NULL)
+				temp = temp->next;
+			else
+				break;
 		}
 		cmd->words_per_pipe[i] = j;
 		j = 0;
 		i++;
-		if ((*temp) != NULL)
-			(*temp) = (*temp)->next;
+		if (temp != NULL)
+			temp = temp->next;
+		else
+			break;
 	}
 }
 
 void	triage_cmd_redir(t_shell *cmd)
 {
-	t_token	*temp;
+	t_token	**temp;
 	t_single_cmd *cmd_lst;
 
-	temp = cmd->tok_lst;
+	temp = &(cmd->tok_lst);
+	// printf("here %s", (*temp)->command);
 	int index_node = 0;
-	
-	while (temp != NULL)
+	write(1, "RT\n", 3);
+	while ((*temp) != NULL)
 	{
-		//chaque pipe doit créer un new node
-		// toutes les redirections doivent etre ouvertes puis fermees
-		// la derniere de chaque type est stockée dans le noeud
-		temp = new_node_cmd(&cmd_lst, index_node, (*temp))
-		index_node++; 
-
-
-
-
-
-		
-// 		if (temp->type == WORD && temp->index == 0)
-// 		{
-// 			cmd-
-
-
-// 		}
-// 		if (temp->type == REDIRECT_IN)
-// 		{
-// 			cmd->redir_in_arr[redir_in] = ft_strdup(copy_redir(cmd,
-// 					temp->index));
-// 			redir_in++;
-// 		}
-// 		else if (temp->type == REDIRECT_OUT)
-// 		{
-// 			cmd->redir_out_arr[redir_out] = ft_strdup(copy_redir(cmd,
-// 					temp->index));
-// 			redir_out++;
-// 		}
-// 		else if (temp->type == REDIR_IN_DOUBLE)
-// 		{
-// 			cmd->heredoc_arr[heredoc] = ft_strdup(copy_redir(cmd, temp->index));
-// 			heredoc++;
-// 		}
-// 		else if (temp->type == REDIR_OUT_DOUBLE)
-// 		{
-// 			cmd->append_arr[append] = ft_strdup(copy_redir(cmd, temp->index));
-// 			append++;
-// 		}
-
-		temp = temp->next;
+		write(2, "NNN", 3);
+		temp = new_node_cmd(&cmd_lst, index_node, temp, cmd);
+		index_node++;
+		if (temp != NULL)
+			(*temp) = (*temp)->next;
+		else 
+			break;
 	}
 
 
 }
 
 
-// // void	triage_cmd_redir(t_shell *cmd)
-// // {
-// // 	t_token	*temp;
-// // 	int		redir_in;
-// // 	int		redir_out;
-// // 	int		heredoc;
-// // 	int		append;
-
-// // 	temp = cmd->tok_lst;
-// // 	redir_in = 0;
-// // 	redir_out = 0;
-// // 	heredoc = 0;
-// // 	append = 0;
-// // 	// should I malloc only in the number are different from 0 ? then different function for it,could put the end with 0 also in it with a different status kinda
-// // 	cmd->redir_in_arr = (char **)malloc(sizeof(char *) * cmd->redir_in + 1);
-// // 	cmd->redir_out_arr = (char **)malloc(sizeof(char *) * cmd->redir_out + 1);
-// // 	cmd->heredoc_arr = (char **)malloc(sizeof(char *) * cmd->heredoc + 1);
-// // 	cmd->append_arr = (char **)malloc(sizeof(char *) * cmd->append + 1);
-// // 	if (!cmd->redir_in_arr || !cmd->redir_out_arr || !cmd->heredoc_arr || !cmd->append_arr)
-// // 		return ;
-// // 	while (temp != NULL)
-// // 	{
-// // 		if (temp->type == REDIRECT_IN)
-// // 		{
-// // 			cmd->redir_in_arr[redir_in] = ft_strdup(copy_redir(cmd,
-// // 					temp->index));
-// // 			redir_in++;
-// // 		}
-// // 		else if (temp->type == REDIRECT_OUT)
-// // 		{
-// // 			cmd->redir_out_arr[redir_out] = ft_strdup(copy_redir(cmd,
-// // 					temp->index));
-// // 			redir_out++;
-// // 		}
-// // 		else if (temp->type == REDIR_IN_DOUBLE)
-// // 		{
-// // 			cmd->heredoc_arr[heredoc] = ft_strdup(copy_redir(cmd, temp->index));
-// // 			heredoc++;
-// // 		}
-// // 		else if (temp->type == REDIR_OUT_DOUBLE)
-// // 		{
-// // 			cmd->append_arr[append] = ft_strdup(copy_redir(cmd, temp->index));
-// // 			append++;
-// // 		}
-// // 		temp = temp->next;
-// // 	}
-// // 	cmd->redir_in_arr[redir_in] = 0;
-// // 	cmd->redir_out_arr[redir_out] = 0;
-// // 	cmd->heredoc_arr[heredoc] = 0;
-// // 	cmd->append_arr[append] = 0;
-// // }
-
-void	deleteNode(t_token **head, t_token *nodeToDelete)
-{
-	t_token *prevNode;
-
-	prevNode = NULL;
-	if (*head == NULL || nodeToDelete == NULL)
-		return ;
-	if (*head == nodeToDelete)
-		*head = nodeToDelete->next;
-	else
-	{
-		prevNode = *head;
-		while (prevNode->next != NULL && prevNode->next != nodeToDelete)
-			prevNode = prevNode->next;
-		if (prevNode->next == nodeToDelete)
-			prevNode->next = nodeToDelete->next;
-		else
-			return ;
-	}
-	free(nodeToDelete->command);
-	free(nodeToDelete);
-	return ;
-}

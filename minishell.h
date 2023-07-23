@@ -44,7 +44,7 @@ typedef struct s_env
 
 typedef struct s_single_cmd
 {
-    char *command;
+    char **command;
     int redir_in;
     char *redir_in_str;
     int redir_out;
@@ -126,12 +126,24 @@ char	*ft_strjoin(char *s1, char *s2);
 /*parser1.c*/
 void    parser(t_shell *cmd);
 void    triage_cmd_redir(t_shell *cmd);
-void    deleteNode(t_token **head, t_token *nodeToDelete);
-void    triage_space(t_shell *cmd);
 void	number_words_per_pipe(t_shell *cmd);
+t_token	**new_node_cmd(t_single_cmd **cmd_lst, int index, t_token **temp, t_shell *cmd);
+void	handle_redir_out(t_single_cmd *new, t_token *temp, int type);
+void	handle_redir_in(t_single_cmd *new, t_token *temp);
+void init_node_cmd(t_single_cmd *new, t_shell *cmd, int index);
+void	add_stack_back_cmd(t_single_cmd **cmd_lst, t_single_cmd *new);
+char	*copy_redir(t_shell *cmd, int nb_node);
+
+/*parser_triage.c*/
+void    triage_space(t_shell *cmd);
+void	triage_quotes(t_shell *cmd);
+
+/*parser_utils.c*/
+void    deleteNode(t_token **head, t_token *nodeToDelete);
 
 /*parser_single_command.c*/
 void   single_command(t_shell *cmd);
+void	adjust_number(t_shell *cmd);
 
 /*src/builtin*/
 void    echo(char **args);
