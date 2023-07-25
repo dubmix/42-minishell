@@ -56,14 +56,14 @@ int ft_heredoc(t_shell *shell)
 }
 
 create_heredoc
-}
 
-int	heredoc(t_shell *shell, t_single_cmd *cmd)
+
+int	heredoc(t_shell *shell)
 {
 	int ret;
 
 	ret = EXIT_SUCCESS;
 	//cmd->redirections?
-	ret = ft_heredoc(shell, cmd->redirections);
+	ret = ft_heredoc(shell, shell->tok_lst->redirections);
 	return (EXIT_SUCCESS);
 }
