@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:45:56 by edrouot           #+#    #+#             */
-/*   Updated: 2023/07/23 15:29:49 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/07/25 16:54:45 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,10 +105,7 @@ t_token	*tokenization(t_shell *shell)
 	i = 0;
 	nb_token = 0;
 	tok_lst = NULL;
-	shell->redir_in = 0;
-	shell->redir_out = 0;
 	shell->heredoc = 0;
-	shell->append = 0;
 	shell->pipe_number = 0;
 	while (shell->line_command[i] != '\0')
 	{
@@ -122,29 +119,21 @@ t_token	*tokenization(t_shell *shell)
 		else if (shell->line_command[i] == 34) // double quotes
 			i = new_token_quote(&tok_lst, shell->line_command, i, nb_token) - 1;
 		else if (shell->line_command[i] == '>' && shell->line_command[i+ 1] != '>')
-		{
 			new_token(&tok_lst, ">", nb_token, REDIRECT_OUTPUT);
-			shell->redir_in++;
-		}
 		else if (shell->line_command[i] == '<' && shell->line_command[i+ 1] != '<')
-		{
 			new_token(&tok_lst, "<", nb_token, REDIRECT_INPUT);
-			shell->redir_out++;
-		}
 		else if (shell->line_command[i] == '>' && shell->line_command[i+ 1] == '>')
 		{
 			new_token(&tok_lst, ">>", nb_token, APPEND);
-			shell->heredoc++;
 			i++;
 		}
 		else if (shell->line_command[i] == '<' && shell->line_command[i+ 1] == '<')
 		{
 			new_token(&tok_lst, "<<", nb_token, HEREDOC);
-			shell->append++;
+			shell->heredoc++;
 			i++;
 		}
 		else if (shell->line_command[i] == ' ' || shell->line_command[i] == 9)
-			// space and tab
 			new_token(&tok_lst, " ", nb_token, SPA);
 		else if (shell->line_command[i] == '$')
 			i = new_token_var_words(&tok_lst, shell->line_command, i, nb_token)- 1;

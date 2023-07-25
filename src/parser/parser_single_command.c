@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:46:21 by edrouot           #+#    #+#             */
-/*   Updated: 2023/07/19 15:10:17 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/07/25 16:59:03 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ char	**get_path(char **envp)
 
 char	*check_access(char **envp, char **cmd) //, int *fds)
 {
+	write(1, "OOO", 3);
 	char	*path_cmd;
 	int		i;
 	char	**path_arr;
@@ -65,26 +66,26 @@ char	*check_access(char **envp, char **cmd) //, int *fds)
 	return (path_cmd);
 }
 
-char	**list_to_array(t_shell *cmd, char **arr_cmd)
-{
-	t_token	**temp;
-	int		i;
+// char	**list_to_array(t_shell *cmd, char *(cmd->cmd_lst->command)
+// {
+// 	t_token	**temp;
+// 	int		i;
 
-	temp = &(cmd->tok_lst);
-	i = 0;
-	while (*temp != NULL)
-	{
-		if ((*temp)->type != 3)
-		{
-			arr_cmd[i] = ft_strdup((*temp)->command);
-			i++;
-		}
-		(*temp) = (*temp)->next;
-	}
-	arr_cmd[i] = 0;
-	return (arr_cmd);
-	// def is not the right size but will handle that later;
-}
+// 	temp = &(cmd->tok_lst);
+// 	i = 0;
+// 	while (*temp != NULL)
+// 	{
+// 		if ((*temp)->type != 3)
+// 		{
+// 		(cmd->cmd_lst->command[i] = ft_strdup((*temp)->command);
+// 			i++;
+// 		}
+// 		(*temp) = (*temp)->next;
+// 	}
+// (cmd->cmd_lst->command[i] = 0;
+// 	return (cmd->cmd_lst->command);
+// 	// def is not the right size but will handle that later;
+// }
 
 void	print_char2(char **arr_string)
 {
@@ -103,9 +104,10 @@ void	print_char2(char **arr_string)
 
 void	single_command(t_shell *cmd)
 {
-	char	**arr_cmd;
-	char	*path;
-
+	// char	*(cmd->cmd_lst->command;
+	// char	*path;
+	t_single_cmd **temp;
+	temp = &(cmd->cmd_lst);
 	/*
 	word[0] will be the command
 	next words can be options or arguments
@@ -120,34 +122,36 @@ void	single_command(t_shell *cmd)
 	// dup2(o, STDIN_FILENO);
 	// dup2(c, STDOUT_FILENO);
 	
-	arr_cmd = (char **)malloc(sizeof(char *) * (cmd->number_token
-			- cmd->redir_in - cmd->redir_out - cmd->heredoc - cmd->append) + 1);
-	// change the size of the array cmd 
-	if (!arr_cmd)
-		return ; // ERROR HANDLING
-	arr_cmd = list_to_array(cmd, arr_cmd);
-	print_char2(arr_cmd);
-	path = check_access(cmd->envp_copy, arr_cmd);
-	if (ft_strncmp(arr_cmd[0], "echo", 4) == 0)
-		echo(arr_cmd);
-	else if (ft_strncmp(arr_cmd[0], "cd", 2) == 0)
-		printf("It will be the cd builtin");
-	else if (ft_strncmp(arr_cmd[0], "env", 3) == 0)
-		env(cmd);
-	else if (ft_strncmp(arr_cmd[0], "exit", 4) == 0)
-		printf("It will be the exit builtin");
-	else if (ft_strncmp(arr_cmd[0], "export", 6) == 0)
-		printf("It will be the export builtin");
-	else if (ft_strncmp(arr_cmd[0], "pwd", 3) == 0)
-		pwd();
-	else if (ft_strncmp(arr_cmd[0], "unset", 5) == 0)
-		printf("It will be the unset builtin");
-	else
-	{
-		if (execve(path, arr_cmd, cmd->envp_copy) == -1)
-		{
-			printf("oupsi");
-		}
-	}
-	// close(c);
+	//(cmd->cmd_lst->command = (char **)malloc(sizeof(char *) * (cmd->number_token
+	// 		- cmd->redir_in - cmd->redir_out - cmd->heredoc - cmd->append) + 1);
+	// // change the size of the array cmd 
+	// if ((cmd->cmd_lst->command)
+	// 	return ; // ERROR HANDLING
+	//(cmd->cmd_lst->command = list_to_array(cmd, cmd->);
+	// print_char2(cmd->cmd_lst->command);
+		write(1, "NNN", 3);
+		// printf("%s", (*temp)->command[0]);
+	// path = check_access(cmd->envp_copy, cmd->cmd_lst->command);
+	// if (ft_strncmp(cmd->cmd_lst->command[0], "echo", 4) == 0)
+	// 	echo(cmd->cmd_lst->command);
+	// else if (ft_strncmp(cmd->cmd_lst->command[0], "cd", 2) == 0)
+	// 	printf("It will be the cd builtin");
+	// else if (ft_strncmp(cmd->cmd_lst->command[0], "env", 3) == 0)
+	// 	env(cmd);
+	// else if (ft_strncmp(cmd->cmd_lst->command[0], "exit", 4) == 0)
+	// 	printf("It will be the exit builtin");
+	// else if (ft_strncmp(cmd->cmd_lst->command[0], "export", 6) == 0)
+	// 	printf("It will be the export builtin");
+	// else if (ft_strncmp(cmd->cmd_lst->command[0], "pwd", 3) == 0)
+	// 	pwd();
+	// else if (ft_strncmp(cmd->cmd_lst->command[0], "unset", 5) == 0)
+	// 	printf("It will be the unset builtin");
+	// else
+	// {
+	// 	if (execve(path,cmd->cmd_lst->command, cmd->envp_copy) == -1)
+	// 	{
+	// 		printf("oupsi");
+	// 	}
+	// }
+	// // close(c);
 }

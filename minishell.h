@@ -49,8 +49,8 @@ typedef struct s_single_cmd
     char *redir_in_str;
     int redir_out;
     char *redir_out_str;
-    int heredoc;
-    char *heredoc_str;
+    // int heredoc;
+    // char **heredoc_str;
     int append;
     char *append_str;
     int index; // is the index of the pipe basically
@@ -67,14 +67,8 @@ typedef struct s_shell
     t_single_cmd *cmd_lst;
     char **envp_copy; // export function recre2er la char ** // do we really need something else than the path
     int size_arr_var;
-    int redir_in; // out
-    int redir_out;// out
     int heredoc;// out
-    int append;// out
-    char **redir_in_arr; // out
-    char **redir_out_arr; // out
-    char **heredoc_arr; // out
-    char **append_arr; // out
+    char **heredoc_arr;
     int pipe_number;
     int number_token;
     int *words_per_pipe;
@@ -128,8 +122,8 @@ void    parser(t_shell *cmd);
 void    triage_cmd_redir(t_shell *cmd);
 void	number_words_per_pipe(t_shell *cmd);
 t_token	*new_node_cmd(t_single_cmd **cmd_lst, int index, t_token *temp, t_shell *cmd);
-void	handle_redir_in(t_single_cmd *new, t_token *temp, int type);
-void	handle_redir_out(t_single_cmd *new, t_token *temp);
+void	handle_redir_in(t_single_cmd *new, t_token *temp);
+void	handle_redir_out(t_single_cmd *new, t_token *temp, int type);
 void init_node_cmd(t_single_cmd **new, t_shell *cmd, int index);
 void	add_stack_back_cmd(t_single_cmd **cmd_lst, t_single_cmd *new);
 char	*copy_redir(t_shell *cmd, int nb_node);
