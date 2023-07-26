@@ -74,11 +74,21 @@ typedef struct s_shell
 /* main.c */
 int minishell_start(char **envp);
 
+/////////////////////////////////// LEXER //////////////////////////////////
+/*lexer_init.c*/
+t_env *init_envp(char **envp, t_shell *cmd);
+void add_stack_back_env(t_env **env_lst, t_env *new);
+void new_node_env(t_env **env_list, char **string);
+
+/* lexer_expand_var.c */
+void expand_var(t_shell *cmd);
+
 /* lexer_utils.c */
 void    print_list(t_env *env); // print the envp
 void    print_list_tok(t_token *tok); // print the token list
-void    free_arr(char **arr); // free any arrays 
 int         special_char(int c);
+int	length_arr_var(char **arr_var, t_shell *cmd);
+int	length_string_without_var(char *string);
 
 /* lexer_token.c */
 void add_stack_back_tok(t_token **tok_lst, t_token *new);
@@ -87,21 +97,47 @@ int new_token_var_words(t_token **tokens, char *string, int i, int nb_token);
 int new_token_quote(t_token **tokens, char *string, int i, int nb_token);
 t_token *tokenization(t_shell *shell);
 
-/* lexer_envp.c */
+/////////////////////////////////// PARSER //////////////////////////////////
 
-char **string_variables(t_shell *cmd, t_token *var);
-void double_quote_env(t_shell *cmd, t_token *var);
-void expand_var(t_shell *cmd);
-void look_into_envir(t_shell *cmd, t_token *var);
-char *look_into_envir_quote(t_shell *cmd, char *variable);
+/*parser_main.c*/
+void    parser(t_shell *cmd);
+void	number_words_per_pipe(t_shell *cmd);
 
-/* lexer_envp2.c */
-int length_arr_var(char **arr_var, t_shell *cmd);
-int length_string_without_var(char *string);
-void add_stack_back_env(t_env **env_lst, t_env *new);
-void new_node_env(t_env **env_list, char **string);
-t_env *init_envp(char **envp, t_shell *cmd);
+/*parser_triage.c*/
+void    triage_space(t_shell *cmd);
+void	triage_quotes(t_shell *cmd);
 
+/*parser_cmd_lst.c*/
+t_single_cmd    *triage_cmd_redir(t_shell *cmd);
+void init_node_cmd(t_single_cmd **new, t_shell *cmd, int index);
+t_token	*new_node_cmd(t_single_cmd **cmd_lst, int index, t_token *temp, t_shell *cmd);
+void	add_stack_back_cmd(t_single_cmd **cmd_lst, t_single_cmd *new);
+
+/*parser_redir.c*/
+void	handle_redir_in(t_single_cmd *new, t_token *temp);
+void	handle_redir_out(t_single_cmd *new, t_token *temp, int type);
+
+/*parser_utils.c*/
+void    deleteNode(t_token **head, t_token *nodeToDelete);
+void	adjust_number(t_shell *cmd);
+void	print_list_commands(t_single_cmd *cmd, t_shell *shell);
+
+/*parser_single_command.c*/
+void   single_command(t_shell *cmd);
+char	**get_path(char **envp);
+char	*check_access(char **envp, char **cmd); //, int *fds);
+
+/////////////////////////////////// BUILTINS //////////////////////////////////
+
+/*builtin*/
+void    echo(char **args);
+int     env(t_shell *cmd);
+int     pwd(void);
+
+/////////////////////////////////// OTHERS //////////////////////////////////
+
+/*errors.c*/
+void    free_arr(char **arr); // free any arrays
 
 /* libft */
 int	countsubstr(char const *s, char c);
@@ -112,33 +148,6 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n);
 char	*checksub(void);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strjoin(char *s1, char *s2);
-
-/*parser1.c*/
-void    parser(t_shell *cmd);
-t_single_cmd    *triage_cmd_redir(t_shell *cmd);
-void	number_words_per_pipe(t_shell *cmd);
-t_token	*new_node_cmd(t_single_cmd **cmd_lst, int index, t_token *temp, t_shell *cmd);
-void	handle_redir_in(t_single_cmd *new, t_token *temp);
-void	handle_redir_out(t_single_cmd *new, t_token *temp, int type);
-void init_node_cmd(t_single_cmd **new, t_shell *cmd, int index);
-void	add_stack_back_cmd(t_single_cmd **cmd_lst, t_single_cmd *new);
-char	*copy_redir(t_shell *cmd, int nb_node);
-
-/*parser_triage.c*/
-void    triage_space(t_shell *cmd);
-void	triage_quotes(t_shell *cmd);
-
-/*parser_utils.c*/
-void    deleteNode(t_token **head, t_token *nodeToDelete);
-
-/*parser_single_command.c*/
-void   single_command(t_shell *cmd);
-void	adjust_number(t_shell *cmd);
-
-/*src/builtin*/
-void    echo(char **args);
-int     env(t_shell *cmd);
-int     pwd(void);
 
 /* TO DO 
 error handling, usually I put error in the printf statement 

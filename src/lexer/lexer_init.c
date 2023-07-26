@@ -6,12 +6,13 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:45:43 by edrouot           #+#    #+#             */
-/*   Updated: 2023/07/23 11:57:36 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/07/26 09:17:31 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-int	size_envp(char **envp);
+
+static int	size_envp(char **envp);
 /* 
 Take the size of the environnement
 alloc char **
@@ -46,7 +47,7 @@ t_env	*init_envp(char **envp, t_shell *cmd)
 	return (envir);
 }
 
-int	size_envp(char **envp)
+static int	size_envp(char **envp)
 {
 	int	i;
 
@@ -89,42 +90,4 @@ void	new_node_env(t_env **env_list, char **string)
 		return ; // error handling
 	new->next = NULL;
 	add_stack_back_env(env_list, new);
-}
-
-int	length_arr_var(char **arr_var, t_shell *cmd)
-{
-	int	j;
-	int	length;
-
-	j = 0;
-	length = 0;
-	while (arr_var[j] != NULL && j < cmd->size_arr_var)
-	{
-		length += ft_strlen(arr_var[j]);
-		j++;
-	}
-	return (length);
-}
-
-int	length_string_without_var(char *string)
-{
-	int		i;
-	char	*temp;
-	int		length;
-
-	i = 0;
-	temp = string;
-	length = 0;
-	while (temp[i] != '\0')
-	{
-		if (temp[i] == '$')
-		{
-			while (temp[i] != ' ' && temp[i] != 34)
-				i++;
-		}
-		else
-			length++;
-		i++;
-	}
-	return (length);
 }

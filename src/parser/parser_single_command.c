@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:46:21 by edrouot           #+#    #+#             */
-/*   Updated: 2023/07/26 09:08:50 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/07/26 09:29:14 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,41 +65,6 @@ char	*check_access(char **envp, char **cmd) //, int *fds)
 	return (path_cmd);
 }
 
-// char	**list_to_array(t_shell *cmd, char *(cmd->cmd_lst->command)
-// {
-// 	t_token	**temp;
-// 	int		i;
-
-// 	temp = &(cmd->tok_lst);
-// 	i = 0;
-// 	while (*temp != NULL)
-// 	{
-// 		if ((*temp)->type != 3)
-// 		{
-// 		(cmd->cmd_lst->command[i] = ft_strdup((*temp)->command);
-// 			i++;
-// 		}
-// 		(*temp) = (*temp)->next;
-// 	}
-// (cmd->cmd_lst->command[i] = 0;
-// 	return (cmd->cmd_lst->command);
-// 	// def is not the right size but will handle that later;
-// }
-
-void	print_char2(char **arr_string)
-{
-	int	i;
-
-	i = 0;
-	printf("\n---- PRINTING ARRAY -----\n");
-	while (arr_string[i] != 0)
-	{
-		printf("%s\n", arr_string[i]);
-		i++;
-	}
-	printf("\n---- END ARRAY -----\n");
-	return ;
-}
 
 void	single_command(t_shell *cmd)
 {

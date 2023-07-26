@@ -39,3 +39,24 @@ void	adjust_number(t_shell *cmd)
 	}
 	cmd->number_token = i;
 }
+
+void	print_list_commands(t_single_cmd *cmd, t_shell *shell)
+{
+	t_single_cmd	*tmp;
+
+	tmp = cmd;
+	int i = 0;
+	int j = 0;
+	while (tmp)
+	{
+		printf("node is %d : \n, redir_in is %d : %s\n, redir_out is %d : %s\n, append is %d : %s,\n", tmp->index, tmp->redir_in, tmp->redir_in_str,  tmp->redir_out, tmp->redir_out_str, tmp->append, tmp->append_str);
+		while (i < shell->words_per_pipe[j])
+		{
+			printf("Command are %s \n", tmp->command[i]);
+			i++;
+		}
+		j++;
+		i = 0;
+		tmp = tmp->next;
+	}
+}
