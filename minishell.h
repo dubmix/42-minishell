@@ -49,8 +49,6 @@ typedef struct s_single_cmd
     char *redir_in_str;
     int redir_out;
     char *redir_out_str;
-    // int heredoc;
-    // char **heredoc_str;
     int append;
     char *append_str;
     int index; // is the index of the pipe basically
@@ -60,15 +58,13 @@ typedef struct s_single_cmd
 typedef struct s_shell
 {
     char *line_command;
-    int d_quote;
-    int s_quote;
     t_token *tok_lst;
     t_env   *env_lst;
     t_single_cmd *cmd_lst;
     char **envp_copy; // export function recre2er la char ** // do we really need something else than the path
     int size_arr_var;
-    int heredoc;// out
-    char **heredoc_arr;
+    int heredoc;
+    char **heredoc_arr; // is not in the single_cmd struc because it is not depending on the pipes
     int pipe_number;
     int number_token;
     int *words_per_pipe;
@@ -82,7 +78,7 @@ int minishell_start(char **envp);
 void    print_list(t_env *env); // print the envp
 void    print_list_tok(t_token *tok); // print the token list
 void    free_arr(char **arr); // free any arrays 
-int	special_char(int c);
+int         special_char(int c);
 
 /* lexer_token.c */
 void add_stack_back_tok(t_token **tok_lst, t_token *new);

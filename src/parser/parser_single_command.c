@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:46:21 by edrouot           #+#    #+#             */
-/*   Updated: 2023/07/25 16:59:03 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/07/26 09:08:50 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ char	**get_path(char **envp)
 
 char	*check_access(char **envp, char **cmd) //, int *fds)
 {
-	write(1, "OOO", 3);
 	char	*path_cmd;
 	int		i;
 	char	**path_arr;
@@ -105,9 +104,9 @@ void	print_char2(char **arr_string)
 void	single_command(t_shell *cmd)
 {
 	// char	*(cmd->cmd_lst->command;
-	// char	*path;
-	t_single_cmd **temp;
-	temp = &(cmd->cmd_lst);
+	char	*path;
+	t_single_cmd *temp;
+	temp = cmd->cmd_lst;
 	/*
 	word[0] will be the command
 	next words can be options or arguments
@@ -129,29 +128,27 @@ void	single_command(t_shell *cmd)
 	// 	return ; // ERROR HANDLING
 	//(cmd->cmd_lst->command = list_to_array(cmd, cmd->);
 	// print_char2(cmd->cmd_lst->command);
-		write(1, "NNN", 3);
-		// printf("%s", (*temp)->command[0]);
-	// path = check_access(cmd->envp_copy, cmd->cmd_lst->command);
-	// if (ft_strncmp(cmd->cmd_lst->command[0], "echo", 4) == 0)
-	// 	echo(cmd->cmd_lst->command);
-	// else if (ft_strncmp(cmd->cmd_lst->command[0], "cd", 2) == 0)
-	// 	printf("It will be the cd builtin");
-	// else if (ft_strncmp(cmd->cmd_lst->command[0], "env", 3) == 0)
-	// 	env(cmd);
-	// else if (ft_strncmp(cmd->cmd_lst->command[0], "exit", 4) == 0)
-	// 	printf("It will be the exit builtin");
-	// else if (ft_strncmp(cmd->cmd_lst->command[0], "export", 6) == 0)
-	// 	printf("It will be the export builtin");
-	// else if (ft_strncmp(cmd->cmd_lst->command[0], "pwd", 3) == 0)
-	// 	pwd();
-	// else if (ft_strncmp(cmd->cmd_lst->command[0], "unset", 5) == 0)
-	// 	printf("It will be the unset builtin");
-	// else
-	// {
-	// 	if (execve(path,cmd->cmd_lst->command, cmd->envp_copy) == -1)
-	// 	{
-	// 		printf("oupsi");
-	// 	}
-	// }
+	path = check_access(cmd->envp_copy, temp->command);
+	if (ft_strncmp(cmd->cmd_lst->command[0], "echo", 4) == 0)
+		echo(cmd->cmd_lst->command);
+	else if (ft_strncmp(cmd->cmd_lst->command[0], "cd", 2) == 0)
+		printf("It will be the cd builtin");
+	else if (ft_strncmp(cmd->cmd_lst->command[0], "env", 3) == 0)
+		env(cmd);
+	else if (ft_strncmp(cmd->cmd_lst->command[0], "exit", 4) == 0)
+		printf("It will be the exit builtin");
+	else if (ft_strncmp(cmd->cmd_lst->command[0], "export", 6) == 0)
+		printf("It will be the export builtin");
+	else if (ft_strncmp(cmd->cmd_lst->command[0], "pwd", 3) == 0)
+		pwd();
+	else if (ft_strncmp(cmd->cmd_lst->command[0], "unset", 5) == 0)
+		printf("It will be the unset builtin");
+	else
+	{
+		if (execve(path,cmd->cmd_lst->command, cmd->envp_copy) == -1)
+		{
+			printf("oupsi");
+		}
+	}
 	// // close(c);
 }
