@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pdelanno <pdelanno@student.42berlin.d      +#+  +:+       +#+        */
+/*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 10:45:11 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/07/25 10:45:35 by pdelanno         ###   ########.fr       */
+/*   Updated: 2023/07/26 13:11:41 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void exec_single_command(t_shell *cmd)
 {
     int pid;
     int status;
-
+    //test//
     //exec_heredoc(cmd);
     pid = fork();
     if (pid < 0)
