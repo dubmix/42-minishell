@@ -24,8 +24,3 @@ int    pwd(void)
     else
         return (EXIT_FAILURE);
 }
-
-//int main(void)
-//{
-//    return pwd();/
-//}

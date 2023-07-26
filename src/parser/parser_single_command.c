@@ -115,5 +115,10 @@ void	single_command(t_shell *cmd)
 			printf("oupsi");
 		}
 	}
+<<<<<<< HEAD
 	// // close(c);
 }
+=======
+	close(c);
+}
+>>>>>>> aded17c185d4ba7581cd238747f88b1d03db35c4
