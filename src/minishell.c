@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 11:16:23 by edrouot           #+#    #+#             */
-/*   Updated: 2023/07/23 10:29:41 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/07/26 15:58:36 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,19 @@ initialize the environnement (envp)
  store in cmd->tok_lst all the tokens
  */
 
+void	init_shell(t_shell *cmd)
+{
+	cmd->nb_of_heredocs = 0;
+	cmd->nb_of_pipes = 0;
+}
+
 int	minishell_start(char **envp)
 {
 	t_shell	*cmd;
 
-	(void)envp;
 	cmd = malloc(sizeof(t_shell));
+	init_shell(cmd);
+	(void)envp;
 	if (!cmd)
 		return (0);
 	cmd->env_lst = init_envp(envp, cmd);

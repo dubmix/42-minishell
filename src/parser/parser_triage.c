@@ -25,6 +25,7 @@ void	triage_space(t_shell *cmd)
 		else
 		{
 			state = 1;
+			(*temp)->type = WORD;
 			temp = &((*temp)->next);
 		}
 	}

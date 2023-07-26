@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:45:38 by edrouot           #+#    #+#             */
-/*   Updated: 2023/07/26 10:49:01 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/07/26 16:03:11 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,10 @@ void	look_into_envir(t_shell *cmd, t_token *var);
 char	**string_variables(t_shell *cmd, t_token *var);
 void	double_quote_env(t_shell *cmd, t_token *var);
 char	*look_into_envir_quote(t_shell *cmd, char *string);
-/*first function : look for two things : either a type variable ($) or double quote (state)*/
+
+/*first function : look for two things :
+either a type variable ($) or double quote (state)*/
+
 void	expand_var(t_shell *cmde)
 {
 	t_token	*tmp;
@@ -34,6 +37,8 @@ void	expand_var(t_shell *cmde)
 			double_quote_env(cmde, tmp);
 			tmp->type = 0;
 		}
+		else if (tmp->state == 2)
+			tmp->type = 0;
 		tmp = tmp->next;
 	}
 }
@@ -51,27 +56,32 @@ char	**string_variables(t_shell *cmd, t_token *var)
 	j = 0;
 	start = 0;
 	cmd->size_arr_var = countsubstr(var->command, '$') - 1;
-	arr_string = (char **)malloc(sizeof(char *) * cmd->size_arr_var); //+ 1 or not ?
+	arr_string = (char **)malloc(sizeof(char *) * (cmd->size_arr_var + 1));
 	if (!arr_string)
 		return (NULL);
 	while (temp[i] != '\0')
 	{
 		if (temp[i] == '$')
 		{
-			start = i + 1; // the + 1 is to directly take out the $ from the string
-			while (temp[i] != ' ' && temp[i] != 34) // 34 is double quote
+			start = i + 1;
+			while (temp[i] != ' ' && temp[i] != 34)
 				i++;
 			arr_string[j] = look_into_envir_quote(cmd, ft_substr(var->command,
-					start, i - start));
+						start, i - start));
 			j++;
 		}
 		i++;
 	}
+	arr_string[j] = NULL;
 	cmd->size_arr_var = j;
 	return (arr_string);
 }
-/*  create via string_variables an array with the correct values of the variable 
-then rewrite the command line with str_join, replacing each var $XXX with the correct value*/
+
+/*  create via string_variables an array 
+with the correct values of the variable 
+then rewrite the command line with str_join,
+ replacing each var $XXX with the correct value*/
+
 void	double_quote_env(t_shell *cmd, t_token *var)
 {
 	int		i;
@@ -85,9 +95,9 @@ void	double_quote_env(t_shell *cmd, t_token *var)
 	k = 0;
 	arr_var = string_variables(cmd, var); 
 	new_string = (char *)malloc(sizeof(char) * (length_arr_var(arr_var, cmd)
-			+ length_string_without_var(var->command)) + 1);
+				+ length_string_without_var(var->command)) + 1);
 	if (!new_string)
-		return ;
+		return;// error handling
 	while (var->command[i] != '\0')
 	{
 		if (var->command[i] == '$')
@@ -106,23 +116,25 @@ void	double_quote_env(t_shell *cmd, t_token *var)
 	free(var->command);
 	var->command = ft_strdup(new_string);
 	free(new_string);
-	// free_arr(arr_var);  // cause issue, to be checked later
+	free_arr(arr_var);
 }
 
- /*  we need only what is after the $ ($USER -> USER) and compare with USER with env_lst 
+/*  we need only what is after the $ ($USER -> USER)
+and compare with USER with env_lst 
  and replace the correct value in the tok_lst*/
+ 
 void	look_into_envir(t_shell *cmd, t_token *var)
 {
 	t_env	*tmp;
-	char	**string;
+	char	**strings;
 	int		j;
 
 	tmp = cmd->env_lst;
 	j = 0;
-	string = ft_split(var->command, '$');
+	strings = ft_split(var->command, '$');
 	while (tmp != NULL)
 	{
-		if (ft_strncmp(string[0], tmp->name, ft_strlen(var->command)) == 0)
+		if (ft_strncmp(strings[0], tmp->name, ft_strlen(var->command)) == 0)
 		{
 			free(var->command);
 			var->command = ft_strdup(tmp->value);
@@ -130,11 +142,7 @@ void	look_into_envir(t_shell *cmd, t_token *var)
 		}
 		tmp = tmp->next;
 	}
-	while (string[j] != NULL)
-	{
-		free(string[j]);
-		j++;
-	}
+	free_arr(strings);
 	if (tmp == NULL)
 	{
 		free(var->command);

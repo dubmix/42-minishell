@@ -60,7 +60,7 @@ typedef struct s_single_cmd
 
 typedef struct s_shell
 {
-    char *line_command;
+    char *line;
     t_token *tok_lst;
     t_env   *env_lst;
     t_single_cmd *cmd_lst;
@@ -77,8 +77,10 @@ typedef struct s_shell
 
 /* main.c */
 int minishell_start(char **envp);
+void	init_shell(t_shell *cmd);
 
 /////////////////////////////////// LEXER //////////////////////////////////
+
 /*lexer_init.c*/
 t_env *init_envp(char **envp, t_shell *cmd);
 void add_stack_back_env(t_env **env_lst, t_env *new);
@@ -123,7 +125,7 @@ void	add_stack_back_cmd(t_single_cmd **cmd_lst, t_single_cmd *new);
 
 /*parser_redir.c*/
 void	handle_redir_in(t_single_cmd *new, t_token *temp);
-void	handle_redir_out(t_single_cmd *new, t_token *temp, int type);
+void	handle_redir_in_out(t_single_cmd *new, t_token *temp);
 
 /*parser_utils.c*/
 void    delete_node(t_token **head, t_token *nodeToDelete);

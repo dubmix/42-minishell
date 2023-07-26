@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:45:56 by edrouot           #+#    #+#             */
-/*   Updated: 2023/07/26 10:53:50 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/07/26 16:02:04 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,11 @@ void	add_stack_back_tok(t_token **tok_lst, t_token *new)
 	}
 	tail->next = new;
 }
-/* is used to create a new node for single characters and add it to the end of the list */
+
+/* is used to create a new node for 
+single characters and 
+add it to the end of the list */
+
 void	new_token(t_token **tokens, char *command, int nb, enum e_type type)
 {
 	t_token	*new;
@@ -52,7 +56,9 @@ void	new_token(t_token **tokens, char *command, int nb, enum e_type type)
 	return ;
 }
 
-/* is used to create a new node for quotes and then use the new_token*/
+/* is used to create a new node for quotes 
+and then use the new_token*/
+
 int	new_token_var_words(t_token **tokens, char *string, int i, int nb_token)
 {
 	int		start;
@@ -69,8 +75,10 @@ int	new_token_var_words(t_token **tokens, char *string, int i, int nb_token)
 	return (i);
 }
 
+/* is used to create a new node for quotes 
+and then use the new_token with either single quote state 
+or double quote state*/
 
-/* is used to create a new node for quotes and then use the new_token with either single quote state or double quote state*/
 int	new_token_quote(t_token **tokens, char *string, int i, int nb_token)
 {
 	int		start;
@@ -95,8 +103,37 @@ int	new_token_quote(t_token **tokens, char *string, int i, int nb_token)
 		new_token(tokens, var, nb_token, D_QUOTE);
 	return (i + 1);
 }
+
 /* Order every type into a list of token (see enum e_type) */
-t_token	*tokenization(t_shell *shell)
+
+int	tokenization_bis(t_shell *cmd, int i, t_token *tok_lst, int nb_token)
+{
+	if (cmd->line[i] == '|')
+	{
+		new_token(&tok_lst, "|", nb_token, PIPE);
+		cmd->nb_of_pipes++;
+	}
+	else if (cmd->line[i] == '>' && cmd->line[i + 1] != '>')
+		new_token(&tok_lst, ">", nb_token, REDIRECT_OUTPUT);
+	else if (cmd->line[i] == '<' && cmd->line[i + 1] != '<')
+		new_token(&tok_lst, "<", nb_token, REDIRECT_INPUT);
+	else if (cmd->line[i] == '>' && cmd->line[i + 1] == '>')
+	{
+		new_token(&tok_lst, ">>", nb_token, APPEND);
+		i++;
+	}
+	else if (cmd->line[i] == '<' && cmd->line[i + 1] == '<')
+	{
+		new_token(&tok_lst, "<<", nb_token, HEREDOC);
+		cmd->nb_of_heredocs++;
+		i++;
+	}
+	else if (cmd->line[i] == ' ' || cmd->line[i] == 9)
+		new_token(&tok_lst, " ", nb_token, SPA);
+	return (i);
+}
+
+t_token	*tokenization(t_shell *cmd)
 {
 	int		i;
 	int		nb_token;
@@ -105,40 +142,20 @@ t_token	*tokenization(t_shell *shell)
 	i = 0;
 	nb_token = 0;
 	tok_lst = NULL;
-	shell->nb_of_heredocs = 0;
-	shell->nb_of_pipes = 0;
-	while (shell->line_command[i] != '\0')
+	while (cmd->line[i] != '\0')
 	{
-		if (shell->line_command[i] == '|')
-		{
-			new_token(&tok_lst, "|", nb_token, PIPE);
-			shell->nb_of_pipes++;
-		}
-		else if (shell->line_command[i] == 39) // single quotes
-			i = new_token_quote(&tok_lst, shell->line_command, i, nb_token) - 1;
-		else if (shell->line_command[i] == 34) // double quotes
-			i = new_token_quote(&tok_lst, shell->line_command, i, nb_token) - 1;
-		else if (shell->line_command[i] == '>' && shell->line_command[i+ 1] != '>')
-			new_token(&tok_lst, ">", nb_token, REDIRECT_OUTPUT);
-		else if (shell->line_command[i] == '<' && shell->line_command[i+ 1] != '<')
-			new_token(&tok_lst, "<", nb_token, REDIRECT_INPUT);
-		else if (shell->line_command[i] == '>' && shell->line_command[i+ 1] == '>')
-		{
-			new_token(&tok_lst, ">>", nb_token, APPEND);
-			i++;
-		}
-		else if (shell->line_command[i] == '<' && shell->line_command[i+ 1] == '<')
-		{
-			new_token(&tok_lst, "<<", nb_token, HEREDOC);
-			shell->nb_of_heredocs++;
-			i++;
-		}
-		else if (shell->line_command[i] == ' ' || shell->line_command[i] == 9)
-			new_token(&tok_lst, " ", nb_token, SPA);
-		else if (shell->line_command[i] == '$')
-			i = new_token_var_words(&tok_lst, shell->line_command, i, nb_token)- 1;
+		if (cmd->line[i] == 39 || cmd->line[i] == 34)
+			i = new_token_quote(&tok_lst, cmd->line,
+					i, nb_token) - 1;
+		else if (cmd->line[i] == '$')
+			i = new_token_var_words(&tok_lst, cmd->line, 
+					i, nb_token) - 1;
+		else if (cmd->line[i] == '>' || cmd->line[i] == '<' || 
+			cmd->line[i] == ' ' || cmd->line[i] == 9 || cmd->line[i] == '|')
+			i = tokenization_bis(cmd, i, tok_lst, nb_token);
 		else
-			i = new_token_var_words(&tok_lst, shell->line_command, i, nb_token)- 1;
+			i = new_token_var_words(&tok_lst, cmd->line, 
+					i, nb_token) - 1;
 		i++;
 		nb_token++;
 	}

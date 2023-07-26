@@ -5,8 +5,10 @@ void	parser(t_shell *cmd)
 	triage_quotes(cmd);
 	triage_space(cmd);
 	adjust_number(cmd);
+	// print_list_tok(cmd->tok_lst);
 	number_words_per_pipe(cmd);
 	cmd->cmd_lst = triage_cmd_redir(cmd);
+	// print_list_commands(cmd->cmd_lst, cmd);
 	pre_executor(cmd);
 	//single_command(cmd);
 	/*

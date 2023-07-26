@@ -6,19 +6,20 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:45:43 by edrouot           #+#    #+#             */
-/*   Updated: 2023/07/26 09:17:31 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/07/26 15:39:18 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
 static int	size_envp(char **envp);
-/* 
-Take the size of the environnement
+
+/* Take the size of the environnement
 alloc char **
-while loop -> alloc each line and create a new node with name and value of each line
-free the split
-*/
+while loop -> alloc each line and
+create a new node with name and value of each line
+free the split */
+
 t_env	*init_envp(char **envp, t_shell *cmd)
 {
 	int		i;
@@ -28,7 +29,7 @@ t_env	*init_envp(char **envp, t_shell *cmd)
 	int		size_env;
 
 	size_env = size_envp(envp);
-	cmd->envp_copy = (char **)malloc(sizeof(char *) * size_env + 1);
+	cmd->envp_copy = (char **)malloc(sizeof(char *) * (size_env + 1));
 	envir = NULL;
 	i = 0;
 	while (envp[i] != NULL)
@@ -44,6 +45,7 @@ t_env	*init_envp(char **envp, t_shell *cmd)
 		}
 		i++;
 	}
+	cmd->envp_copy[i] = NULL;
 	return (envir);
 }
 
@@ -76,7 +78,9 @@ void	add_stack_back_env(t_env **env_lst, t_env *new)
 	tail->next = new;
 }
 
-/*create a new node, copy in name and value and add it to the back of the list */
+/*create a new node, copy in name and value and 
+add it to the back of the list */
+
 void	new_node_env(t_env **env_list, char **string)
 {
 	t_env	*new;
@@ -87,7 +91,7 @@ void	new_node_env(t_env **env_list, char **string)
 	new->name = ft_strdup(string[0]);
 	new->value = ft_strdup(string[1]);
 	if (!new->name || !new->value)
-		return ; // error handling
+		return ;// error handling
 	new->next = NULL;
 	add_stack_back_env(env_list, new);
 }

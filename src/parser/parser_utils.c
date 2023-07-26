@@ -37,7 +37,6 @@ void	adjust_number(t_shell *cmd)
 		temp = &((*temp)->next);
 		i++;
 	}
-	cmd->nb_of_tokens = i;
 }
 
 void	print_list_commands(t_single_cmd *cmd, t_shell *shell)

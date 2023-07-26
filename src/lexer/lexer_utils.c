@@ -6,15 +6,17 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:46:03 by edrouot           #+#    #+#             */
-/*   Updated: 2023/07/26 09:18:20 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/07/26 16:03:57 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-void	print_list(t_env *env) // print the envp
+void	print_list(t_env *env)
 {
-	t_env *tmp = env;
+	t_env	*tmp;
+
+	tmp = env;
 	while (tmp != NULL)
 	{
 		printf("node is %s and value is %s\n", tmp->name, tmp->value);
@@ -43,7 +45,6 @@ int	special_char(int c)
 	else
 		return (0);
 }
-
 
 int	length_arr_var(char **arr_var, t_shell *cmd)
 {

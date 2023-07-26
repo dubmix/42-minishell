@@ -6,41 +6,31 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 11:55:39 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/07/19 15:13:40 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/07/26 15:06:16 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-static int     args_nb(char **args)
-{
-    int nb;
-
-    nb = 0;
-    while (args[nb])
-        nb++;
-    return (nb);
-}
-
-void    echo(char **args)
+void    echo(char **cmd)
 {
     int newline;
     int i;
 
     newline = 1;
     i = 1;
-    if (args_nb(args) > 1)
-    {
-        if (ft_strncmp(args[i], "-n", 2) == 0) // one n or multiple should be equal to -n 
+    if (cmd != NULL)
+    {   
+        if (ft_strncmp(cmd[1], " ", 1) == 0)
+            i++;
+        if (ft_strncmp(cmd[i], "-n", 2) == 0)
         {
             newline = 0;
             i++;
         }
-        while(args[i])
+        while(cmd[i] != NULL)
         {
-            printf("%s", args[i]);
-            if (args[i + 1] != NULL) // apparently is printing the space when should not 
-                printf(" ");
+            printf("%s", cmd[i]);
             i++;
         }
     }
