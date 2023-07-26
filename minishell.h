@@ -138,6 +138,14 @@ char	**get_path(char **envp);
 char	*check_access(char **envp, char **cmd); //, int *fds);
 void exec_single_command(t_shell *cmd);
 int pre_executor(t_shell *cmd);
+int exec_piped_command(t_shell *cmd);
+int ft_fork(t_shell *cmd, int pipefd[2], int fd, int i);
+void dup_cmd(t_shell *cmd, int pipefd[2], int fd);
+int exec_command(t_shell *cmd);
+int check_redirections(t_shell *cmd);
+int exec_infile(char *file);
+int exec_outfile(t_shell *cmd);
+int pipe_wait(int *pid, int nb_of_pipes);
 
 /////////////////////////////////// BUILTINS //////////////////////////////////
 

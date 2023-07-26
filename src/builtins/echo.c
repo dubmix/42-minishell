@@ -38,7 +38,7 @@ void    echo(char **args)
         }
         while(args[i])
         {
-            printf("%s", args[i]);
+            ft_putstr_fd(args[i], STDOUT_FILENO);
             if (args[i + 1] != NULL) // apparently is printing the space when should not 
                 printf(" ");
             i++;
