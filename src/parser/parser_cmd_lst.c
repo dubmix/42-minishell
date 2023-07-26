@@ -8,7 +8,7 @@ t_single_cmd	*triage_cmd_redir(t_shell *cmd)
 
 	temp = &(cmd->tok_lst);
 	int index_node = 0;
-	while ((*temp) != NULL && index_node != cmd->pipe_number + 1)
+	while ((*temp) != NULL && index_node != cmd->nb_of_pipes + 1)
 	{
 		(*temp) = new_node_cmd(&cmd_lst, index_node, *temp, cmd);
 		index_node++;

@@ -30,9 +30,9 @@ typedef struct s_token
 {
     char *command;
     int index;
+    int state; // 0 if nowhere, 1 if in double quote, 2 if in single quote
     enum e_type type;
     struct s_token *next;
-    int state; // 0 if nowhere, 1 if in double quote, 2 if in single quote
 }   t_token;
 
 typedef struct s_env
@@ -63,10 +63,10 @@ typedef struct s_shell
     t_single_cmd *cmd_lst;
     char **envp_copy; // export function recre2er la char ** // do we really need something else than the path
     int size_arr_var;
-    int heredoc;
     char **heredoc_arr; // is not in the single_cmd struc because it is not depending on the pipes
-    int pipe_number;
-    int number_token;
+    int nb_of_heredocs;
+    int nb_of_pipes;
+    int nb_of_tokens;
     int *words_per_pipe;
 } t_shell;
 
@@ -82,13 +82,17 @@ void new_node_env(t_env **env_list, char **string);
 
 /* lexer_expand_var.c */
 void expand_var(t_shell *cmd);
+void	look_into_envir(t_shell *cmd, t_token *var);
+char	**string_variables(t_shell *cmd, t_token *var);
+void	double_quote_env(t_shell *cmd, t_token *var);
+char	*look_into_envir_quote(t_shell *cmd, char *string);
 
 /* lexer_utils.c */
 void    print_list(t_env *env); // print the envp
 void    print_list_tok(t_token *tok); // print the token list
 int         special_char(int c);
-int	length_arr_var(char **arr_var, t_shell *cmd);
-int	length_string_without_var(char *string);
+int         length_arr_var(char **arr_var, t_shell *cmd);
+int         length_string_without_var(char *string);
 
 /* lexer_token.c */
 void add_stack_back_tok(t_token **tok_lst, t_token *new);
@@ -118,7 +122,7 @@ void	handle_redir_in(t_single_cmd *new, t_token *temp);
 void	handle_redir_out(t_single_cmd *new, t_token *temp, int type);
 
 /*parser_utils.c*/
-void    deleteNode(t_token **head, t_token *nodeToDelete);
+void    delete_node(t_token **head, t_token *nodeToDelete);
 void	adjust_number(t_shell *cmd);
 void	print_list_commands(t_single_cmd *cmd, t_shell *shell);
 

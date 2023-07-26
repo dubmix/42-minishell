@@ -6,16 +6,16 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:45:38 by edrouot           #+#    #+#             */
-/*   Updated: 2023/07/26 09:31:44 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/07/26 10:49:01 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-static void	look_into_envir(t_shell *cmd, t_token *var);
-static char	**string_variables(t_shell *cmd, t_token *var);
-static void	double_quote_env(t_shell *cmd, t_token *var);
-static char	*look_into_envir_quote(t_shell *cmd, char *string);
+void	look_into_envir(t_shell *cmd, t_token *var);
+char	**string_variables(t_shell *cmd, t_token *var);
+void	double_quote_env(t_shell *cmd, t_token *var);
+char	*look_into_envir_quote(t_shell *cmd, char *string);
 /*first function : look for two things : either a type variable ($) or double quote (state)*/
 void	expand_var(t_shell *cmde)
 {
@@ -38,7 +38,7 @@ void	expand_var(t_shell *cmde)
 	}
 }
 
-static char	**string_variables(t_shell *cmd, t_token *var)
+char	**string_variables(t_shell *cmd, t_token *var)
 {
 	char	**arr_string;
 	char	*temp;
@@ -72,7 +72,7 @@ static char	**string_variables(t_shell *cmd, t_token *var)
 }
 /*  create via string_variables an array with the correct values of the variable 
 then rewrite the command line with str_join, replacing each var $XXX with the correct value*/
-static void	double_quote_env(t_shell *cmd, t_token *var)
+void	double_quote_env(t_shell *cmd, t_token *var)
 {
 	int		i;
 	char	**arr_var;
@@ -111,7 +111,7 @@ static void	double_quote_env(t_shell *cmd, t_token *var)
 
  /*  we need only what is after the $ ($USER -> USER) and compare with USER with env_lst 
  and replace the correct value in the tok_lst*/
-static void	look_into_envir(t_shell *cmd, t_token *var)
+void	look_into_envir(t_shell *cmd, t_token *var)
 {
 	t_env	*tmp;
 	char	**string;
@@ -143,7 +143,7 @@ static void	look_into_envir(t_shell *cmd, t_token *var)
 	return ;
 }
 
-static char	*look_into_envir_quote(t_shell *cmd, char *string)
+char	*look_into_envir_quote(t_shell *cmd, char *string)
 {
 	t_env	*tmp;
 

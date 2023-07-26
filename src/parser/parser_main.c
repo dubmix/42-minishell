@@ -22,8 +22,8 @@ void	number_words_per_pipe(t_shell *cmd)
 	t_token	*temp;
 	
 	temp = cmd->tok_lst;
-	cmd->words_per_pipe = (int *)malloc(sizeof(int) * (cmd->pipe_number + 1));
-	cmd->heredoc_arr = (char **)malloc(sizeof(char *) * cmd->heredoc + 1);
+	cmd->words_per_pipe = (int *)malloc(sizeof(int) * (cmd->nb_of_pipes + 1));
+	cmd->heredoc_arr = (char **)malloc(sizeof(char *) * cmd->nb_of_heredocs + 1);
 	if (!cmd->words_per_pipe || !cmd->heredoc_arr)
 		return ; // error handling
 	int i = 0;

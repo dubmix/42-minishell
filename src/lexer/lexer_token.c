@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:45:56 by edrouot           #+#    #+#             */
-/*   Updated: 2023/07/25 16:54:45 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/07/26 10:53:50 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,14 +105,14 @@ t_token	*tokenization(t_shell *shell)
 	i = 0;
 	nb_token = 0;
 	tok_lst = NULL;
-	shell->heredoc = 0;
-	shell->pipe_number = 0;
+	shell->nb_of_heredocs = 0;
+	shell->nb_of_pipes = 0;
 	while (shell->line_command[i] != '\0')
 	{
 		if (shell->line_command[i] == '|')
 		{
 			new_token(&tok_lst, "|", nb_token, PIPE);
-			shell->pipe_number++;
+			shell->nb_of_pipes++;
 		}
 		else if (shell->line_command[i] == 39) // single quotes
 			i = new_token_quote(&tok_lst, shell->line_command, i, nb_token) - 1;
@@ -130,7 +130,7 @@ t_token	*tokenization(t_shell *shell)
 		else if (shell->line_command[i] == '<' && shell->line_command[i+ 1] == '<')
 		{
 			new_token(&tok_lst, "<<", nb_token, HEREDOC);
-			shell->heredoc++;
+			shell->nb_of_heredocs++;
 			i++;
 		}
 		else if (shell->line_command[i] == ' ' || shell->line_command[i] == 9)

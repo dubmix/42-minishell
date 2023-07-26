@@ -1,4 +1,4 @@
-#include "minishell.h"
+#include "../../minishell.h"
 
 void	free_arr(char **arr)
 {

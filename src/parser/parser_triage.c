@@ -19,7 +19,7 @@ void	triage_space(t_shell *cmd)
 		else if ((*temp)->type == 3 && (state == 1 || state == 2))
 		{
 			nodeToDelete = *temp;
-			deleteNode(&(cmd->tok_lst), nodeToDelete);
+			delete_node(&(cmd->tok_lst), nodeToDelete);
 			state = 2;
 		}
 		else

@@ -6,7 +6,7 @@
 #    By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/26 12:53:21 by edrouot           #+#    #+#              #
-#    Updated: 2023/07/26 09:31:25 by edrouot          ###   ########.fr        #
+#    Updated: 2023/07/26 10:49:18 by edrouot          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ SRCS	= src/minishell.c \
 		src/parser/parser_triage.c \
 		src/parser/parser_cmd_lst.c \
 		src/parser/parser_redir.c \
-		errors.c
+		src/errors/errors.c
 
 OBJS	= $(SRCS:.c=.o)
 
