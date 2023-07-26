@@ -119,7 +119,7 @@ char	*ft_strjoin(char *s1, char *s2);
 
 /*parser1.c*/
 void    parser(t_shell *cmd);
-void    triage_cmd_redir(t_shell *cmd);
+t_single_cmd    *triage_cmd_redir(t_shell *cmd);
 void	number_words_per_pipe(t_shell *cmd);
 t_token	*new_node_cmd(t_single_cmd **cmd_lst, int index, t_token *temp, t_shell *cmd);
 void	handle_redir_in(t_single_cmd *new, t_token *temp);
