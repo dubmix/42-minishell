@@ -58,7 +58,7 @@ int ft_heredoc(t_shell *shell)
 create_heredoc
 
 
-int	heredoc(t_shell *shell)
+int	exec_heredoc(t_shell *shell)
 {
 	int ret;
 

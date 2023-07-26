@@ -29,16 +29,7 @@ int	minishell_start(char **envp)
 	cmd->env_lst = init_envp(envp, cmd);
 	while (1)
 	{
-<<<<<<< HEAD
 		cmd->line_command = readline("Minishell >");
-=======
-		cmd->line_command = readline(">");
-		// if (!cmd->line_command)
-		// {
-		// 	write(STDERR_FILENO, "exit\n", 5);
-		// 	exit(0);
-		// }											MAX signals ^d, empty string
->>>>>>> aded17c185d4ba7581cd238747f88b1d03db35c4
 		cmd->tok_lst = tokenization(cmd);
 		expand_var(cmd);
 		parser(cmd);

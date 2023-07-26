@@ -15,12 +15,13 @@ NAME	= minishell
 LIBFT = ./libft/libft.a
 
 SRCS	= src/minishell.c \
+		src/executor/executor.c \
+		src/executor/single_command.c \
 		src/lexer/lexer_utils.c \
 		src/lexer/lexer_token.c \
 		src/lexer/lexer_init.c \
 		src/lexer/lexer_expand_var.c \
 		src/parser/parser_main.c \
-		src/parser/parser_single_command.c \
 		src/builtins/echo.c \
 		src/builtins/env.c \
 		src/builtins/pwd.c \

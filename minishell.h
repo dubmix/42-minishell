@@ -13,6 +13,8 @@
     # include <fcntl.h>
     # include <limits.h>
 
+static int exit_code;
+
 enum e_type
 {
 	WORD,		//0   any word inside quotes as well
@@ -69,6 +71,7 @@ typedef struct s_shell
     int nb_of_pipes;
     int nb_of_tokens;
     int *words_per_pipe;
+    int	*pid;
 } t_shell;
 
 
@@ -127,10 +130,14 @@ void    delete_node(t_token **head, t_token *nodeToDelete);
 void	adjust_number(t_shell *cmd);
 void	print_list_commands(t_single_cmd *cmd, t_shell *shell);
 
-/*parser_single_command.c*/
-void   single_command(t_shell *cmd);
+/////////////////////////////////// EXECUTOR //////////////////////////////////
+
+/*single_command.c*/
+int   single_command(t_shell *cmd);
 char	**get_path(char **envp);
 char	*check_access(char **envp, char **cmd); //, int *fds);
+void exec_single_command(t_shell *cmd);
+int pre_executor(t_shell *cmd);
 
 /////////////////////////////////// BUILTINS //////////////////////////////////
 

@@ -65,8 +65,7 @@ char	*check_access(char **envp, char **cmd) //, int *fds)
 	return (path_cmd);
 }
 
-
-void	single_command(t_shell *cmd)
+int	single_command(t_shell *cmd)
 {
 	// char	*(cmd->cmd_lst->command;
 	char	*path;
@@ -115,10 +114,6 @@ void	single_command(t_shell *cmd)
 			printf("oupsi");
 		}
 	}
-<<<<<<< HEAD
+	return(exit_code);
 	// // close(c);
 }
-=======
-	close(c);
-}
->>>>>>> aded17c185d4ba7581cd238747f88b1d03db35c4
