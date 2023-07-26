@@ -3,26 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edrouot <edrouot@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:46:03 by edrouot           #+#    #+#             */
-/*   Updated: 2023/07/19 11:46:03 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/07/26 09:18:20 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-
-void	free_arr(char **arr)
-{
-	int	i;
-
-	i = 0;
-	while (arr[i] != NULL)
-	{
-		free(arr[i]);
-		i++;
-	}
-}
 
 void	print_list(t_env *env) // print the envp
 {
@@ -54,4 +42,43 @@ int	special_char(int c)
 		return (1);
 	else
 		return (0);
+}
+
+
+int	length_arr_var(char **arr_var, t_shell *cmd)
+{
+	int	j;
+	int	length;
+
+	j = 0;
+	length = 0;
+	while (arr_var[j] != NULL && j < cmd->size_arr_var)
+	{
+		length += ft_strlen(arr_var[j]);
+		j++;
+	}
+	return (length);
+}
+
+int	length_string_without_var(char *string)
+{
+	int		i;
+	char	*temp;
+	int		length;
+
+	i = 0;
+	temp = string;
+	length = 0;
+	while (temp[i] != '\0')
+	{
+		if (temp[i] == '$')
+		{
+			while (temp[i] != ' ' && temp[i] != 34)
+				i++;
+		}
+		else
+			length++;
+		i++;
+	}
+	return (length);
 }

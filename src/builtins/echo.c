@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 11:55:39 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/07/19 10:50:45 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/07/19 15:13:40 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void    echo(char **args)
     i = 1;
     if (args_nb(args) > 1)
     {
-        if (ft_strncmp(args[i], "-n", 2) == 0)
+        if (ft_strncmp(args[i], "-n", 2) == 0) // one n or multiple should be equal to -n 
         {
             newline = 0;
             i++;
@@ -39,7 +39,7 @@ void    echo(char **args)
         while(args[i])
         {
             printf("%s", args[i]);
-            if (args[i + 1] != NULL)
+            if (args[i + 1] != NULL) // apparently is printing the space when should not 
                 printf(" ");
             i++;
         }

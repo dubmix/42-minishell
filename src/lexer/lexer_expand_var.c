@@ -1,16 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer_envp2.c                                      :+:      :+:    :+:   */
+/*   lexer_expand_var.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:45:38 by edrouot           #+#    #+#             */
-/*   Updated: 2023/07/19 12:11:02 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/07/26 10:49:01 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+
+void	look_into_envir(t_shell *cmd, t_token *var);
+char	**string_variables(t_shell *cmd, t_token *var);
+void	double_quote_env(t_shell *cmd, t_token *var);
+char	*look_into_envir_quote(t_shell *cmd, char *string);
+/*first function : look for two things : either a type variable ($) or double quote (state)*/
+void	expand_var(t_shell *cmde)
+{
+	t_token	*tmp;
+
+	tmp = cmde->tok_lst;
+	while (tmp != NULL)
+	{
+		if (tmp->type == 4)
+		{
+			look_into_envir(cmde, tmp);
+			tmp->type = 0;
+		}
+		else if (tmp->state == 1)
+		{
+			double_quote_env(cmde, tmp);
+			tmp->type = 0;
+		}
+		tmp = tmp->next;
+	}
+}
 
 char	**string_variables(t_shell *cmd, t_token *var)
 {
@@ -44,7 +70,8 @@ char	**string_variables(t_shell *cmd, t_token *var)
 	cmd->size_arr_var = j;
 	return (arr_string);
 }
-
+/*  create via string_variables an array with the correct values of the variable 
+then rewrite the command line with str_join, replacing each var $XXX with the correct value*/
 void	double_quote_env(t_shell *cmd, t_token *var)
 {
 	int		i;
@@ -56,7 +83,7 @@ void	double_quote_env(t_shell *cmd, t_token *var)
 	i = 0;
 	j = 0;
 	k = 0;
-	arr_var = string_variables(cmd, var);
+	arr_var = string_variables(cmd, var); 
 	new_string = (char *)malloc(sizeof(char) * (length_arr_var(arr_var, cmd)
 			+ length_string_without_var(var->command)) + 1);
 	if (!new_string)
@@ -82,27 +109,8 @@ void	double_quote_env(t_shell *cmd, t_token *var)
 	// free_arr(arr_var);  // cause issue, to be checked later
 }
 
-void	expand_var(t_shell *cmde)
-{
-	t_token	*tmp;
-
-	tmp = cmde->tok_lst;
-	while (tmp != NULL)
-	{
-		if (tmp->type == 4)
-		{
-			look_into_envir(cmde, tmp);
-			tmp->type = 0;
-		}
-		else if (tmp->state == 1)
-		{
-			double_quote_env(cmde, tmp);
-			tmp->type = 0;
-		}
-		tmp = tmp->next;
-	}
-}
-
+ /*  we need only what is after the $ ($USER -> USER) and compare with USER with env_lst 
+ and replace the correct value in the tok_lst*/
 void	look_into_envir(t_shell *cmd, t_token *var)
 {
 	t_env	*tmp;
@@ -127,6 +135,11 @@ void	look_into_envir(t_shell *cmd, t_token *var)
 		free(string[j]);
 		j++;
 	}
+	if (tmp == NULL)
+	{
+		free(var->command);
+		var->command = ft_strdup("");
+	}
 	return ;
 }
 
@@ -141,9 +154,9 @@ char	*look_into_envir_quote(t_shell *cmd, char *string)
 		{
 			free(string);
 			string = ft_strdup(tmp->value);
-			break ;
+			return (string);
 		}
 		tmp = tmp->next;
 	}
-	return (string);
+	return ("");
 }
