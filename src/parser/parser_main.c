@@ -7,7 +7,7 @@ void	parser(t_shell *cmd)
 	adjust_number(cmd);
 	number_words_per_pipe(cmd);
 	cmd->cmd_lst = triage_cmd_redir(cmd);
-	pre_executor(cmd);
+	//pre_executor(cmd);
 	//single_command(cmd);
 	/*
 	part 1 : check if there is a pipe

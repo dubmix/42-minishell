@@ -31,8 +31,11 @@ int	minishell_start(char **envp)
 	{
 		cmd->line_command = readline("Minishell >");
 		cmd->tok_lst = tokenization(cmd);
+		add_history(cmd->line_command);
 		expand_var(cmd);
 		parser(cmd);
+		pre_executor(cmd);
+		//reset?
 	}
 }
 

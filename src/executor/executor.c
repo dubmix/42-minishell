@@ -49,11 +49,15 @@ int exec_piped_command(t_shell *cmd)
     int fd;
     int pipefd[2];
     int i;
+    //int status;
+    t_single_cmd *head;
 
+    head = cmd->cmd_lst;
     i = 0;
     fd = STDIN_FILENO;
     while (1)
     {
+        //write(1, "a", 1);
         if (cmd->cmd_lst->next)
             pipe(pipefd);
         //exec_heredoc(cmd);
@@ -63,11 +67,17 @@ int exec_piped_command(t_shell *cmd)
         fd = pipefd[0];
         //fd = check_heredoc(cmd, pipefd);
         if (cmd->cmd_lst->next)
+        {
+            //write(1, "b", 1);
             cmd->cmd_lst = cmd->cmd_lst->next;
+        }
         else
             break;
     }
+    //write(1, "c", 1);
     pipe_wait(cmd->pid, cmd->nb_of_pipes); // could be replaced by pid = -1 
+    //waitpid(-1, &status, 0);
+    cmd->cmd_lst = head;
     //so the parents waits for all child processes to terminate?
     //cmd->cmd_lst->command; //iterate through list to set back to first command
     return (0);
@@ -76,10 +86,14 @@ int exec_piped_command(t_shell *cmd)
 int ft_fork(t_shell *cmd, int pipefd[2], int fd, int i)
 {
     cmd->pid[i] = fork();
+    //write(1, "g", 1);
     if (cmd->pid[i] < 0)
         return (0); //error handling
     if (cmd->pid[i] == 0)
+    {
         dup_cmd(cmd, pipefd, fd);
+        //write(1, "j", 1);
+    }
     i++;
     return (i);
 }
@@ -88,13 +102,21 @@ void dup_cmd(t_shell *cmd, int pipefd[2], int fd)
 {
     int dup;
 
-    dup = dup2(fd, STDIN_FILENO);
-    if (dup < 0)
-        return ; //error handling
+    if (cmd->cmd_lst->index != 0)
+    {
+        //write(1, "y", 1);
+        dup = dup2(fd, STDIN_FILENO);
+        if (dup < 0 && cmd->cmd_lst->index != 0)
+            return ; //error handling
+    }
     close(pipefd[0]);
-    dup = dup2(pipefd[1], STDOUT_FILENO);
-    if (dup < 0)
-        return ; //error handling
+    if (cmd->cmd_lst->next)
+    {
+        //write (1, "z", 1);
+        dup = dup2(pipefd[1], STDOUT_FILENO);
+        if (dup < 0 && cmd->cmd_lst->next)
+            return ; //error handling
+    }
     close(pipefd[1]);
     if(cmd->cmd_lst->index != 0)
         close(fd);
@@ -107,10 +129,10 @@ int exec_command(t_shell *cmd)
             || cmd->cmd_lst->redir_out == 1) //if there are any redirections. and how do we declare the static exit_code
     {
         check_redirections(cmd);
-        write(1, "c", 1);
+        //write(1, "c", 1);
             //exit(1);
     }
-    write(1, "d", 1);
+    //write(1, "d", 1);
     if (cmd->cmd_lst->command != NULL)
     {
         exit_code = single_command(cmd);
@@ -134,7 +156,7 @@ int check_redirections(t_shell *cmd)
             exec_outfile(cmd);
     cmd->cmd_lst = cmd->cmd_lst->next;
     }
-    write(1, "g", 1);
+    //write(1, "g", 1);
     cmd->cmd_lst = head; // a utiliser a la place des temp?
     return (EXIT_SUCCESS);
 }

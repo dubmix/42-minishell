@@ -149,10 +149,28 @@ int pipe_wait(int *pid, int nb_of_pipes);
 
 /////////////////////////////////// BUILTINS //////////////////////////////////
 
-/*builtin*/
+/*cd*/
+int     cd(t_shell *cmd);
+int	    go_to_path(t_shell *cmd, char *str);
+char    *get_path_cd(t_shell *cmd, char *str);
+void    add_path_to_env(t_shell *cmd);
+/*exit*/
+int	    exxit(t_shell *cmd);
+void    get_exit_code(void);
+int     is_only_digits(char *str);
+/*echo*/
 void    echo(char **args);
+/*env*/
 int     env(t_shell *cmd);
+/*pwd*/
 int     pwd(void);
+/*export*/
+int	export(t_shell *cmd);
+int	export_error(char *str);
+int check_valid_id(char c);
+int	check_param(char *str);
+int	ft_findchar(char *str, char c);
+int var_exists(t_env *env, char *str);
 
 /////////////////////////////////// OTHERS //////////////////////////////////
 
@@ -173,7 +191,6 @@ char	*ft_strjoin(char *s1, char *s2);
 error handling, usually I put error in the printf statement 
 free all the struct for each new prompt
 handle ?* in the expander
-handle history
 */
 
 #endif

@@ -96,13 +96,13 @@ int	single_command(t_shell *cmd)
 	if (ft_strncmp(cmd->cmd_lst->command[0], "echo", 4) == 0)
 		echo(cmd->cmd_lst->command);
 	else if (ft_strncmp(cmd->cmd_lst->command[0], "cd", 2) == 0)
-		printf("It will be the cd builtin");
+		cd(cmd);
 	else if (ft_strncmp(cmd->cmd_lst->command[0], "env", 3) == 0)
 		env(cmd);
 	else if (ft_strncmp(cmd->cmd_lst->command[0], "exit", 4) == 0)
-		printf("It will be the exit builtin");
+		exxit(cmd);
 	else if (ft_strncmp(cmd->cmd_lst->command[0], "export", 6) == 0)
-		printf("It will be the export builtin");
+		export(cmd);
 	else if (ft_strncmp(cmd->cmd_lst->command[0], "pwd", 3) == 0)
 		pwd();
 	else if (ft_strncmp(cmd->cmd_lst->command[0], "unset", 5) == 0)
