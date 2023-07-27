@@ -133,10 +133,16 @@ int exec_command(t_shell *cmd)
             //exit(1);
     }
     //write(1, "d", 1);
-    if (cmd->cmd_lst->command != NULL)
+    ////////////////////CA FOIRE ICI///////
+    // if (cmd->nb_of_pipes != 0 && cmd->cmd_lst->command != NULL)
+    // {
+    //     exit_code = single_command(cmd);
+    //     exit(exit_code); //
+    // }
+    else if (cmd->cmd_lst->command != NULL)
     {
         exit_code = single_command(cmd);
-        exit(exit_code);
+        exit(exit_code); //return (exit_code); // si exit l'env s'efface quand le loop recommence
     }
     return (exit_code);
 }

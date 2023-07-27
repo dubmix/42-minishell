@@ -16,24 +16,28 @@ int cd(t_shell *cmd)
 {
 	int ret;
 	t_shell **tmp;
+	//char cwd[PATH_MAX];
 
+	//if (getcwd(cwd, sizeof(cwd)) != NULL)
+		//printf("Current working directory: %s\n", cwd);
 	tmp = &cmd;
 	if (!(*tmp)->cmd_lst->command)
 	{
-		write(1, "a", 1);
+		//write(1, "a", 1);
 		ret = go_to_path(cmd, "HOME");
 	}
 	else if(ft_strncmp((*tmp)->cmd_lst->command[0], "-", 1) == 0)
 	{	
-		write(1, "b", 1);
+		//write(1, "b", 1);
 		ret = go_to_path(cmd, "OLDPWD");
 	}
 	else
 	{
-		write(1, "cd", 2);
 		ret = chdir((*tmp)->cmd_lst->command[1]);
+		printf("%d\n", ret);
 		if (ret != 0)
 			printf("minishell: %s\n", (*tmp)->cmd_lst->command[0]);
+		write(1, "cd", 2);
 	}
 	if (ret != 0)
 		return (EXIT_FAILURE); // exit_failure value = 8;

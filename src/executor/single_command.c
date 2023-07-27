@@ -95,7 +95,7 @@ int	single_command(t_shell *cmd)
 	path = check_access(cmd->envp_copy, temp->command);
 	if (ft_strncmp(cmd->cmd_lst->command[0], "echo", 4) == 0)
 		echo(cmd->cmd_lst->command);
-	else if (ft_strncmp(cmd->cmd_lst->command[0], "cd", 2) == 0)
+	else if (ft_strncmp(cmd->cmd_lst->command[0], "cdd", 3) == 0)
 		cd(cmd);
 	else if (ft_strncmp(cmd->cmd_lst->command[0], "env", 3) == 0)
 		env(cmd);

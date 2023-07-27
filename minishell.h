@@ -72,6 +72,7 @@ typedef struct s_shell
     int nb_of_tokens;
     int *words_per_pipe;
     int	*pid;
+    int exit_flag;
 } t_shell;
 
 
@@ -171,6 +172,7 @@ int check_valid_id(char c);
 int	check_param(char *str);
 int	ft_findchar(char *str, char c);
 int var_exists(t_env *env, char *str);
+int	ft_lstsize_test(t_env *lst);
 
 /////////////////////////////////// OTHERS //////////////////////////////////
 

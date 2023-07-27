@@ -17,6 +17,7 @@ int	exxit(t_shell *cmd)
 	//char **str;
 
 	printf("exit");
+	cmd->exit_flag = 1;
 	if (cmd->cmd_lst->command[1] && cmd->cmd_lst->command[2])
 	{
 		printf("minishell: exit: too many arguments\n");
@@ -42,8 +43,8 @@ void get_exit_code(void)
 	exit_code = 0;
 	// }		
 	//free_arr(str);
-	exit(0);
-	write(1, "k", 1);
+
+	exit(0); //child process??
 }
 
 // int is_only_digits(char *str)

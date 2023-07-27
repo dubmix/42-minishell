@@ -12,6 +12,19 @@
 
 #include "../../minishell.h"
 
+int	ft_lstsize_test(t_env *lst)
+{
+	int	i;
+
+	i = 0;
+	while (lst)
+	{
+		lst = lst->next;
+		i++;
+	}
+	return (i);
+}
+
 int	export(t_shell *cmd)
 {
 	char    **str;
@@ -20,22 +33,24 @@ int	export(t_shell *cmd)
 	tmp = &cmd;
 	while ((*tmp)->cmd_lst)
 	{
-		while ((*tmp)->env_lst)
-		{
-			str = ft_split(((*tmp)->cmd_lst->command[1]), '=');
-			if (check_param((*tmp)->cmd_lst->command[1]) == 0 
-					&& var_exists((*tmp)->env_lst, str[0]) == 0)
+		str = ft_split(((*tmp)->cmd_lst->command[1]), '=');
+		// while ((*tmp)->env_lst)
+		// {
+			if (var_exists((*tmp)->env_lst, str[0]) == 0)
 			{
+				printf("%s %s\n", str[0], str[1]);
+				printf("%d\n", ft_lstsize_test((*tmp)->env_lst));
 				new_node_env(&(*tmp)->env_lst, str);
+				printf("%d\n", ft_lstsize_test((*tmp)->env_lst));
 				//free_array(str);
-				write(1, "k", 1);
 				break ;
 			}
 			(*tmp)->env_lst = (*tmp)->env_lst->next;
 			//free_array(str);
-		}
+		//}
 		(*tmp)->cmd_lst = (*tmp)->cmd_lst->next;
 	}
+	printf("%d\n", ft_lstsize_test((cmd->env_lst)));
 	return (EXIT_SUCCESS);
 }
 
@@ -57,6 +72,20 @@ int check_valid_id(char c)
 		return (1);
 	else
 		return (0);
+}
+
+int var_exists(t_env *env, char *str)
+{
+	t_env *head;
+
+	head = env;
+	while (head)
+	{
+		if (ft_strncmp(head->name, str, ft_strlen(str)) == 0)
+			return (1);
+		head = head->next;
+	}
+	return (0);
 }
 
 int	check_param(char *str)
@@ -89,20 +118,6 @@ int	ft_findchar(char *str, char c)
 		if(str[i] == c)
 			return (1);
 		i++;
-	}
-	return (0);
-}
-
-int var_exists(t_env *env, char *str)
-{
-	t_env *head;
-
-	head = env;
-	while (head)
-	{
-		if (ft_strncmp(head->name, str, ft_strlen(str)) == 1)
-			return (1);
-		head = head->next;
 	}
 	return (0);
 }
