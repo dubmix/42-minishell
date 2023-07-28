@@ -7,6 +7,7 @@ void	triage_space(t_shell *cmd)
 	int		state;
 
 	temp = &(cmd->tok_lst);
+	
 	nodeToDelete = NULL;
 	state = 0;
 	while (*temp != NULL)
@@ -25,7 +26,8 @@ void	triage_space(t_shell *cmd)
 		else
 		{
 			state = 1;
-			(*temp)->type = WORD;
+			if ((*temp)->type == SPA)
+				(*temp)->type = WORD;
 			temp = &((*temp)->next);
 		}
 	}

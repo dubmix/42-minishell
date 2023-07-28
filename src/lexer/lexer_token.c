@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:45:56 by edrouot           #+#    #+#             */
-/*   Updated: 2023/07/26 16:02:04 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/07/28 16:54:30 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ int	new_token_var_words(t_token **tokens, char *string, int i, int nb_token)
 	char	*var;
 
 	start = i;
+	i++;
 	while (special_char(string[i]) == 0 && string[i] != '\0')
 		i++;
 	var = ft_substr(string, start, i - start);

@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 10:45:11 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/07/26 13:11:41 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/07/28 10:22:19 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ int pre_executor(t_shell *cmd)
     if (cmd->nb_of_pipes == 0)
     {
         exec_single_command(cmd);
-        //write(1, "a", 1);
     }
     else
     {
@@ -208,7 +207,6 @@ int exec_outfile(t_shell *cmd)
         printf("minishell: outfile: Error\n");
         return (EXIT_FAILURE); // error handling;
     }
-    write(1, "f", 1);
     dup = dup2(fd, STDOUT_FILENO);
     if (fd > 0 && dup < 0)
     {

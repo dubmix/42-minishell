@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 16:04:33 by edrouot           #+#    #+#             */
-/*   Updated: 2023/07/26 16:16:57 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/07/28 16:51:40 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ t_token	*new_node_cmd(t_single_cmd **cmd_lst, int index,
 	init_node_cmd(&new, cmd, index);
 	while (temp != NULL && temp->type != PIPE)
 	{
-		if (temp->type == WORD && i < cmd->words_per_pipe[index])
+		if ((temp->type == WORD) && i < cmd->words_per_pipe[index])
 		{
 			new->command[i] = ft_strdup(temp->command);
 			i++;

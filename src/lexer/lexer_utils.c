@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:46:03 by edrouot           #+#    #+#             */
-/*   Updated: 2023/07/26 16:03:57 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/07/28 16:42:20 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	print_list_tok(t_token *tok)
 int	special_char(int c)
 {
 	if (c == '|' || c == 34 || c == ' ' || c == '<' || c == '>' || c == 39
-		|| c == 9)
+		|| c == 9 || c == '$')
 		return (1);
 	else
 		return (0);
@@ -50,7 +50,7 @@ int	length_arr_var(char **arr_var, t_shell *cmd)
 {
 	int	j;
 	int	length;
-
+	write(1, "TRUC", 4);
 	j = 0;
 	length = 0;
 	while (arr_var[j] != NULL && j < cmd->size_arr_var)
@@ -64,17 +64,17 @@ int	length_arr_var(char **arr_var, t_shell *cmd)
 int	length_string_without_var(char *string)
 {
 	int		i;
-	char	*temp;
 	int		length;
 
 	i = 0;
-	temp = string;
 	length = 0;
-	while (temp[i] != '\0')
+	write(1, "HOPP", 4);
+
+	while (string[i] != '\0')
 	{
-		if (temp[i] == '$')
+		if (string[i] == '$')
 		{
-			while (temp[i] != ' ' && temp[i] != 34)
+			while (string[i] != ' ' && string[i] != 34 && string[i] != '\0')
 				i++;
 		}
 		else

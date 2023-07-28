@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 16:13:54 by edrouot           #+#    #+#             */
-/*   Updated: 2023/07/26 16:17:55 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/07/28 10:33:22 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 void	handle_redir_in_out(t_single_cmd *new, t_token *temp)
 {
 	int	fd;
+
+	fd = 0;
 	if (temp->type == REDIRECT_OUTPUT)
 	{
 		free(new->redir_out_str);
@@ -31,10 +33,10 @@ void	handle_redir_in_out(t_single_cmd *new, t_token *temp)
 	}
 	else if (temp->type == REDIRECT_INPUT)
 	{
-	free(new->redir_in_str);
-	new->redir_in_str = ft_strdup(temp->command);
-	fd = open(new->redir_in_str, O_RDONLY | O_CREAT, 0644);
-	new->redir_in = 1;
+		free(new->redir_in_str);
+		new->redir_in_str = ft_strdup(temp->command);
+		fd = open(new->redir_in_str, O_RDONLY | O_CREAT, 0644);
+		new->redir_in = 1;
 	}
 	if (fd < 0)
 		printf("REDIR OUT SIMPLE ERROR") ; // error handling

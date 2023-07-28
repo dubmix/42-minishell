@@ -6,7 +6,7 @@
 #    By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/26 12:53:21 by edrouot           #+#    #+#              #
-#    Updated: 2023/07/26 10:49:18 by edrouot          ###   ########.fr        #
+#    Updated: 2023/07/28 10:31:05 by edrouot          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,6 +17,7 @@ LIBFT = ./libft/libft.a
 SRCS	= src/minishell.c \
 		src/executor/executor.c \
 		src/executor/single_command.c \
+		src/executor/heredoc.c \
 		src/lexer/lexer_utils.c \
 		src/lexer/lexer_token.c \
 		src/lexer/lexer_init.c \

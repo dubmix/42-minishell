@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 11:16:23 by edrouot           #+#    #+#             */
-/*   Updated: 2023/07/26 15:58:36 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/07/28 10:30:24 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,12 @@ int	minishell_start(char **envp)
 	while (1)
 	{
 		//printf("1 %d\n", ft_lstsize_test((cmd->env_lst)));
-		cmd->line_command = readline("Minishell >");
+		cmd->line = readline("Minishell >");
 		cmd->tok_lst = tokenization(cmd);
-		add_history(cmd->line_command);
+		add_history(cmd->line);
 		expand_var(cmd);
 		parser(cmd);
-		pre_executor(cmd);
+		// pre_executor(cmd);
 		if (cmd->exit_flag == 1)
         	exit(exit_code); // pq ca marche pas ca??
 		//printf("2 %d\n", ft_lstsize_test((cmd->env_lst)));

@@ -5,11 +5,17 @@ void	parser(t_shell *cmd)
 	triage_quotes(cmd);
 	triage_space(cmd);
 	adjust_number(cmd);
-	// print_list_tok(cmd->tok_lst);
 	number_words_per_pipe(cmd);
 	cmd->cmd_lst = triage_cmd_redir(cmd);
-	// print_list_commands(cmd->cmd_lst, cmd);
-	pre_executor(cmd);
+	printf("IS %d\n", cmd->nb_of_heredocs);
+	// if (cmd->nb_of_heredocs != 0)
+	// {	
+	// 	write(1, "TRUC", 4);
+		grab_heredoc(cmd); 
+	// 	printf("HEREDOC is :|\n\n%s", cmd->heredoc_string);
+	// }
+	
+	// pre_executor(cmd);
 	//single_command(cmd);
 	/*
 	part 1 : check if there is a pipe
@@ -26,7 +32,7 @@ void	number_words_per_pipe(t_shell *cmd)
 	
 	temp = cmd->tok_lst;
 	cmd->words_per_pipe = (int *)malloc(sizeof(int) * (cmd->nb_of_pipes + 1));
-	cmd->heredoc_arr = (char **)malloc(sizeof(char *) * cmd->nb_of_heredocs + 1);
+	cmd->heredoc_arr = (char **)malloc(sizeof(char *) * (cmd->nb_of_heredocs + 1));
 	if (!cmd->words_per_pipe || !cmd->heredoc_arr)
 		return ; // error handling
 	int i = 0;
@@ -42,7 +48,7 @@ void	number_words_per_pipe(t_shell *cmd)
 			{
 				cmd->heredoc_arr[k] = ft_strdup(temp->next->command);
 				k++;
-				temp = temp->next->next;
+				temp = temp->next;
 			}
 			else if (temp->type == WORD)
 				j++;
@@ -59,6 +65,7 @@ void	number_words_per_pipe(t_shell *cmd)
 		else
 			break;
 	}
+	cmd->heredoc_arr[k] = 0;
 }
 
 

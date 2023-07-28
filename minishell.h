@@ -66,7 +66,8 @@ typedef struct s_shell
     t_single_cmd *cmd_lst;
     char **envp_copy; // export function recre2er la char ** // do we really need something else than the path
     int size_arr_var;
-    char **heredoc_arr; // is not in the single_cmd struc because it is not depending on the pipes
+    char **heredoc_arr;
+    char *heredoc_string; // is not in the single_cmd struc because it is not depending on the pipes
     int nb_of_heredocs;
     int nb_of_pipes;
     int nb_of_tokens;
@@ -149,6 +150,11 @@ int check_redirections(t_shell *cmd);
 int exec_infile(char *file);
 int exec_outfile(t_shell *cmd);
 int pipe_wait(int *pid, int nb_of_pipes);
+
+/*heredoc.c*/
+void	grab_heredoc(t_shell *cmd);
+char	**string_variables_heredoc(t_shell *cmd, char *string);
+char *double_quote_env_heredoc(t_shell *cmd, char *string);
 
 /////////////////////////////////// BUILTINS //////////////////////////////////
 

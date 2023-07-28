@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser_single_command.c                            :+:      :+:    :+:   */
+/*   single_command.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:46:21 by edrouot           #+#    #+#             */
-/*   Updated: 2023/07/26 09:29:14 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/07/28 09:15:41 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,8 @@ int	single_command(t_shell *cmd)
 	char	*path;
 	t_single_cmd *temp;
 	temp = cmd->cmd_lst;
-	/*
+	/*    
+
 	word[0] will be the command
 	next words can be options or arguments
 	redirections are in between
@@ -95,7 +96,7 @@ int	single_command(t_shell *cmd)
 	path = check_access(cmd->envp_copy, temp->command);
 	if (ft_strncmp(cmd->cmd_lst->command[0], "echo", 4) == 0)
 		echo(cmd->cmd_lst->command);
-	else if (ft_strncmp(cmd->cmd_lst->command[0], "cdd", 3) == 0)
+	else if (ft_strncmp(cmd->cmd_lst->command[0], "cd", 2) == 0)
 		cd(cmd);
 	else if (ft_strncmp(cmd->cmd_lst->command[0], "env", 3) == 0)
 		env(cmd);
@@ -109,6 +110,7 @@ int	single_command(t_shell *cmd)
 		printf("It will be the unset builtin");
 	else
 	{
+		write(1, "a", 1);
 		if (execve(path,cmd->cmd_lst->command, cmd->envp_copy) == -1)
 		{
 			printf("oupsi");
