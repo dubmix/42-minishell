@@ -12,33 +12,43 @@
 
 #include "../../minishell.h"
 
-// char *get_dir_name()
-// {
-// 	int i;
+int cd(t_shell *cmd)
+{
+	int ret;
+	t_shell **tmp;
+	//char cwd[PATH_MAX];
 
-// 	i = 0;
-// 	while()
-// 	{
-// 		if (ft_strncmp)
-// 	}
-// }
-
-// int change_directory(t_shell *cmd)
-// {
-// 	char *tmp;
-// 	int		ret;
-
-// 	tmp = get_dir_name()
-// 	ret = chdir(tmp); //returns 0 if success, -1 if error
-// 	free(tmp);
-
-// 	return (ret);
-// }
+	//if (getcwd(cwd, sizeof(cwd)) != NULL)
+		//printf("Current working directory: %s\n", cwd);
+	tmp = &cmd;
+	if (!(*tmp)->cmd_lst->command)
+	{
+		//write(1, "a", 1);
+		ret = go_to_path(cmd, "HOME");
+	}
+	else if(ft_strncmp((*tmp)->cmd_lst->command[0], "-", 1) == 0)
+	{	
+		//write(1, "b", 1);
+		ret = go_to_path(cmd, "OLDPWD");
+	}
+	else
+	{
+		ret = chdir((*tmp)->cmd_lst->command[1]);
+		printf("%d\n", ret);
+		if (ret != 0)
+			printf("minishell: %s\n", (*tmp)->cmd_lst->command[0]);
+		write(1, "cd", 2);
+	}
+	if (ret != 0)
+		return (EXIT_FAILURE); // exit_failure value = 8;
+	add_path_to_env(cmd);
+	return (EXIT_SUCCESS);
+}
 
 void add_path_to_env(t_shell *cmd)
 {
 	t_env *tmp;
-	char *str;
+	//char *str;
 	char cwd[PATH_MAX];
 
 	tmp = cmd->env_lst;
@@ -51,7 +61,7 @@ void add_path_to_env(t_shell *cmd)
 	//same with OLDPWD
 }
 
-char *get_path(t_shell *cmd, char *str)
+char *get_path_cd(t_shell *cmd, char *str)
 {
 	t_env *tmp;
 	char *path;
@@ -74,7 +84,7 @@ int	go_to_path(t_shell *cmd, char *str)
 	char *tmp;
 	int ret;
 
-	tmp = get_path(cmd, str);
+	tmp = get_path_cd(cmd, str);
 	ret = chdir(tmp);
 	free(tmp);
 	if (ret != 0)
@@ -82,26 +92,4 @@ int	go_to_path(t_shell *cmd, char *str)
 		/* error handling */
 	}
 	return (ret);
-}
-
-int cd(t_shell *cmd)
-{
-	int ret;
-	t_shell **tmp;
-
-	tmp = &cmd;
-	if ((*tmp)->tok_lst->command == '\0')
-		ret = go_to_path(cmd, "HOME");
-	else if(ft_strncmp((*tmp)->tok_lst->command, "-", 1) == 0)
-		ret = go_to_path(cmd, "OLDPWD");
-	else
-	{
-		ret = chdir((*tmp)->tok_lst->command);
-		if (ret != 0)
-			printf("minishell: %s\n", (*tmp)->tok_lst->command);
-	}
-	if (ret != 0)
-		return (EXIT_FAILURE); // exit_failure value = 8;
-	add_path_to_env(cmd);
-	return (EXIT_SUCCESS);
 }

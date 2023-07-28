@@ -72,6 +72,7 @@ typedef struct s_shell
     int nb_of_tokens;
     int *words_per_pipe;
     int	*pid;
+    int exit_flag;
 } t_shell;
 
 
@@ -140,13 +141,40 @@ char	**get_path(char **envp);
 char	*check_access(char **envp, char **cmd); //, int *fds);
 void exec_single_command(t_shell *cmd);
 int pre_executor(t_shell *cmd);
+int exec_piped_command(t_shell *cmd);
+int ft_fork(t_shell *cmd, int pipefd[2], int fd, int i);
+void dup_cmd(t_shell *cmd, int pipefd[2], int fd);
+int exec_command(t_shell *cmd);
+int check_redirections(t_shell *cmd);
+int exec_infile(char *file);
+int exec_outfile(t_shell *cmd);
+int pipe_wait(int *pid, int nb_of_pipes);
 
 /////////////////////////////////// BUILTINS //////////////////////////////////
 
-/*builtin*/
+/*cd*/
+int     cd(t_shell *cmd);
+int	    go_to_path(t_shell *cmd, char *str);
+char    *get_path_cd(t_shell *cmd, char *str);
+void    add_path_to_env(t_shell *cmd);
+/*exit*/
+int	    exxit(t_shell *cmd);
+void    get_exit_code(void);
+int     is_only_digits(char *str);
+/*echo*/
 void    echo(char **args);
+/*env*/
 int     env(t_shell *cmd);
+/*pwd*/
 int     pwd(void);
+/*export*/
+int	export(t_shell *cmd);
+int	export_error(char *str);
+int check_valid_id(char c);
+int	check_param(char *str);
+int	ft_findchar(char *str, char c);
+int var_exists(t_env *env, char *str);
+int	ft_lstsize_test(t_env *lst);
 
 /////////////////////////////////// OTHERS //////////////////////////////////
 
@@ -167,7 +195,6 @@ char	*ft_strjoin(char *s1, char *s2);
 error handling, usually I put error in the printf statement 
 free all the struct for each new prompt
 handle ?* in the expander
-handle history
 */
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 11:55:39 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/07/26 15:06:16 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/07/28 09:02:21 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,9 @@ void    echo(char **cmd)
         }
         while(cmd[i] != NULL)
         {
-            printf("%s", cmd[i]);
+            ft_putstr_fd(args[i], STDOUT_FILENO);
+            if (args[i + 1] != NULL) // apparently is printing the space when should not 
+                printf(" ");
             i++;
         }
     }

@@ -25,6 +25,9 @@ SRCS	= src/minishell.c \
 		src/builtins/echo.c \
 		src/builtins/env.c \
 		src/builtins/pwd.c \
+		src/builtins/cd.c \
+		src/builtins/exit.c \
+		src/builtins/export.c \
 		src/parser/parser_utils.c \
 		src/parser/parser_triage.c \
 		src/parser/parser_cmd_lst.c \
