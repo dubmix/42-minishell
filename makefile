@@ -6,7 +6,7 @@
 #    By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/26 12:53:21 by edrouot           #+#    #+#              #
-#    Updated: 2023/07/28 10:31:05 by edrouot          ###   ########.fr        #
+#    Updated: 2023/07/29 11:23:54 by edrouot          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,6 +29,7 @@ SRCS	= src/minishell.c \
 		src/builtins/cd.c \
 		src/builtins/exit.c \
 		src/builtins/export.c \
+		src/builtins/unset.c \
 		src/parser/parser_utils.c \
 		src/parser/parser_triage.c \
 		src/parser/parser_cmd_lst.c \

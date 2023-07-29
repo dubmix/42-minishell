@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:46:03 by edrouot           #+#    #+#             */
-/*   Updated: 2023/07/28 16:42:20 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/07/29 09:05:48 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	length_arr_var(char **arr_var, t_shell *cmd)
 {
 	int	j;
 	int	length;
-	write(1, "TRUC", 4);
+
 	j = 0;
 	length = 0;
 	while (arr_var[j] != NULL && j < cmd->size_arr_var)
@@ -68,8 +68,6 @@ int	length_string_without_var(char *string)
 
 	i = 0;
 	length = 0;
-	write(1, "HOPP", 4);
-
 	while (string[i] != '\0')
 	{
 		if (string[i] == '$')

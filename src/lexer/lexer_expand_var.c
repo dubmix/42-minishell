@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:45:38 by edrouot           #+#    #+#             */
-/*   Updated: 2023/07/28 16:24:46 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/07/29 14:02:01 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ void	double_quote_env(t_shell *cmd, t_token *var)
 		j++;
 	}
 	new_string[j] = '\0';
+	free_arr(arr_var);
 	free(var->command);
 	var->command = ft_strdup(new_string);
 	free(new_string);

@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:46:21 by edrouot           #+#    #+#             */
-/*   Updated: 2023/07/28 09:15:41 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/07/29 11:21:54 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,32 +67,9 @@ char	*check_access(char **envp, char **cmd) //, int *fds)
 
 int	single_command(t_shell *cmd)
 {
-	// char	*(cmd->cmd_lst->command;
 	char	*path;
 	t_single_cmd *temp;
 	temp = cmd->cmd_lst;
-	/*    
-
-	word[0] will be the command
-	next words can be options or arguments
-	redirections are in between
-	creation of three independent things :
-	- command and options (have to be separated with a space)
-	- args
-	// *///int o;
-	// int c;
-	// // o = open("file1", O_RDONLY);
-	// c = open("file2", O_CREAT | O_WRONLY | O_TRUNC, 0777);
-	// dup2(o, STDIN_FILENO);
-	// dup2(c, STDOUT_FILENO);
-	
-	//(cmd->cmd_lst->command = (char **)malloc(sizeof(char *) * (cmd->number_token
-	// 		- cmd->redir_in - cmd->redir_out - cmd->heredoc - cmd->append) + 1);
-	// // change the size of the array cmd 
-	// if ((cmd->cmd_lst->command)
-	// 	return ; // ERROR HANDLING
-	//(cmd->cmd_lst->command = list_to_array(cmd, cmd->);
-	// print_char2(cmd->cmd_lst->command);
 	path = check_access(cmd->envp_copy, temp->command);
 	if (ft_strncmp(cmd->cmd_lst->command[0], "echo", 4) == 0)
 		echo(cmd->cmd_lst->command);
@@ -107,14 +84,11 @@ int	single_command(t_shell *cmd)
 	else if (ft_strncmp(cmd->cmd_lst->command[0], "pwd", 3) == 0)
 		pwd();
 	else if (ft_strncmp(cmd->cmd_lst->command[0], "unset", 5) == 0)
-		printf("It will be the unset builtin");
+		unset(cmd);
 	else
 	{
-		write(1, "a", 1);
 		if (execve(path,cmd->cmd_lst->command, cmd->envp_copy) == -1)
-		{
 			printf("oupsi");
-		}
 	}
 	return(exit_code);
 	// // close(c);

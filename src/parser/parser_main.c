@@ -7,13 +7,7 @@ void	parser(t_shell *cmd)
 	adjust_number(cmd);
 	number_words_per_pipe(cmd);
 	cmd->cmd_lst = triage_cmd_redir(cmd);
-	printf("IS %d\n", cmd->nb_of_heredocs);
-	// if (cmd->nb_of_heredocs != 0)
-	// {	
-	// 	write(1, "TRUC", 4);
-		grab_heredoc(cmd); 
-	// 	printf("HEREDOC is :|\n\n%s", cmd->heredoc_string);
-	// }
+	grab_heredoc(cmd); 
 	
 	// pre_executor(cmd);
 	//single_command(cmd);

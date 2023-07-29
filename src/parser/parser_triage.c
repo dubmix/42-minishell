@@ -53,6 +53,7 @@ void	triage_quotes(t_shell *cmd)
 			cmd_splitted = ft_split((*temp)->command, '\'');
 			free((*temp)->command);
 			(*temp)->command = ft_strdup(cmd_splitted[0]);
+			(*temp)->type = 0;
 			free_arr(cmd_splitted);
 		}
 		temp = &((*temp)->next);

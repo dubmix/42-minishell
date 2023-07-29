@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 10:45:11 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/07/28 10:22:19 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/07/29 11:15:11 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ int exec_piped_command(t_shell *cmd)
     fd = STDIN_FILENO;
     while (1)
     {
-        //write(1, "a", 1);
         if (cmd->cmd_lst->next)
             pipe(pipefd);
         //exec_heredoc(cmd);
@@ -153,10 +152,12 @@ int check_redirections(t_shell *cmd)
     head = cmd->cmd_lst;
     while (cmd->cmd_lst)
     {
-        if (cmd->cmd_lst->redir_in == 1)
+        if (cmd->nb_of_heredocs != 0)
+            exec_heredoc(cmd);
+        else if (cmd->cmd_lst->redir_in == 1)
             exec_infile(cmd->cmd_lst->redir_in_str);
-        else if (cmd->cmd_lst->append == 1)
-            exec_outfile(cmd); //actually heredoc filename?
+        if (cmd->cmd_lst->append == 1)
+            exec_outfile(cmd);
         else if (cmd->cmd_lst->redir_out == 1)
             exec_outfile(cmd);
     cmd->cmd_lst = cmd->cmd_lst->next;
@@ -166,11 +167,41 @@ int check_redirections(t_shell *cmd)
     return (EXIT_SUCCESS);
 }
 
+int exec_heredoc(t_shell *cmd)
+{
+    int fd;
+    int dup;
+    
+    fd = open("heredoc.txt", O_CREAT | O_RDWR, 0644);
+    if (fd < 0)
+    {
+        printf("minishell: heredoc creation error");
+        return (EXIT_FAILURE); // error handling;
+    }
+    write(fd, cmd->heredoc_string, ft_strlen(cmd->heredoc_string));
+    close(fd);
+    fd = open("heredoc.txt", O_RDONLY);
+    if (fd < 0)
+    {
+        printf("minishell: heredoc opening error\n");
+        return (EXIT_FAILURE); // error handling;
+    }
+    dup = dup2(fd, STDIN_FILENO);
+    if (dup < 0)
+    {
+        printf("minishell: dup heredoc error\n");
+        return (EXIT_FAILURE); //error handling;
+    }
+    close(fd);
+    unlink("heredoc.txt");
+    return (EXIT_SUCCESS);
+}
+
 int exec_infile(char *file)
 {
     int fd;
     int dup;
-
+    
     fd = open(file, O_RDONLY);
     if (fd < 0)
     {
@@ -198,7 +229,6 @@ int exec_outfile(t_shell *cmd)
                 O_CREAT | O_RDWR | O_APPEND, 0644);
     else
     {
-        write(1, "e", 1);
         fd = open(cmd->cmd_lst->redir_out_str,
                 O_CREAT | O_RDWR | O_TRUNC, 0644);
     }

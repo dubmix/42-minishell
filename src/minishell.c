@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 11:16:23 by edrouot           #+#    #+#             */
-/*   Updated: 2023/07/28 10:30:24 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/07/29 13:11:23 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	init_shell(t_shell *cmd)
 {
 	cmd->nb_of_heredocs = 0;
 	cmd->nb_of_pipes = 0;
+	cmd->exit_flag = 0;
 }
 
 int	minishell_start(char **envp)
@@ -33,7 +34,6 @@ int	minishell_start(char **envp)
 	(void)envp;
 	if (!cmd)
 		return (0);
-	cmd->exit_flag = 0;
 	cmd->env_lst = init_envp(envp, cmd);
 	while (1)
 	{
@@ -43,7 +43,7 @@ int	minishell_start(char **envp)
 		add_history(cmd->line);
 		expand_var(cmd);
 		parser(cmd);
-		// pre_executor(cmd);
+		pre_executor(cmd);
 		if (cmd->exit_flag == 1)
         	exit(exit_code); // pq ca marche pas ca??
 		//printf("2 %d\n", ft_lstsize_test((cmd->env_lst)));

@@ -150,6 +150,7 @@ int check_redirections(t_shell *cmd);
 int exec_infile(char *file);
 int exec_outfile(t_shell *cmd);
 int pipe_wait(int *pid, int nb_of_pipes);
+int exec_heredoc(t_shell *cmd);
 
 /*heredoc.c*/
 void	grab_heredoc(t_shell *cmd);
@@ -181,6 +182,9 @@ int	check_param(char *str);
 int	ft_findchar(char *str, char c);
 int var_exists(t_env *env, char *str);
 int	ft_lstsize_test(t_env *lst);
+/*unset*/
+int unset(t_shell *cmd);
+void	delete_node_env(t_env **head, t_env *nodeToDelete);
 
 /////////////////////////////////// OTHERS //////////////////////////////////
 

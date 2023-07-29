@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 11:32:47 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/07/28 16:40:23 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/07/29 14:40:41 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,7 @@ void	grab_heredoc(t_shell *cmd)
 	char *second_line;
 	char *final_line;
 	
-	write(1, "MMM", 3);
-	final_line = ft_strdup("");
+	second_line = NULL;
 	i = 0;
 	while(i < cmd->nb_of_heredocs)
 	{
@@ -32,23 +31,19 @@ void	grab_heredoc(t_shell *cmd)
 		{
 			
 			first_line = double_quote_env_heredoc(cmd, line_input);
-			if (final_line == NULL)
-			{
-				second_line = ft_strdup(first_line);
-				final_line = ft_strjoin(second_line, "\n");
-			}
-			else
-			{
-				second_line = ft_strjoin(final_line, first_line);
-				final_line = ft_strjoin(second_line, "\n");
-			}
 			free(line_input);
+			if (second_line == NULL)
+				second_line = ft_strdup(first_line);
+			else
+				second_line = ft_strjoin(second_line, first_line);
 			free(first_line);
+			final_line = ft_strjoin(second_line, "\n");
 			free(second_line);
 		}
-		cmd->heredoc_string = ft_strdup(final_line);
-		free(final_line);
 	}
+	cmd->heredoc_string = ft_strdup(final_line);
+	free(final_line);
+	free_arr(cmd->heredoc_arr);
 	return;
 }
 
@@ -115,6 +110,7 @@ char *double_quote_env_heredoc(t_shell *cmd, char *string)
 		j++;
 	}
 	new_string[j] = '\0';
+	free(arr_var);
 	return(new_string);
 }
 
