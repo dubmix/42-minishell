@@ -33,8 +33,7 @@ void exec_single_command(t_shell *cmd)
 {
     int pid;
     int status;
-    //test//
-    //exec_heredoc(cmd);
+
     pid = fork();
     if (pid < 0)
         return ; // error handling
@@ -71,8 +70,7 @@ int exec_piped_command(t_shell *cmd)
             break;
     }
     //write(1, "c", 1);
-    pipe_wait(cmd->pid, cmd->nb_of_pipes); // could be replaced by pid = -1 
-    //waitpid(-1, &status, 0);
+    pipe_wait(cmd->pid, cmd->nb_of_pipes);
     cmd->cmd_lst = head;
     //so the parents waits for all child processes to terminate?
     //cmd->cmd_lst->command; //iterate through list to set back to first command
@@ -245,20 +243,6 @@ int exec_outfile(t_shell *cmd)
         close(fd);
     return (EXIT_SUCCESS);
 }
-
-// int check_heredoc(t_shell *cmd, int pipefd[2])
-// {
-//     int fd;
-
-//     if (cmd->nb_of_heredocs != 0)
-//     {
-//         close(pipefd[0]);
-//         fd = open(cmd->heredoc_arr, O_RDONLY);
-//     }
-//     else
-//         fd = pipefd[0];
-//     return (fd);
-// }
 
 int pipe_wait(int *pid, int nb_of_pipes)
 {

@@ -16,11 +16,24 @@ int cd(t_shell *cmd)
 {
 	int ret;
 	t_shell **tmp;
+	char *oldpwd;
 	//char cwd[PATH_MAX];
 
 	//if (getcwd(cwd, sizeof(cwd)) != NULL)
 		//printf("Current working directory: %s\n", cwd);
 	tmp = &cmd;
+	while ((*tmp)->env_lst)
+	{
+		if(ft_strncmp((*tmp)->env_lst->name, "PWD", 3))
+		{
+			oldpwd = malloc(sizeof(char *) * ft_strlen(((*tmp)->env_lst->value)));
+			oldpwd = (*tmp)->env_lst->value;
+			(*tmp)->oldpwd = oldpwd;
+			printf("oldpwd value is %s\n", (*tmp)->oldpwd);
+			break ;
+		}
+		(*tmp)->env_lst = (*tmp)->env_lst->next;
+	}
 	if (!(*tmp)->cmd_lst->command)
 	{
 		//write(1, "a", 1);
@@ -48,17 +61,22 @@ int cd(t_shell *cmd)
 void add_path_to_env(t_shell *cmd)
 {
 	t_env *tmp;
-	//char *str;
 	char cwd[PATH_MAX];
 
 	tmp = cmd->env_lst;
 	while (tmp)
 	{
 		if (ft_strncmp(tmp->name, "PWD", 3) == 0)
+		{
 			tmp->value = getcwd(cwd, sizeof(cwd));
+		}
+		else if (ft_strncmp(tmp->name, "OLDPWD", 6) == 0)
+		{
+			tmp->value = cmd->oldpwd;
+			free(cmd->oldpwd);
+		}
 		tmp = tmp->next;
 	}
-	//same with OLDPWD
 }
 
 char *get_path_cd(t_shell *cmd, char *str)

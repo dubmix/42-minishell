@@ -74,6 +74,7 @@ typedef struct s_shell
     int *words_per_pipe;
     int	*pid;
     int exit_flag;
+    char *oldpwd;
 } t_shell;
 
 
