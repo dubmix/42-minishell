@@ -9,7 +9,6 @@ void	parser(t_shell *cmd)
 	number_words_per_pipe(cmd);
 	// empty the array of int and free the tok_lst
 	cmd->cmd_lst = triage_cmd_redir(cmd);
-	print_list_commands(cmd->cmd_lst, cmd);
 	if (cmd->nb_of_heredocs != 0)
 		grab_heredoc(cmd); 
 	
