@@ -40,6 +40,7 @@ typedef struct s_token
 
 typedef struct s_env
 {
+    char *full_string;
     char *name;
     char *value;
     struct s_env *next;
@@ -87,7 +88,7 @@ void	init_shell(t_shell *cmd);
 /*lexer_init.c*/
 t_env *init_envp(char **envp, t_shell *cmd);
 void add_stack_back_env(t_env **env_lst, t_env *new);
-void new_node_env(t_env **env_list, char **string);
+void	new_node_env(t_env **env_list, char **string, char *full_string);
 
 /* lexer_expand_var.c */
 void expand_var(t_shell *cmd);

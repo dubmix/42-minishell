@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 13:29:20 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/07/19 11:13:15 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/07/30 14:43:40 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ int	export(t_shell *cmd)
 		//}
 		(*tmp)->cmd_lst = (*tmp)->cmd_lst->next;
 	}
+	// print_list((*tmp)->env_lst);
 	printf("list size at end of export is%d\n", ft_lstsize_test((cmd->env_lst)));
 	return (EXIT_SUCCESS);
 }
