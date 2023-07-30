@@ -3,6 +3,7 @@
 void	parser(t_shell *cmd)
 {
 	triage_quotes(cmd);
+	adjust_number(cmd);
 	triage_space(cmd);
 	adjust_number(cmd);
 	number_words_per_pipe(cmd);

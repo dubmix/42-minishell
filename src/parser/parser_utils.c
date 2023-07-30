@@ -34,8 +34,12 @@ void	adjust_number(t_shell *cmd)
 	while (*temp != NULL)
 	{
 		(*temp)->index = i;
-		temp = &((*temp)->next);
+		if (ft_strncmp((*temp)->command, " ", ft_strlen((*temp)->command)) == 0 && i == 0)
+			i = -1;
 		i++;
+		if (ft_strncmp((*temp)->command, "|", ft_strlen((*temp)->command)) == 0)
+			i = 0;
+		temp = &((*temp)->next);
 	}
 }
 

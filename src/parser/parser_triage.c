@@ -26,7 +26,7 @@ void	triage_space(t_shell *cmd)
 		else
 		{
 			state = 1;
-			if ((*temp)->type == SPA)
+			if ((*temp)->type == SPA && (*temp)->index != 1)
 				(*temp)->type = WORD;
 			temp = &((*temp)->next);
 		}
