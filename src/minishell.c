@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 11:16:23 by edrouot           #+#    #+#             */
-/*   Updated: 2023/07/30 14:06:39 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/07/30 14:25:22 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	minishell_start(char **envp)
 		pre_executor(cmd);
 		if (cmd->exit_flag == 1)
         	exit(exit_code); // pq ca marche pas ca??
-		printf("2 %d\n", ft_lstsize_test((cmd->env_lst)));
+		// printf("2 %d\n", ft_lstsize_test((cmd->env_lst)));
 	}
 }
 

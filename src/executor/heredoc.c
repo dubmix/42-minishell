@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 11:32:47 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/07/30 12:34:45 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/07/30 14:25:03 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ void	grab_heredoc(t_shell *cmd)
 				second_line = ft_strjoin(second_line, first_line);
 			free(first_line);
 			final_line = ft_strjoin(second_line, "\n");
-			// printf("FINAL LINE IS %s", final_line);
 			free(second_line);
 		}
 	}
