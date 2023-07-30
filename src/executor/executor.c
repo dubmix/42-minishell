@@ -136,7 +136,8 @@ int exec_command(t_shell *cmd)
     else if (cmd->cmd_lst->command != NULL)
     {
         exit_code = single_command(cmd);
-        exit(exit_code); //return (exit_code); // si exit l'env s'efface quand le loop recommence
+        printf("2 %d\n", ft_lstsize_test((cmd->env_lst)));
+        exit(0); //return (exit_code); // si exit l'env s'efface quand le loop recommence
     }
     return (exit_code);
 }

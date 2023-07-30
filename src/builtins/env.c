@@ -18,10 +18,11 @@ int env(t_shell *cmd)
     // t_env **tmp
     // tmp = cmd->env_lst;
     tmp = &cmd;
-    while((*tmp)->env_lst)
-    {
-        printf("%s=%s\n", (*tmp)->env_lst->name, (*tmp)->env_lst->value);
-        (*tmp)->env_lst = (*tmp)->env_lst->next;
-    }
+    // while((*tmp)->env_lst)
+    // {
+    //     printf("%s=%s\n", (*tmp)->env_lst->name, (*tmp)->env_lst->value);
+    //     (*tmp)->env_lst = (*tmp)->env_lst->next;
+    // }
+    print_list(cmd->env_lst);
     return (EXIT_SUCCESS);
 }
