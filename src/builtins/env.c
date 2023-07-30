@@ -14,15 +14,13 @@
 
 int env(t_shell *cmd)
 {
-    t_shell **tmp;
-    // t_env **tmp
-    // tmp = cmd->env_lst;
-    tmp = &cmd;
-    // while((*tmp)->env_lst)
-    // {
-        // printf("%s=%s\n", (*tmp)->env_lst->name, (*tmp)->env_lst->value);
-        // (*tmp)->env_lst = (*tmp)->env_lst->next;
-        print_list((*tmp)->env_lst);
-    // }
+	t_env	*tmp;
+
+	tmp = cmd->env_lst;
+	while (tmp != NULL)
+	{
+		printf("%s\n", tmp->full_string);
+		tmp = tmp->next;
+	}
     return (EXIT_SUCCESS);
 }

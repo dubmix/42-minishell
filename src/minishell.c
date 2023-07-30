@@ -37,7 +37,7 @@ int	minishell_start(char **envp)
 	cmd->env_lst = init_envp(envp, cmd);
 	while (1)
 	{
-		printf("1 %d\n", ft_lstsize_test((cmd->env_lst)));
+		// printf("1 %d\n", ft_lstsize_test((cmd->env_lst)));
 		cmd->line = readline("Minishell >");
 		cmd->tok_lst = tokenization(cmd);
 		add_history(cmd->line);
@@ -48,6 +48,7 @@ int	minishell_start(char **envp)
         // 	exit(exit_code); // pq ca marche pas ca??
 	}
 }
+
 
 /* launch minishell */
 int	main(int argc, char **argv, char **envp)

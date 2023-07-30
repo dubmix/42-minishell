@@ -19,7 +19,7 @@ void	print_list(t_env *env)
 	tmp = env;
 	while (tmp != NULL)
 	{
-		printf("node is %s and value is %s\n", tmp->name, tmp->value);
+		printf("%s\n", tmp->full_string);
 		tmp = tmp->next;
 	}
 }
