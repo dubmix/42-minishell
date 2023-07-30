@@ -71,6 +71,7 @@ int	single_command(t_shell *cmd)
 	t_single_cmd *temp;
 	temp = cmd->cmd_lst;
 	path = check_access(cmd->envp_copy, temp->command);
+	
 	if (ft_strncmp(cmd->cmd_lst->command[0], "echo", 4) == 0)
 		echo(cmd->cmd_lst->command);
 	else if (ft_strncmp(cmd->cmd_lst->command[0], "cd", 2) == 0)

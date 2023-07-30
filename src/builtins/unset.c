@@ -58,27 +58,27 @@ int unset(t_shell *cmd)
     return (EXIT_SUCCESS);
 }
 
-void	delete_node_env(t_env **head, t_env *nodeToDelete)
+void	delete_node_env(t_env **head, t_env *node_to_delete)
 {
-	t_env *prevNode;
+	t_env *prev_node;
 
-	prevNode = NULL;
-	if (*head == NULL || nodeToDelete == NULL)
+	prev_node = NULL;
+	if (*head == NULL || node_to_delete == NULL)
 		return ;
-	if (*head == nodeToDelete)
-		*head = nodeToDelete->next;
+	if (*head == node_to_delete)
+		*head = node_to_delete->next;
 	else
 	{
-		prevNode = *head;
-		while (prevNode->next != NULL && prevNode->next != nodeToDelete)
-			prevNode = prevNode->next;
-		if (prevNode->next == nodeToDelete)
-			prevNode->next = nodeToDelete->next;
+		prev_node = *head;
+		while (prev_node->next != NULL && prev_node->next != node_to_delete)
+			prev_node = prev_node->next;
+		if (prev_node->next == node_to_delete)
+			prev_node->next = node_to_delete->next;
 		else
 			return ;
 	}
-	free(nodeToDelete->name);
-    free(nodeToDelete->value);
-	free(nodeToDelete);
+	free(node_to_delete->name);
+    free(node_to_delete->value);
+	free(node_to_delete);
 	return ;
 }

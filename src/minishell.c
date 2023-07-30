@@ -44,8 +44,8 @@ int	minishell_start(char **envp)
 		expand_var(cmd);
 		parser(cmd);
 		pre_executor(cmd);
-		if (cmd->exit_flag == 1)
-        	exit(exit_code); // pq ca marche pas ca??
+		// if (cmd->exit_flag == 1)
+        // 	exit(exit_code); // pq ca marche pas ca??
 		//printf("2 %d\n", ft_lstsize_test((cmd->env_lst)));
 	}
 }

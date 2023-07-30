@@ -38,10 +38,10 @@ int	export(t_shell *cmd)
 		// {
 			if (var_exists((*tmp)->env_lst, str[0]) == 0)
 			{
-				printf("%s %s\n", str[0], str[1]);
-				printf("%d\n", ft_lstsize_test((*tmp)->env_lst));
+				//printf("%s %s\n", str[0], str[1]);
+				printf("list size at beg of export is %d\n", ft_lstsize_test((*tmp)->env_lst));
 				new_node_env(&(*tmp)->env_lst, str);
-				printf("%d\n", ft_lstsize_test((*tmp)->env_lst));
+				//printf("%d\n", ft_lstsize_test((*tmp)->env_lst));
 				//free_array(str);
 				break ;
 			}
@@ -50,7 +50,7 @@ int	export(t_shell *cmd)
 		//}
 		(*tmp)->cmd_lst = (*tmp)->cmd_lst->next;
 	}
-	printf("%d\n", ft_lstsize_test((cmd->env_lst)));
+	printf("list size at end of export is%d\n", ft_lstsize_test((cmd->env_lst)));
 	return (EXIT_SUCCESS);
 }
 
