@@ -12,6 +12,7 @@ void	triage_space(t_shell *cmd)
 	state = 0;
 	while (*temp != NULL)
 	{
+		printf("truc is %d command is %s\n", (*temp)->index, (*temp)->command);
 		if ((*temp)->type == 0)
 		{
 			state = 0;
@@ -26,7 +27,7 @@ void	triage_space(t_shell *cmd)
 		else
 		{
 			state = 1;
-			if ((*temp)->type == SPA)
+			if ((*temp)->type == SPA && (*temp)->index != 1)
 				(*temp)->type = WORD;
 			temp = &((*temp)->next);
 		}

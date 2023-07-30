@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 10:45:11 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/07/29 11:15:11 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/07/30 13:38:49 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,10 @@ int exec_piped_command(t_shell *cmd)
     {
         if (cmd->cmd_lst->next)
             pipe(pipefd);
-        //exec_heredoc(cmd);
         i = ft_fork(cmd, pipefd, fd, i);
         if (cmd->cmd_lst->index != 0)
             close(pipefd[1]);
         fd = pipefd[0];
-        //fd = check_heredoc(cmd, pipefd);
         if (cmd->cmd_lst->next)
         {
             //write(1, "b", 1);
@@ -124,7 +122,7 @@ void dup_cmd(t_shell *cmd, int pipefd[2], int fd)
 int exec_command(t_shell *cmd)
 {
     if (cmd->cmd_lst->append == 1 || cmd->cmd_lst->redir_in == 1
-            || cmd->cmd_lst->redir_out == 1) //if there are any redirections. and how do we declare the static exit_code
+            || cmd->cmd_lst->redir_out == 1 || cmd->nb_of_heredocs != 0) //if there are any redirections. and how do we declare the static exit_code
     {
         check_redirections(cmd);
         //write(1, "c", 1);

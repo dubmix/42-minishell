@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:46:21 by edrouot           #+#    #+#             */
-/*   Updated: 2023/07/29 11:21:54 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/07/30 13:39:37 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int	single_command(t_shell *cmd)
 		unset(cmd);
 	else
 	{
-		if (execve(path,cmd->cmd_lst->command, cmd->envp_copy) == -1)
+		if (execve(path, cmd->cmd_lst->command, cmd->envp_copy) == -1)
 			printf("oupsi");
 	}
 	return(exit_code);
