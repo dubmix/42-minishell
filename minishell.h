@@ -184,6 +184,7 @@ int	check_param(char *str);
 int	ft_findchar(char *str, char c);
 int var_exists(t_env *env, char *str);
 int	ft_lstsize_test(t_env *lst);
+void	update_envp_copy(t_shell *cmd);
 /*unset*/
 int unset(t_shell *cmd);
 void	delete_node_env(t_env **head, t_env *nodeToDelete);

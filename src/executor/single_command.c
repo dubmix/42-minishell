@@ -77,11 +77,16 @@ int	single_command(t_shell *cmd)
 	else if (ft_strncmp(cmd->cmd_lst->command[0], "cd", 2) == 0)
 		cd(cmd);
 	else if (ft_strncmp(cmd->cmd_lst->command[0], "env", 3) == 0)
+	{
 		env(cmd);
+	}
 	else if (ft_strncmp(cmd->cmd_lst->command[0], "exit", 4) == 0)
 		exxit(cmd);
 	else if (ft_strncmp(cmd->cmd_lst->command[0], "export", 6) == 0)
+	{
 		export(cmd);
+		printf("2 %d\n", ft_lstsize_test((cmd->env_lst)));
+	}
 	else if (ft_strncmp(cmd->cmd_lst->command[0], "pwd", 3) == 0)
 		pwd();
 	else if (ft_strncmp(cmd->cmd_lst->command[0], "unset", 5) == 0)
@@ -91,6 +96,6 @@ int	single_command(t_shell *cmd)
 		if (execve(path, cmd->cmd_lst->command, cmd->envp_copy) == -1)
 			printf("oupsi");
 	}
-	return(exit_code);
+	return(EXIT_SUCCESS);
 	// // close(c);
 }

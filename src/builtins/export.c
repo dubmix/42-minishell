@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 13:29:20 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/07/30 14:43:40 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/07/30 15:37:49 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,21 +38,48 @@ int	export(t_shell *cmd)
 		// {
 			if (var_exists((*tmp)->env_lst, str[0]) == 0)
 			{
-				//printf("%s %s\n", str[0], str[1]);
+				write(1, "h", 1);
+				printf("%s %s\n", str[0], str[1]);
 				printf("list size at beg of export is %d\n", ft_lstsize_test((*tmp)->env_lst));
 				new_node_env(&(*tmp)->env_lst, str);
 				//printf("%d\n", ft_lstsize_test((*tmp)->env_lst));
 				//free_array(str);
 				break ;
 			}
-			(*tmp)->env_lst = (*tmp)->env_lst->next;
+			//(*tmp)->env_lst = (*tmp)->env_lst->next;
 			//free_array(str);
 		//}
 		(*tmp)->cmd_lst = (*tmp)->cmd_lst->next;
 	}
 	// print_list((*tmp)->env_lst);
 	printf("list size at end of export is%d\n", ft_lstsize_test((cmd->env_lst)));
+	update_envp_copy(cmd);
 	return (EXIT_SUCCESS);
+}
+
+void	update_envp_copy(t_shell *cmd)
+{
+	t_env *temp;
+	int i;
+	char *string;
+	char *temp_string;
+	
+	free_arr(cmd->envp_copy);
+	cmd->envp_copy = (char **)malloc(sizeof(ft_lstsize_test(cmd->env_lst) + 1));
+	temp = cmd->env_lst;
+	i = 0;
+	while(temp != NULL)
+	{
+		printf("list size at end of export is%d %d\n", ft_lstsize_test((cmd->env_lst)), i);
+		string = ft_strjoin(temp->name, "=");
+		temp_string = ft_strjoin(string, temp->value);
+		free(string);
+		cmd->envp_copy[i] = ft_strdup(temp_string);
+		free(temp_string);
+		i++;
+		temp = temp->next;
+	}
+
 }
 
 int	export_error(char *str)
