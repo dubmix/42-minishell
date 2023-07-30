@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 16:04:33 by edrouot           #+#    #+#             */
-/*   Updated: 2023/07/28 16:51:40 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/07/30 13:27:15 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ t_single_cmd	*triage_cmd_redir(t_shell *cmd)
 		if ((*temp) != NULL)
 			(*temp) = (*temp)->next;
 	}
+	free(cmd->words_per_pipe);
 	return (cmd_lst);
 }
 

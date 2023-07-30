@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 11:32:47 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/07/30 12:34:45 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/07/30 13:20:39 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ void	grab_heredoc(t_shell *cmd)
 				second_line = ft_strjoin(second_line, first_line);
 			free(first_line);
 			final_line = ft_strjoin(second_line, "\n");
-			// printf("FINAL LINE IS %s", final_line);
 			free(second_line);
 		}
 	}
@@ -114,60 +113,3 @@ char *double_quote_env_heredoc(t_shell *cmd, char *string)
 	free(arr_var);
 	return(new_string);
 }
-
-
-// int	create_heredoc(char **heredoc, char *file_name)
-// {
-// 	int fd;
-// 	char *line;
-// 	int i;
-
-// 	fd = open(file_name, O_CREAT);
-// 	line = readline(">");
-// 	while(line && ft_strncmp(heredoc[i], line, ft_strlen(heredoc[i])) != 0) // tant que EOF n'est pas detecte
-// 	{
-// 		write(fd, line, ft_strlen(line));
-// 		write(fd, "\n", 1);
-// 		free(line);
-// 		line = readline(">");
-// 	}
-// 	free(line);
-// 	close(fd);
-// 	return (EXIT_SUCCESS);
-// }
-
-// char *create_heredoc_filename(void)
-// {
-// 	int i;
-
-// 	i = 0;
-// 	char *file_name;
-	
-// 	file_name = ft_strjoin("build/.tmp_heredoc_file_", "");
-// 	return (file_name);
-// }
-
-// int ft_heredoc(t_shell *shell)
-// {
-// 	char *file_name;
-// 	int ret;
-
-// 	file_name = create_heredoc_filename();
-// 	shell->nb_of_heredocs = 1; //flag for in heredoc
-// 	ret = create_heredoc(file_name);
-// 	shell->nb_of_heredocs = 0;
-// 	return (ret);
-// }
-
-// create_heredoc
-
-
-// int	exec_heredoc(t_shell *shell)
-// {
-// 	int ret;
-
-// 	ret = EXIT_SUCCESS;
-// 	//cmd->redirections?
-// 	ret = ft_heredoc(shell, shell->tok_lst->redirections);
-// 	return (EXIT_SUCCESS);
-// }
