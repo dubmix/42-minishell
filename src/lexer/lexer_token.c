@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:45:56 by edrouot           #+#    #+#             */
-/*   Updated: 2023/07/28 16:54:30 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/07/31 13:23:31 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ int	new_token_var_words(t_token **tokens, char *string, int i, int nb_token)
 		new_token(tokens, var, nb_token, VARIABLE);
 	else
 		new_token(tokens, var, nb_token, WORD);
+	free(var);
 	return (i);
 }
 
@@ -102,6 +103,7 @@ int	new_token_quote(t_token **tokens, char *string, int i, int nb_token)
 		new_token(tokens, var, nb_token, S_QUOTE);
 	else
 		new_token(tokens, var, nb_token, D_QUOTE);
+	free(var);
 	return (i + 1);
 }
 
@@ -160,5 +162,6 @@ t_token	*tokenization(t_shell *cmd)
 		i++;
 		nb_token++;
 	}
+	free(cmd->line);
 	return (tok_lst);
 }

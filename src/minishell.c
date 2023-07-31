@@ -6,11 +6,13 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 11:16:23 by edrouot           #+#    #+#             */
-/*   Updated: 2023/07/30 14:34:44 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/07/31 14:41:29 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+int g_exit_code = 0;
 
 /* alloc shell struc
 initialize the environnement (envp)
@@ -39,15 +41,19 @@ int	minishell_start(char **envp)
 	{
 		//printf("1 %d\n", ft_lstsize_test((cmd->env_lst)));
 		cmd->line = readline("Minishell >");
-		cmd->tok_lst = tokenization(cmd);
 		add_history(cmd->line);
+		cmd->tok_lst = tokenization(cmd);
 		expand_var(cmd);
 		parser(cmd);
 		pre_executor(cmd);
+		free_all(cmd, 4);
 		// if (cmd->exit_flag == 1)
-        // 	exit(exit_code); // pq ca marche pas ca??
+        // 	exit(g_exit_code); // pq ca marche pas ca??
 		// printf("2 %d\n", ft_lstsize_test((cmd->env_lst)));
 	}
+	free_all(cmd, 3);
+	rl_clear_history();
+	return (0);
 }
 
 /* launch minishell */

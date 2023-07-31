@@ -13,7 +13,7 @@
     # include <fcntl.h>
     # include <limits.h>
 
-static int exit_code;
+extern int g_exit_code;
 
 enum e_type
 {
@@ -40,6 +40,7 @@ typedef struct s_token
 
 typedef struct s_env
 {
+    char *full_string;
     char *name;
     char *value;
     struct s_env *next;
@@ -87,7 +88,7 @@ void	init_shell(t_shell *cmd);
 /*lexer_init.c*/
 t_env *init_envp(char **envp, t_shell *cmd);
 void add_stack_back_env(t_env **env_lst, t_env *new);
-void new_node_env(t_env **env_list, char **string);
+void new_node_env(t_env **env_list, char **string, char *full_string);
 
 /* lexer_expand_var.c */
 void expand_var(t_shell *cmd);
@@ -131,7 +132,7 @@ void	handle_redir_in(t_single_cmd *new, t_token *temp);
 void	handle_redir_in_out(t_single_cmd *new, t_token *temp);
 
 /*parser_utils.c*/
-void    delete_node(t_token **head, t_token *nodeToDelete);
+void    delete_node_tok(t_token **head, t_token *nodeToDelete);
 void	adjust_number(t_shell *cmd);
 void	print_list_commands(t_single_cmd *cmd, t_shell *shell);
 
@@ -191,6 +192,13 @@ void	delete_node_env(t_env **head, t_env *nodeToDelete);
 
 /*errors.c*/
 void    free_arr(char **arr); // free any arrays
+void	free_all(t_shell *cmd, int type);
+void	free_tok_lst(t_token **tok_lst);
+void	delete_node_cmd(t_single_cmd **head, t_single_cmd *nodeToDelete);
+void	free_cmd_lst(t_single_cmd **cmd_lst);
+void	free_env_lst(t_env **env_lst);
+void free_shell(t_shell *cmd);
+//void	free_arr_int(int *arr);
 
 /* libft */
 int	countsubstr(char const *s, char c);

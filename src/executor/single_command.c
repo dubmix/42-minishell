@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:46:21 by edrouot           #+#    #+#             */
-/*   Updated: 2023/07/30 13:39:37 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/07/31 14:13:29 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ char	*check_access(char **envp, char **cmd) //, int *fds)
 	}
 	// if (path_arr[i] == (void *) '\0')
 	// 	free_all(path_arr, cmd) //, fds);
-	// free_arr(path_arr);
+	free_arr(path_arr);
 	return (path_cmd);
 }
 
@@ -91,6 +91,7 @@ int	single_command(t_shell *cmd)
 		if (execve(path, cmd->cmd_lst->command, cmd->envp_copy) == -1)
 			printf("oupsi");
 	}
-	return(exit_code);
+	free(path);
+	return(g_exit_code);
 	// // close(c);
 }

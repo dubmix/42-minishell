@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:45:43 by edrouot           #+#    #+#             */
-/*   Updated: 2023/07/29 14:05:26 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/07/31 14:52:11 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,16 +36,12 @@ t_env	*init_envp(char **envp, t_shell *cmd)
 	{
 		cmd->envp_copy[i] = ft_strdup(envp[i]);
 		string = ft_split(envp[i], '=');
-		new_node_env(&envir, string);
+		new_node_env(&envir, string, envp[i]);
 		j = 0;
-		while (string[j] != NULL)
-		{
-			free(string[j]);
-			j++;
-		}
+		free_arr(string);
 		i++;
 	}
-	cmd->envp_copy[i] = NULL;
+	cmd->envp_copy[i] = 0;
 	return (envir);
 }
 
@@ -81,15 +77,19 @@ void	add_stack_back_env(t_env **env_lst, t_env *new)
 /*create a new node, copy in name and value and 
 add it to the back of the list */
 
-void	new_node_env(t_env **env_list, char **string)
+void	new_node_env(t_env **env_list, char **string, char *full_string)
 {
 	t_env	*new;
 
 	new = (t_env *)malloc(sizeof(t_env));
 	if (!new)
 		return ;
+	new->full_string = ft_strdup(full_string);
 	new->name = ft_strdup(string[0]);
-	new->value = ft_strdup(string[1]);
+	if (!string[1])
+		new->value = ft_strdup("");
+	else
+		new->value = ft_strdup(string[1]);
 	if (!new->name || !new->value)
 		return ;// error handling
 	new->next = NULL;

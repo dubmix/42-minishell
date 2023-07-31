@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_substr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edrouot <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 19:36:46 by edrouot           #+#    #+#             */
-/*   Updated: 2022/12/02 19:36:48 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/07/31 13:20:55 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ char	*checksub(void)
 {
 	char	*substr;
 
-	substr = malloc (1 * sizeof(char));
+	substr = ft_calloc(sizeof(char), 1);
 	if (!substr)
 		return (NULL);
 	substr[0] = '\0';
@@ -34,7 +34,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 		len = ft_strlen(s) - start;
 	if (ft_strlen(s) < start)
 		return (checksub());
-	substr = (char *) malloc (sizeof(char) * (len + 1));
+	substr = ft_calloc(sizeof(char), (len + 1));
 	if (!substr)
 		return (NULL);
 	i = 0;
@@ -46,6 +46,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	substr[i] = '\0';
 	return (substr);
 }
+
 
 /*int	main(void)
 {

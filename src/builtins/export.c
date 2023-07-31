@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 13:29:20 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/07/19 11:13:15 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/07/31 11:50:52 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	export(t_shell *cmd)
 			{
 				//printf("%s %s\n", str[0], str[1]);
 				printf("list size at beg of export is %d\n", ft_lstsize_test((*tmp)->env_lst));
-				new_node_env(&(*tmp)->env_lst, str);
+				new_node_env(&(*tmp)->env_lst, str, *(*tmp)->cmd_lst->command);
 				//printf("%d\n", ft_lstsize_test((*tmp)->env_lst));
 				//free_array(str);
 				break ;
