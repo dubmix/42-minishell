@@ -45,7 +45,8 @@ t_env	*init_envp(char **envp, t_shell *cmd)
 		}
 		i++;
 	}
-	cmd->envp_copy[i] = NULL;
+	//i++;
+	cmd->envp_copy[i] = 0;
 	return (envir);
 }
 
@@ -90,7 +91,10 @@ void	new_node_env(t_env **env_list, char **string, char *full_string)
 		return ;
 	new->full_string = ft_strdup(full_string);
 	new->name = ft_strdup(string[0]);
-	new->value = ft_strdup(string[1]);
+	if (string[1])
+		new->value = ft_strdup(string[1]);
+	else
+        new->value = ft_strdup("");
 	if (!new->name || !new->value || !new->full_string)
 		return ;// error handling
 	new->next = NULL;

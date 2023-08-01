@@ -42,6 +42,9 @@ void	init_node_cmd(t_single_cmd **new, t_shell *cmd, int index)
 	(*new)->append_str = NULL;
 	(*new)->redir_in_str = NULL;
 	(*new)->redir_out_str = NULL;
+	(*new)->append = 0;
+    (*new)->redir_in = 0;
+    (*new)->redir_out = 0;
 }
 
 t_token	*new_node_cmd(t_single_cmd **cmd_lst, int index, 

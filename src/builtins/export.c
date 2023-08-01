@@ -25,7 +25,7 @@ int	ft_lstsize_test(t_env *lst)
 	return (i);
 }
 
-int	export(t_shell *cmd)
+int	export(t_shell *cmd, char **command)
 {
 	char    **str;
 	t_shell **tmp;
@@ -33,29 +33,18 @@ int	export(t_shell *cmd)
 
 	i = 1;
 	tmp = &cmd;
-	while ((*tmp)->cmd_lst)
+	while (command[i] != NULL)
 	{
-		str = ft_split(((*tmp)->cmd_lst->command[i]), '=');
-		// while ((*tmp)->env_lst)
-		// {
-			if (var_exists((*tmp)->env_lst, str[0]) == 0)
-			{
-				write(1, "h", 1);
-				// printf("%s %s\n", str[0], str[1]);
-				// printf("list size at beg of export is %d\n", ft_lstsize_test((*tmp)->env_lst));
-				new_node_env(&(*tmp)->env_lst, str, (*tmp)->cmd_lst->command[i]);
-				printf("%d\n", ft_lstsize_test((*tmp)->env_lst));
-				//free_arr(str);
-				break ;
-			}
-			i++;
-			//(*tmp)->env_lst = (*tmp)->env_lst->next;
-			//free_array(str);
-		//}
-		(*tmp)->cmd_lst = (*tmp)->cmd_lst->next;
+		if (ft_strncmp(command[i], " ", 1) != 0)
+		{
+			str = ft_split((command[i]), '=');
+			if (check_param(command[i]) == 0 &&
+					var_exists((*tmp)->env_lst, str[0]) == 0)
+				new_node_env(&(*tmp)->env_lst, str, command[i]);
+			free_arr(str);
+		}
+		i++;
 	}
-	// print_list((*tmp)->env_lst);
-	// printf("list size at end of export is%d\n", ft_lstsize_test((cmd->env_lst)));
 	update_envp_copy(cmd);
 	return (EXIT_SUCCESS);
 }
@@ -78,29 +67,22 @@ void	update_envp_copy(t_shell *cmd)
 	int i;
 
 	free_arr(cmd->envp_copy);
-	cmd->envp_copy = (char **)malloc(sizeof(char *) * ft_lstsize_test(cmd->env_lst));
+	cmd->envp_copy = (char **)malloc(sizeof(char *) * (ft_lstsize_test(cmd->env_lst) + 1));
 	temp = cmd->env_lst;
 	i = 0;
-	//printf("bla %d\n", ft_lstsize_test(cmd->env_lst));
 	while(temp)
 	{
-		// printf("list size at end of export is%d %d\n", ft_lstsize_test((temp)), i);
 		cmd->envp_copy[i] = ft_strdup(temp->full_string);
 		i++;
 		temp = temp->next;
 
 	}
-	// printf("-----------------------\n");
-	// print_chararr(cmd->envp_copy);
-	// printf("-----------------------\n");
 	cmd->envp_copy[i] = 0;
-	write(1, "bonjour", 7);
-
 }
 
 int	export_error(char *str)
 {
-	printf("minishell: export: '%s': not a valid identifier", str);
+	printf("minishell: export: '%s': not a valid identifier\n", str);
 	return(EXIT_FAILURE);
 }
 
@@ -141,14 +123,14 @@ int	check_param(char *str)
 		return (EXIT_FAILURE);
 	 if (ft_isdigit(str[i]))
 	 	return (export_error(str));
-	// if (ft_findchar(str, '=') == 0)
-	// 	return (export_error(str));
-	// while (str[i] != '=')
-	// {
-	// 	if (check_valid_id(str[i]) == 1)
-	// 		return (export_error(str));
-	// 	i++;
-	// }
+	if (ft_findchar(str, '=') == 0)
+	 	return (export_error(str));
+	while (str[i] != '=')
+	{
+		if (check_valid_id(str[i]) == 1)
+			return (export_error(str));
+		i++;
+	}
 	return (0);
 }
 

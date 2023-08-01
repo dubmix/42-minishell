@@ -34,7 +34,8 @@ SRCS	= src/minishell.c \
 		src/parser/parser_triage.c \
 		src/parser/parser_cmd_lst.c \
 		src/parser/parser_redir.c \
-		src/errors/errors.c
+		src/errors/errors.c \
+		src/signals/signals.c
 
 OBJS	= $(SRCS:.c=.o)
 

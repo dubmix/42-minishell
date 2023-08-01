@@ -12,29 +12,28 @@
 
 #include "../../minishell.h"
 
+int	event(void)
+{
+	return (EXIT_SUCCESS);
+}
+
 void sigint_handler(int sig)
 {
-	if (sig == SIGINT)
-	{
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
-		//return (EXIT_SUCCESS);
-	}
+	printf("\n");
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+	(void) sig;
 }
 
 void sigquit_handler(int sig)
 {
-	if (sig == SIGQUIT)
-	{
-		write(1, "exit", 4);
-		write(1, "\n", 1);
-		//return (EXIT_SUCCESS);
-	}
+	printf("Quit: %d\n", sig);
 }
 
 void init_signals()
 {
+	rl_event_hook = event;
 	signal(SIGINT, sigint_handler);
-	signal(SIGQUIT, sigquit_handler);
+	signal(SIGQUIT, SIG_IGN);
 }

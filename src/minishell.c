@@ -22,7 +22,6 @@ void	init_shell(t_shell *cmd)
 {
 	cmd->nb_of_heredocs = 0;
 	cmd->nb_of_pipes = 0;
-	cmd->exit_flag = 0;
 }
 
 int	minishell_start(char **envp)
@@ -34,18 +33,17 @@ int	minishell_start(char **envp)
 	(void)envp;
 	if (!cmd)
 		return (0);
+	//init_signals();
 	cmd->env_lst = init_envp(envp, cmd);
 	while (1)
 	{
-		// printf("1 %d\n", ft_lstsize_test((cmd->env_lst)));
+		cmd->nb_of_pipes = 0;
 		cmd->line = readline("Minishell >");
 		cmd->tok_lst = tokenization(cmd);
 		add_history(cmd->line);
 		expand_var(cmd);
 		parser(cmd);
 		pre_executor(cmd);
-		// if (cmd->exit_flag == 1)
-        // 	exit(exit_code); // pq ca marche pas ca??
 	}
 }
 
