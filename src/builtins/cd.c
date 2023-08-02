@@ -15,12 +15,9 @@
 int cd(t_shell *cmd)
 {
 	int ret;
-	t_shell **tmp;
 	char *oldpwd;
-	//char cwd[PATH_MAX];
+	t_shell **tmp;
 
-	//if (getcwd(cwd, sizeof(cwd)) != NULL)
-		//printf("Current working directory: %s\n", cwd);
 	tmp = &cmd;
 	while ((*tmp)->env_lst)
 	{
@@ -29,28 +26,19 @@ int cd(t_shell *cmd)
 			oldpwd = malloc(sizeof(char *) * ft_strlen(((*tmp)->env_lst->value)));
 			oldpwd = (*tmp)->env_lst->value;
 			(*tmp)->oldpwd = oldpwd;
-			printf("oldpwd value is %s\n", (*tmp)->oldpwd);
 			break ;
 		}
 		(*tmp)->env_lst = (*tmp)->env_lst->next;
 	}
 	if (!(*tmp)->cmd_lst->command)
-	{
-		//write(1, "a", 1);
 		ret = go_to_path(cmd, "HOME");
-	}
 	else if(ft_strncmp((*tmp)->cmd_lst->command[0], "-", 1) == 0)
-	{	
-		//write(1, "b", 1);
 		ret = go_to_path(cmd, "OLDPWD");
-	}
 	else
 	{
 		ret = chdir((*tmp)->cmd_lst->command[1]);
-		printf("%d\n", ret);
 		if (ret != 0)
 			printf("minishell: %s\n", (*tmp)->cmd_lst->command[0]);
-		write(1, "cd", 2);
 	}
 	if (ret != 0)
 		return (EXIT_FAILURE); // exit_failure value = 8;

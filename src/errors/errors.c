@@ -12,7 +12,6 @@ void	free_arr(char **arr)
 	}
 	free(arr);
 }
-
 // void	free_arr_int(int *arr)
 // {
 // 	int	i;

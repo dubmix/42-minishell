@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 16:04:33 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/02 09:40:31 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/02 09:48:17 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,9 @@ void	init_node_cmd(t_single_cmd **new, t_shell *cmd, int index)
 	(*new)->append_str = NULL;
 	(*new)->redir_in_str = NULL;
 	(*new)->redir_out_str = NULL;
+	(*new)->append = 0;
+    (*new)->redir_in = 0;
+    (*new)->redir_out = 0;
 	(*new)->append = 0;
 	(*new)->redir_in = 0;
 	(*new)->redir_out = 0;

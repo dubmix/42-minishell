@@ -2,6 +2,7 @@
     #define MINISHELL_H
 
     # include <stdlib.h>
+    # include <signal.h>
     # include <stdio.h>
     # include <readline/readline.h>
     # include <readline/history.h>
@@ -75,10 +76,12 @@ typedef struct s_shell
     int nb_of_tokens;
     int *words_per_pipe;
     int	*pid;
-    int exit_flag;
     char *oldpwd;
 } t_shell;
 
+
+/*debugging*/
+void print_chararr(char **envp);
 
 /* main.c */
 int minishell_start(char **envp);
@@ -169,7 +172,7 @@ char    *get_path_cd(t_shell *cmd, char *str);
 void    add_path_to_env(t_shell *cmd);
 /*exit*/
 int	    exxit(t_shell *cmd);
-void    get_exit_code(void);
+void    get_exit_code(char **command);
 int     is_only_digits(char *str);
 /*echo*/
 void    echo(char **args);
@@ -178,7 +181,7 @@ int     env(t_shell *cmd);
 /*pwd*/
 int     pwd(void);
 /*export*/
-int	export(t_shell *cmd);
+int	export(t_shell *cmd, char **command);
 int	export_error(char *str);
 int check_valid_id(char c);
 int	check_param(char *str);
@@ -187,10 +190,15 @@ int var_exists(t_env *env, char *str);
 int	ft_lstsize_test(t_env *lst);
 void	update_envp_copy(t_shell *cmd);
 /*unset*/
-int unset(t_shell *cmd);
+int unset(t_shell *cmd, char **command);
 void	delete_node_env(t_env **head, t_env *nodeToDelete);
 
 /////////////////////////////////// OTHERS //////////////////////////////////
+
+/*signals*/
+void init_signals();
+void sigquit_handler(int sig);
+void sigint_handler(int sig);
 
 /*errors.c*/
 void    free_arr(char **arr); // free any arrays

@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 10:45:11 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/02 09:41:50 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/02 09:46:37 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,10 @@
 
 int pre_executor(t_shell *cmd)
 {
-    //sigquit handle
+    //signal(SIGQUIT, sigquit_handler);
     if (cmd->nb_of_pipes == 0)
     {
+        write(1, "a", 1);
         exec_single_command(cmd);
     }
     else
@@ -34,6 +35,23 @@ void exec_single_command(t_shell *cmd)
     int pid;
     int status;
 
+    if(ft_strncmp(cmd->cmd_lst->command[0], "exit", 4) == 0)
+        exxit(cmd);    // check corner case exit | ech
+    else if (ft_strncmp(cmd->cmd_lst->command[0], "export", 6) == 0)
+    {
+		export(cmd, cmd->cmd_lst->command);
+        return ;
+    }
+    else if (ft_strncmp(cmd->cmd_lst->command[0], "unset", 5) == 0)
+	{
+        unset(cmd, cmd->cmd_lst->command);
+        return ;
+    }
+    else if (ft_strncmp(cmd->cmd_lst->command[0], "cd", 2) == 0)
+	{	
+        cd(cmd);
+        return ;
+    }
     pid = fork();
     if (pid < 0)
         return ; // error handling
@@ -48,7 +66,6 @@ int exec_piped_command(t_shell *cmd)
     int fd;
     int pipefd[2];
     int i;
-    //int status;
     t_single_cmd *head;
 
     head = cmd->cmd_lst;
@@ -63,32 +80,22 @@ int exec_piped_command(t_shell *cmd)
             close(pipefd[1]);
         fd = pipefd[0];
         if (cmd->cmd_lst->next)
-        {
-            //write(1, "b", 1);
             cmd->cmd_lst = cmd->cmd_lst->next;
-        }
         else
             break;
     }
-    //write(1, "c", 1);
     pipe_wait(cmd->pid, cmd->nb_of_pipes);
     cmd->cmd_lst = head;
-    //so the parents waits for all child processes to terminate?
-    //cmd->cmd_lst->command; //iterate through list to set back to first command
     return (0);
 }
 
 int ft_fork(t_shell *cmd, int pipefd[2], int fd, int i)
 {
     cmd->pid[i] = fork();
-    //write(1, "g", 1);
     if (cmd->pid[i] < 0)
         return (0); //error handling
     if (cmd->pid[i] == 0)
-    {
         dup_cmd(cmd, pipefd, fd);
-        //write(1, "j", 1);
-    }
     i++;
     return (i);
 }
@@ -99,7 +106,6 @@ void dup_cmd(t_shell *cmd, int pipefd[2], int fd)
 
     if (cmd->cmd_lst->index != 0)
     {
-        //write(1, "y", 1);
         dup = dup2(fd, STDIN_FILENO);
         if (dup < 0 && cmd->cmd_lst->index != 0)
             return ; //error handling
@@ -107,7 +113,6 @@ void dup_cmd(t_shell *cmd, int pipefd[2], int fd)
     close(pipefd[0]);
     if (cmd->cmd_lst->next)
     {
-        //write (1, "z", 1);
         dup = dup2(pipefd[1], STDOUT_FILENO);
         if (dup < 0 && cmd->cmd_lst->next)
             return ; //error handling
@@ -121,19 +126,13 @@ void dup_cmd(t_shell *cmd, int pipefd[2], int fd)
 int exec_command(t_shell *cmd)
 {
     if (cmd->cmd_lst->append == 1 || cmd->cmd_lst->redir_in == 1
-            || cmd->cmd_lst->redir_out == 1 || cmd->nb_of_heredocs != 0) //if there are any redirections. and how do we declare the static exit_code
-    {
+            || cmd->cmd_lst->redir_out == 1 || cmd->nb_of_heredocs != 0) //if there are 
         check_redirections(cmd);
-        //write(1, "c", 1);
-            //exit(1);
+    if (cmd->nb_of_pipes != 0 && cmd->cmd_lst->command != NULL) // nb_of_pipes needs to be reinit
+    {
+        exit_code = single_command(cmd);
+        exit(exit_code); //si ca beug possibilite de lancer export etc dans le parent
     }
-    //write(1, "d", 1);
-    ////////////////////CA FOIRE ICI///////
-    // if (cmd->nb_of_pipes != 0 && cmd->cmd_lst->command != NULL)
-    // {
-    //     exit_code = single_command(cmd);
-    //     exit(exit_code); //
-    // }
     else if (cmd->cmd_lst->command != NULL)
     {
         g_exit_code = single_command(cmd);
@@ -160,8 +159,7 @@ int check_redirections(t_shell *cmd)
             exec_outfile(cmd);
     cmd->cmd_lst = cmd->cmd_lst->next;
     }
-    //write(1, "g", 1);
-    cmd->cmd_lst = head; // a utiliser a la place des temp?
+    cmd->cmd_lst = head;
     return (EXIT_SUCCESS);
 }
 

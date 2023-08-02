@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 11:16:23 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/02 09:43:51 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/02 09:45:44 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ void	init_shell(t_shell *cmd)
 {
 	cmd->nb_of_heredocs = 0;
 	cmd->nb_of_pipes = 0;
-	cmd->exit_flag = 0;
 }
 
 int	minishell_start(char **envp)
@@ -37,10 +36,11 @@ int	minishell_start(char **envp)
 	(void)envp;
 	if (!cmd)
 		return (0);
+	//init_signals();
 	cmd->env_lst = init_envp(envp, cmd);
 	while (1)
 	{
-		printf("1 %d\n", ft_lstsize_test((cmd->env_lst)));
+		cmd->nb_of_pipes = 0;
 		cmd->line = readline("Minishell >");
 		add_history(cmd->line);
 		cmd->tok_lst = tokenization(cmd);
@@ -56,6 +56,7 @@ int	minishell_start(char **envp)
 	rl_clear_history();
 	return (0);
 }
+
 
 /* launch minishell */
 int	main(int argc, char **argv, char **envp)

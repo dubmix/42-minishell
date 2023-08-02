@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:46:21 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/02 09:41:13 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/02 09:47:37 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,28 +69,15 @@ int	single_command(t_shell *cmd)
 {
 	char	*path;
 	t_single_cmd *temp;
+
 	temp = cmd->cmd_lst;
 	path = check_access(cmd->envp_copy, temp->command);
-	
 	if (ft_strncmp(cmd->cmd_lst->command[0], "echo", 4) == 0)
 		echo(cmd->cmd_lst->command);
-	else if (ft_strncmp(cmd->cmd_lst->command[0], "cd", 2) == 0)
-		cd(cmd);
 	else if (ft_strncmp(cmd->cmd_lst->command[0], "env", 3) == 0)
-	{
 		env(cmd);
-	}
-	else if (ft_strncmp(cmd->cmd_lst->command[0], "exit", 4) == 0)
-		exxit(cmd);
-	else if (ft_strncmp(cmd->cmd_lst->command[0], "export", 6) == 0)
-	{
-		export(cmd);
-		printf("2 %d\n", ft_lstsize_test((cmd->env_lst)));
-	}
 	else if (ft_strncmp(cmd->cmd_lst->command[0], "pwd", 3) == 0)
 		pwd();
-	else if (ft_strncmp(cmd->cmd_lst->command[0], "unset", 5) == 0)
-		unset(cmd);
 	else
 	{
 		if (execve(path, cmd->cmd_lst->command, cmd->envp_copy) == -1)
@@ -98,5 +85,4 @@ int	single_command(t_shell *cmd)
 	}
 	free(path);
 	return(g_EXIT_SUCCESS);
-	// // close(c);
 }
