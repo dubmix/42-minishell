@@ -5,9 +5,11 @@ void	parser(t_shell *cmd)
 	triage_quotes(cmd);
 	adjust_number(cmd);
 	triage_space(cmd);
+	// print_list_tok(cmd->tok_lst);
 	adjust_number(cmd);
 	number_words_per_pipe(cmd);
 	cmd->cmd_lst = triage_cmd_redir(cmd);
+	// print_list_commands(cmd->cmd_lst, cmd);
 	if (cmd->nb_of_heredocs != 0)
 		grab_heredoc(cmd); 
 	
@@ -21,10 +23,14 @@ void	number_words_per_pipe(t_shell *cmd)
 	t_token	*temp;
 	
 	temp = cmd->tok_lst;
-	cmd->words_per_pipe = (int *)malloc(sizeof(int) * (cmd->nb_of_pipes)); // +1 ?
+	cmd->words_per_pipe = (int *)malloc(sizeof(int) * (cmd->nb_of_pipes + 1)); // +1 ?
 	if (cmd->nb_of_heredocs != 0)
+	{
 		cmd->heredoc_arr = (char **)malloc(sizeof(char *) * (cmd->nb_of_heredocs + 1));
-	if (!cmd->words_per_pipe || !cmd->heredoc_arr)
+		if (!cmd->heredoc_arr)
+			return ;
+	}
+	if (!cmd->words_per_pipe)
 		return ; // error handling
 	int i = 0;
 	int j = 0;
@@ -56,7 +62,8 @@ void	number_words_per_pipe(t_shell *cmd)
 		else
 			break;
 	}
-	cmd->heredoc_arr[k] = 0;
+	if (cmd->nb_of_heredocs != 0)
+		cmd->heredoc_arr[k] = 0;
 }
 
 

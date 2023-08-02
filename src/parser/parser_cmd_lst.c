@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 16:04:33 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/02 09:52:42 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/02 13:56:56 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,6 @@ void	init_node_cmd(t_single_cmd **new, t_shell *cmd, int index)
 	(*new)->append = 0;
     (*new)->redir_in = 0;
     (*new)->redir_out = 0;
-	(*new)->append = 0;
-	(*new)->redir_in = 0;
-	(*new)->redir_out = 0;
 }
 
 t_token	*new_node_cmd(t_single_cmd **cmd_lst, int index, 

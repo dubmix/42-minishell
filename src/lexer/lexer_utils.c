@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:46:03 by edrouot           #+#    #+#             */
-/*   Updated: 2023/07/31 10:31:52 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/02 14:56:58 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int	length_string_without_var(char *string)
 	{
 		if (string[i] == '$')
 		{
-			while (string[i] != ' ' && string[i] != 34 && string[i] != '\0')
+			while (string[i] != 34 && string[i] != '\0') // string[i] != ' ' && 
 				i++;
 		}
 		else

@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 11:16:23 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/02 09:45:44 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/02 14:02:21 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,9 @@ int	minishell_start(char **envp)
         // 	exit(g_exit_code); // pq ca marche pas ca??
 		// printf("2 %d\n", ft_lstsize_test((cmd->env_lst)));
 	}
-	free_all(cmd, 3);
 	rl_clear_history();
+	free_all(cmd, 3);
+	free(cmd);
 	return (0);
 }
 
@@ -66,5 +67,6 @@ int	main(int argc, char **argv, char **envp)
 		printf("Error, this program should not take any arguments");
 	else
 		minishell_start(envp);
+	
 	return (0);
 }

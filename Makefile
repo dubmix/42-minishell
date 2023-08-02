@@ -6,7 +6,7 @@
 #    By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/26 12:53:21 by edrouot           #+#    #+#              #
-#    Updated: 2023/07/29 11:23:54 by edrouot          ###   ########.fr        #
+#    Updated: 2023/08/02 12:58:00 by edrouot          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,15 +39,16 @@ SRCS	= src/minishell.c \
 
 OBJS	= $(SRCS:.c=.o)
 
-CC 	= cc
+CC 	= cc 
 
-CFLAGS = -g -Wall -Wextra -Werror 
+CFLAGS = -Wall -Wextra -Werror -g
+#-fsanitize=address 
 
 all:	$(NAME)
 
 ${NAME}: $(OBJS)
 	@make -C ./libft
-	@$(CC) $(OBJS) $(CFLAGS) -o $(NAME) -lreadline $(LIBFT)
+	@$(CC) $(OBJS) $(CFLAGS) -o $(NAME) -lreadline $(LIBFT) 
 	@echo "Compiling complete"
 
 clean: 
@@ -58,6 +59,6 @@ fclean: clean
 	@rm -f $(NAME)
 	@rm -f $(LIBFT)
 
-re:	fclean
+re:	fclean all
 
 .PHONY:	all clean fclean re

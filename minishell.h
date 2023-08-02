@@ -144,7 +144,7 @@ void	print_list_commands(t_single_cmd *cmd, t_shell *shell);
 /*single_command.c*/
 int   single_command(t_shell *cmd);
 char	**get_path(char **envp);
-char	*check_access(char **envp, char **cmd); //, int *fds);
+char	*check_access(char **envp, char **command); //, int *fds)
 void exec_single_command(t_shell *cmd);
 int pre_executor(t_shell *cmd);
 int exec_piped_command(t_shell *cmd);

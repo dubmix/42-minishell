@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:45:56 by edrouot           #+#    #+#             */
-/*   Updated: 2023/07/31 13:23:31 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/02 14:31:00 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,10 @@ add it to the end of the list */
 void	new_token(t_token **tokens, char *command, int nb, enum e_type type)
 {
 	t_token	*new;
-
 	new = malloc(sizeof(t_token));
 	if (!new)
 		return ;
+	// printf("INDEX IS %d, COMMAND IS '%s'", nb, command);
 	new->command = ft_strdup(command);
 	new->index = nb;
 	new->type = type;
@@ -74,6 +74,7 @@ int	new_token_var_words(t_token **tokens, char *string, int i, int nb_token)
 	else
 		new_token(tokens, var, nb_token, WORD);
 	free(var);
+	i = i -1;
 	return (i);
 }
 
@@ -97,9 +98,7 @@ int	new_token_quote(t_token **tokens, char *string, int i, int nb_token)
 		i++;
 	}
 	var = ft_substr(string, start, i + 1 - start);
-	if (string[i] == '\0' && string[i] != c)
-		return (printf("error")); // inifinite loop - to be changed, saying that there is an incorrect number of quotes
-	else if (c == 39)
+	if (c == 39)
 		new_token(tokens, var, nb_token, S_QUOTE);
 	else
 		new_token(tokens, var, nb_token, D_QUOTE);
@@ -158,7 +157,7 @@ t_token	*tokenization(t_shell *cmd)
 			i = tokenization_bis(cmd, i, tok_lst, nb_token);
 		else
 			i = new_token_var_words(&tok_lst, cmd->line, 
-					i, nb_token) - 1;
+					i, nb_token);
 		i++;
 		nb_token++;
 	}

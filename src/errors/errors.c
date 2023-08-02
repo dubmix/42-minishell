@@ -12,18 +12,6 @@ void	free_arr(char **arr)
 	}
 	free(arr);
 }
-// void	free_arr_int(int *arr)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (arr[i])
-// 	{
-// 		free((void*)arr[i]);
-// 		i++;
-// 	}
-// 	free((void)arr);
-// }
 
 void	free_all(t_shell *cmd, int type)
 {
@@ -31,6 +19,7 @@ void	free_all(t_shell *cmd, int type)
 	//type = 1 -> free cmd->lst
 	//type = 2 -> free tok_lst + cmd_lst
 	// type = 3 -> free env_lst
+	// type = 4 -> free shell (tok_lst, cmd_lst + all value of t_shell)
 
 	//to free : tok_lst        cmd_lst       env_lst 
 
@@ -67,20 +56,22 @@ void free_shell(t_shell *cmd)
 	cmd->nb_of_pipes = 0;
 	cmd->nb_of_tokens = 0;
 	cmd->nb_of_heredocs = 0;
+	free(cmd->tok_lst);
+	free(cmd->cmd_lst);
 	//cmd->exit_flag = 0;
 }
 
-void delete_all_nodes(t_token **head) 
-{
-    t_token *current = *head;
-    t_token *next;
+// void delete_all_nodes(t_token **head) 
+// {
+//     t_token *current = *head;
+//     t_token *next;
 
-    while (current != NULL) {
-        next = current->next;
-        delete_node_tok(head, current);
-        current = next;
-    }
-}
+//     while (current != NULL) {
+//         next = current->next;
+//         delete_node_tok(head, current);
+//         current = next;
+//     }
+// }
 
 void	free_tok_lst(t_token **tok_lst)
 {
@@ -93,32 +84,36 @@ void	free_tok_lst(t_token **tok_lst)
 			delete_node_tok(tok_lst, current);
 			current = next;
 	}
+	*tok_lst = NULL;
 }
 
 void	free_cmd_lst(t_single_cmd **cmd_lst)
 {
-	t_single_cmd	*nodeToDelete;
+	t_single_cmd *current = *cmd_lst;
+	t_single_cmd	*next;
 	
-	nodeToDelete = NULL;
-	while (*cmd_lst != NULL)
+	while (current != NULL)
 	{
-			nodeToDelete = *cmd_lst;
-			delete_node_cmd(cmd_lst, nodeToDelete);
+			next = current->next;
+			delete_node_cmd(cmd_lst, current);
+			current = next;
 	}
+	*cmd_lst = NULL;
 }
 
 void	free_env_lst(t_env **env_lst)
 {
-	// t_token	**temp;
-	t_env	*nodeToDelete;
-	
-	nodeToDelete = NULL;
-	while (*env_lst != NULL)
+	t_env *current = *env_lst;
+	t_env	*next;
+	while (current != NULL)
 	{
-			nodeToDelete = *env_lst;
-			delete_node_env(env_lst, nodeToDelete);
+			next = current->next;
+			delete_node_env(env_lst, current);
+			current = next;
 	}
+	*env_lst = NULL;
 }
+
 
 void	delete_node_cmd(t_single_cmd **head, t_single_cmd *nodeToDelete)
 {
@@ -139,7 +134,13 @@ void	delete_node_cmd(t_single_cmd **head, t_single_cmd *nodeToDelete)
 		else
 			return ;
 	}
-	free(nodeToDelete->command);
+	free_arr(nodeToDelete->command);
+	if (nodeToDelete->redir_in != 0)
+		free(nodeToDelete->redir_in_str);
+	if (nodeToDelete->redir_out != 0)
+		free(nodeToDelete->redir_out_str);
+	if (nodeToDelete->append != 0)
+	free(nodeToDelete->append_str);
 	free(nodeToDelete);
 	return ;
 }

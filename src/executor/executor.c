@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 10:45:11 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/02 09:53:51 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/02 14:31:38 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,9 +135,10 @@ int exec_command(t_shell *cmd)
     else if (cmd->cmd_lst->command != NULL)
     {
         g_exit_code = single_command(cmd);
-        // printf("2 %d\n", ft_lstsize_test((cmd->env_lst)));
+        // printf("%d", g_exit_code);
         exit(g_exit_code); //return (exit_code); // si exit l'env s'efface quand le loop recommence
     }
+    write(1, "NNN", 3);
     return (g_exit_code);
 }
 

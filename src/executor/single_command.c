@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:46:21 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/02 09:51:34 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/02 12:10:48 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,21 +37,20 @@ char	**get_path(char **envp)
 	return (path_arr);
 }
 
-char	*check_access(char **envp, char **cmd) //, int *fds)
+char	*check_access(char **envp, char **command) //, int *fds)
 {
 	char	*path_cmd;
 	int		i;
 	char	**path_arr;
 	char	*tmp;
-
-	if (access(cmd[0], F_OK) == 0)
-		return (cmd[0]);
+	if (access(command[0], F_OK) == 0)
+		return (command[0]);
 	path_arr = get_path(envp);
 	i = 0;
 	while (path_arr[i] != (void *)'\0')
 	{
 		tmp = ft_strjoin(path_arr[i], "/");
-		path_cmd = ft_strjoin(tmp, cmd[0]);
+		path_cmd = ft_strjoin(tmp, command[0]);
 		free(tmp);
 		if (access(path_cmd, F_OK | X_OK) != 0)
 			free(path_cmd);
@@ -59,8 +58,13 @@ char	*check_access(char **envp, char **cmd) //, int *fds)
 			break ;
 		i++;
 	}
-	// if (path_arr[i] == (void *) '\0')
-	// 	free_all(path_arr, cmd) //, fds);
+	if (path_arr[i] == (void *) '\0')
+	{
+		printf("Command '%s' not found\n", command[0]);
+		g_exit_code = 127;
+		free_arr(path_arr);
+		return (NULL);
+	}
 	free_arr(path_arr);
 	return (path_cmd);
 }
@@ -72,6 +76,8 @@ int	single_command(t_shell *cmd)
 
 	temp = cmd->cmd_lst;
 	path = check_access(cmd->envp_copy, temp->command);
+	if (!path)
+		return (g_exit_code);
 	if (ft_strncmp(cmd->cmd_lst->command[0], "echo", 4) == 0)
 		echo(cmd->cmd_lst->command);
 	else if (ft_strncmp(cmd->cmd_lst->command[0], "env", 3) == 0)
@@ -81,7 +87,9 @@ int	single_command(t_shell *cmd)
 	else
 	{
 		if (execve(path, cmd->cmd_lst->command, cmd->envp_copy) == -1)
-			printf("oupsi");
+		{
+			return(127); // wrong one most likely
+		}
 	}
 	free(path);
 	return(EXIT_SUCCESS);
