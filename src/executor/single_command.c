@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:46:21 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/02 09:47:37 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/02 09:51:34 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,5 +84,5 @@ int	single_command(t_shell *cmd)
 			printf("oupsi");
 	}
 	free(path);
-	return(g_EXIT_SUCCESS);
+	return(EXIT_SUCCESS);
 }

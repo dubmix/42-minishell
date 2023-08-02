@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 10:45:11 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/02 09:46:37 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/02 09:53:51 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ int pre_executor(t_shell *cmd)
     //signal(SIGQUIT, sigquit_handler);
     if (cmd->nb_of_pipes == 0)
     {
-        write(1, "a", 1);
         exec_single_command(cmd);
     }
     else
@@ -130,14 +129,14 @@ int exec_command(t_shell *cmd)
         check_redirections(cmd);
     if (cmd->nb_of_pipes != 0 && cmd->cmd_lst->command != NULL) // nb_of_pipes needs to be reinit
     {
-        exit_code = single_command(cmd);
-        exit(exit_code); //si ca beug possibilite de lancer export etc dans le parent
+        g_exit_code = single_command(cmd);
+        exit(g_exit_code); //si ca beug possibilite de lancer export etc dans le parent
     }
     else if (cmd->cmd_lst->command != NULL)
     {
         g_exit_code = single_command(cmd);
-        printf("2 %d\n", ft_lstsize_test((cmd->env_lst)));
-        exit(g_0); //return (exit_code); // si exit l'env s'efface quand le loop recommence
+        // printf("2 %d\n", ft_lstsize_test((cmd->env_lst)));
+        exit(g_exit_code); //return (exit_code); // si exit l'env s'efface quand le loop recommence
     }
     return (g_exit_code);
 }

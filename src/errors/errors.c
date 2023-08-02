@@ -67,7 +67,7 @@ void free_shell(t_shell *cmd)
 	cmd->nb_of_pipes = 0;
 	cmd->nb_of_tokens = 0;
 	cmd->nb_of_heredocs = 0;
-	cmd->exit_flag = 0;
+	//cmd->exit_flag = 0;
 }
 
 void delete_all_nodes(t_token **head) 
