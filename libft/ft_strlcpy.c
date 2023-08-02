@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlcpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edrouot <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 19:35:07 by edrouot           #+#    #+#             */
-/*   Updated: 2022/11/29 19:35:08 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/07/31 12:45:15 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,3 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t size)
 		dst[i] = '\0';
 	return (lengthstr(src));
 }
-
-/*int	main(void)
-{
-	char dest[] = "je veux etre copie";
-	const char src[] = "allons y copions cela";
-	
-	printf("%ld\n", ft_strlcpy (dest, src, 6));
-}*/

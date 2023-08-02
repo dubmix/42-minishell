@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 10:45:11 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/07/30 13:38:49 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/02 09:41:50 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,9 @@ void exec_single_command(t_shell *cmd)
     if (pid < 0)
         return ; // error handling
     if (pid == 0)
-        exit_code = exec_command(cmd);
-    waitpid(pid, &status, 0);
+        g_exit_code = exec_command(cmd);
+    else
+        waitpid(pid, &status, 0);
 }
 
 int exec_piped_command(t_shell *cmd)
@@ -135,11 +136,11 @@ int exec_command(t_shell *cmd)
     // }
     else if (cmd->cmd_lst->command != NULL)
     {
-        exit_code = single_command(cmd);
+        g_exit_code = single_command(cmd);
         printf("2 %d\n", ft_lstsize_test((cmd->env_lst)));
-        exit(0); //return (exit_code); // si exit l'env s'efface quand le loop recommence
+        exit(g_0); //return (exit_code); // si exit l'env s'efface quand le loop recommence
     }
-    return (exit_code);
+    return (g_exit_code);
 }
 
 int check_redirections(t_shell *cmd)

@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:46:03 by edrouot           #+#    #+#             */
-/*   Updated: 2023/07/30 13:55:44 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/07/31 10:31:52 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ void	print_list_tok(t_token *tok)
 	tmp = tok;
 	while (tmp)
 	{
+	// 	write(2, "TTT", 3);
+	// 	write(2, &tmp->command, ft_strlen(tmp->command));
 		printf("node is %s, number is %d, state is %d, type is %d, index is %d\n",
 			tmp->command, tmp->index, tmp->state, tmp->type, tmp->index);
 		tmp = tmp->next;

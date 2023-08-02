@@ -31,7 +31,6 @@ int	exxit(t_shell *cmd)
 
 void get_exit_code(void)
 {
-	int exit_code;
 
 	// if (str[1] == '\0')
 	// 	exit_code = 0;
@@ -40,7 +39,7 @@ void get_exit_code(void)
 	// else
 	// {
 	// 	printf("minishell: exit: %s: numeric argument required\n");
-	exit_code = 0;
+	g_exit_code = 0;
 	// }		
 	//free_arr(str);
 

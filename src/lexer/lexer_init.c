@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:45:43 by edrouot           #+#    #+#             */
-/*   Updated: 2023/07/30 15:36:34 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/02 09:40:56 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,14 +38,10 @@ t_env	*init_envp(char **envp, t_shell *cmd)
 		string = ft_split(envp[i], '=');
 		new_node_env(&envir, string, envp[i]);
 		j = 0;
-		while (string[j] != NULL)
-		{
-			free(string[j]);
-			j++;
-		}
+		free_arr(string);
 		i++;
 	}
-	cmd->envp_copy[i] = NULL;
+	cmd->envp_copy[i] = 0;
 	return (envir);
 }
 
@@ -90,8 +86,11 @@ void	new_node_env(t_env **env_list, char **string, char *full_string)
 		return ;
 	new->full_string = ft_strdup(full_string);
 	new->name = ft_strdup(string[0]);
-	new->value = ft_strdup(string[1]);
-	if (!new->name || !new->value || !new->full_string)
+	if (!string[1])
+		new->value = ft_strdup("");
+	else
+		new->value = ft_strdup(string[1]);
+	if (!new->name || !new->value)
 		return ;// error handling
 	new->next = NULL;
 	add_stack_back_env(env_list, new);

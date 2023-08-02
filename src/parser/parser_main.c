@@ -7,20 +7,13 @@ void	parser(t_shell *cmd)
 	triage_space(cmd);
 	adjust_number(cmd);
 	number_words_per_pipe(cmd);
-	// empty the array of int and free the tok_lst
 	cmd->cmd_lst = triage_cmd_redir(cmd);
 	if (cmd->nb_of_heredocs != 0)
 		grab_heredoc(cmd); 
 	
-	// pre_executor(cmd);
+
 	//single_command(cmd);
-	/*
-	part 1 : check if there is a pipe
-	part 2 : form the command in a new list --> list2array
-	part 3 : put all the redirections in a separate struct --> done
-	part 4 : handle two cases : pipes or single command --> single command handled
-	part 5 : differentiate if the command are builtin or not
-	*/
+
 }
 
 void	number_words_per_pipe(t_shell *cmd)
@@ -28,8 +21,9 @@ void	number_words_per_pipe(t_shell *cmd)
 	t_token	*temp;
 	
 	temp = cmd->tok_lst;
-	cmd->words_per_pipe = (int *)malloc(sizeof(int) * (cmd->nb_of_pipes + 1));
-	cmd->heredoc_arr = (char **)malloc(sizeof(char *) * (cmd->nb_of_heredocs + 1));
+	cmd->words_per_pipe = (int *)malloc(sizeof(int) * (cmd->nb_of_pipes)); // +1 ?
+	if (cmd->nb_of_heredocs != 0)
+		cmd->heredoc_arr = (char **)malloc(sizeof(char *) * (cmd->nb_of_heredocs + 1));
 	if (!cmd->words_per_pipe || !cmd->heredoc_arr)
 		return ; // error handling
 	int i = 0;

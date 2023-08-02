@@ -1,6 +1,6 @@
 #include "../../minishell.h"
 
-void	delete_node(t_token **head, t_token *nodeToDelete)
+void	delete_node_tok(t_token **head, t_token *nodeToDelete)
 {
 	t_token *prevNode;
 
