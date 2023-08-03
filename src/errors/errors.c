@@ -43,6 +43,13 @@ void	free_all(t_shell *cmd, int type)
 		free_shell(cmd);
 }
 
+void	ft_error(t_shell *cmd, char *string)
+{
+	write(2, &string, ft_strlen(string));
+	free_all(cmd,4);
+	free_all(cmd,3);
+	exit(1);
+}
 void free_shell(t_shell *cmd)
 {
 	free_tok_lst(&cmd->tok_lst);
@@ -61,6 +68,7 @@ void free_shell(t_shell *cmd)
 	free(cmd->cmd_lst);
 	//cmd->exit_flag = 0;
 }
+
 
 // void delete_all_nodes(t_token **head) 
 // {

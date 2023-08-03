@@ -14,8 +14,6 @@
     # include <fcntl.h>
     # include <limits.h>
 
-extern int g_exit_code;
-
 enum e_type
 {
 	WORD,		//0   any word inside quotes as well
@@ -78,6 +76,7 @@ typedef struct s_shell
     int	*pid;
     char *oldpwd;
     char *name_executable;
+    int exit_code;
 } t_shell;
 
 
@@ -147,7 +146,7 @@ void	print_list_commands(t_single_cmd *cmd, t_shell *shell);
 /*single_command.c*/
 int   single_command(t_shell *cmd);
 char	**get_path(char **envp);
-char	*check_access(char **envp, char **command); //, int *fds)
+char	*check_access(char **envp, char **command, t_shell *cmd); //, int *fds)
 void exec_single_command(t_shell *cmd);
 int pre_executor(t_shell *cmd);
 int exec_piped_command(t_shell *cmd);
@@ -215,7 +214,9 @@ void	free_tok_lst(t_token **tok_lst);
 void	delete_node_cmd(t_single_cmd **head, t_single_cmd *nodeToDelete);
 void	free_cmd_lst(t_single_cmd **cmd_lst);
 void	free_env_lst(t_env **env_lst);
-void free_shell(t_shell *cmd);
+void    free_shell(t_shell *cmd);
+void	ft_error(t_shell *cmd, char *string);
+
 
 //void	free_arr_int(int *arr);
 

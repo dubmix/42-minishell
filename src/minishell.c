@@ -6,14 +6,12 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 11:16:23 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/03 18:17:02 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/03 20:51:59 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "../minishell.h"
-
-int g_exit_code = 0;
 
 /* alloc shell struc
 initialize the environnement (envp)
@@ -32,8 +30,8 @@ int	minishell_start(char **envp, char **argv)
 	t_shell	*cmd;
 
 	cmd = malloc(sizeof(t_shell));
-	cmd->name_executable = ft_strdup(argv[0]);
-	init_shell(cmd);
+	argv = NULL;
+	cmd->name_executable = ft_strdup("minishell");
 	(void)envp;
 	if (!cmd)
 		return (0);
@@ -41,9 +39,9 @@ int	minishell_start(char **envp, char **argv)
 	cmd->env_lst = init_envp(envp, cmd);
 	while (1)
 	{
-		cmd->nb_of_pipes = 0;
+		init_shell(cmd);
 		cmd->line = readline("Minishell >");
-		if (cmd->line != NULL)
+		if (ft_strncmp(cmd->line, "", ft_strlen(cmd->line)) != 0)
 		{
 			add_history(cmd->line);
 			cmd->tok_lst = tokenization(cmd);

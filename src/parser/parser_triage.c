@@ -45,14 +45,20 @@ void	triage_quotes(t_shell *cmd)
 		{
 			cmd_splitted = ft_split((*temp)->command, '\"');
 			free((*temp)->command);
-			(*temp)->command = ft_strdup(cmd_splitted[0]);
+			if (cmd_splitted[0])
+				(*temp)->command = ft_strdup(cmd_splitted[0]);
+			else
+				(*temp)->command = ft_strdup("\"\"");
 			free_arr(cmd_splitted);
 		}
 		else if ((*temp)->state == 2)
 		{
 			cmd_splitted = ft_split((*temp)->command, '\'');
 			free((*temp)->command);
-			(*temp)->command = ft_strdup(cmd_splitted[0]);
+			if (cmd_splitted[0])
+				(*temp)->command = ft_strdup(cmd_splitted[0]);
+			else
+				(*temp)->command = ft_strdup("\'\'");
 			(*temp)->type = 0;
 			free_arr(cmd_splitted);
 		}

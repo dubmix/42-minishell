@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:45:56 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/03 17:43:13 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/03 19:49:03 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	new_token(t_token **tokens, char *command, int nb, enum e_type type)
 	new = malloc(sizeof(t_token));
 	if (!new)
 		return ;
-	// printf("INDEX IS %d, COMMAND IS '%s'", nb, command);
+
 	new->command = ft_strdup(command);
 	new->index = nb;
 	new->type = type;
@@ -69,7 +69,9 @@ int	new_token_var_words(t_token **tokens, char *string, int i, int nb_token)
 	while (special_char(string[i]) == 0 && string[i] != '\0')
 		i++;
 	var = ft_substr(string, start, i - start);
-	if (string[start] == '$')
+	if (ft_strncmp(var, "$", ft_strlen(var)) == 0)
+		new_token(tokens, "$", nb_token, WORD);
+	else if (string[start] == '$')
 		new_token(tokens, var, nb_token, VARIABLE);
 	else
 	{
@@ -99,7 +101,8 @@ int	new_token_quote(t_token **tokens, char *string, int i, int nb_token)
 			break ;
 		i++;
 	}
-	var = ft_substr(string, start, i + 1 - start);
+	nb_token++;
+	var = ft_substr(string, start, i +1 - start);
 	if (c == 39)
 		new_token(tokens, var, nb_token, S_QUOTE);
 	else

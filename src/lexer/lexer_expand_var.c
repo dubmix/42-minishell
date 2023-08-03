@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:45:38 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/03 16:01:15 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/03 20:57:52 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,7 @@ void	look_into_envir(t_shell *cmd, t_token *var)
 		if (ft_strncmp(string[0], "?", 1) == 0)
 		{
 			free(var->command);
-			var->command = ft_strdup(ft_itoa(g_exit_code));
+			var->command = ft_strdup(ft_itoa(cmd->exit_code));
 			break;
 		}
 		else if (ft_strncmp(string[0], tmp->name, ft_strlen(var->command)) == 0)
@@ -183,7 +183,7 @@ char	*look_into_envir_quote(t_shell *cmd, char *string)
 		if (ft_strncmp(string, "?", 1) == 0)
 		{
 			free(string);
-			string = ft_strdup(ft_itoa(g_exit_code));
+			string = ft_strdup(ft_itoa(cmd->exit_code));
 			return (string);
 		}
 		else if (ft_strncmp(string, tmp->name, ft_strlen(string)) == 0)

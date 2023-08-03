@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 13:14:26 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/02 09:49:28 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/03 20:52:51 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	exxit(t_shell *cmd)
 
 void get_exit_code(char **command)
 {
-
+int	g_exit_code; //need to be changed for the cmd->exit_code;
 	// if (str[1] == '\0')
 	// 	exit_code = 0;
 	// if (is_only_digits(str[1]) != 0)
