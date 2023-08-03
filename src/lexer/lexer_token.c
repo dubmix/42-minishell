@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:45:56 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/02 14:31:00 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/03 17:43:13 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,11 @@ int	new_token_var_words(t_token **tokens, char *string, int i, int nb_token)
 	if (string[start] == '$')
 		new_token(tokens, var, nb_token, VARIABLE);
 	else
+	{
 		new_token(tokens, var, nb_token, WORD);
+		i = i - 1;
+	}
 	free(var);
-	i = i -1;
 	return (i);
 }
 
@@ -149,6 +151,16 @@ t_token	*tokenization(t_shell *cmd)
 		if (cmd->line[i] == 39 || cmd->line[i] == 34)
 			i = new_token_quote(&tok_lst, cmd->line,
 					i, nb_token) - 1;
+		else if (cmd->line[i] == '$' && cmd->line[i + 1] == '0')
+		{
+			new_token(&tok_lst, cmd->name_executable, nb_token, WORD);
+			i = i + 1;
+		}
+		else if (cmd->line[i] == '~' && (cmd->line[i + 1] == ' ' || cmd->line[i + 1] == '\0'))
+		{
+			new_token(&tok_lst, "$HOME", nb_token, VARIABLE);
+			i++;
+		}
 		else if (cmd->line[i] == '$')
 			i = new_token_var_words(&tok_lst, cmd->line, 
 					i, nb_token) - 1;

@@ -44,6 +44,7 @@ typedef struct s_env
     char *full_string;
     char *name;
     char *value;
+    int     index;
     struct s_env *next;
 }   t_env;
 
@@ -76,6 +77,7 @@ typedef struct s_shell
     int *words_per_pipe;
     int	*pid;
     char *oldpwd;
+    char *name_executable;
 } t_shell;
 
 
@@ -83,7 +85,7 @@ typedef struct s_shell
 void print_chararr(char **envp);
 
 /* main.c */
-int minishell_start(char **envp);
+int minishell_start(char **envp, char **argv);
 void	init_shell(t_shell *cmd);
 
 /////////////////////////////////// LEXER //////////////////////////////////
@@ -99,6 +101,7 @@ void	look_into_envir(t_shell *cmd, t_token *var);
 char	**string_variables(t_shell *cmd, t_token *var);
 void	double_quote_env(t_shell *cmd, t_token *var);
 char	*look_into_envir_quote(t_shell *cmd, char *string);
+int check_valid_id_test(char c);
 
 /* lexer_utils.c */
 void    print_list(t_env *env); // print the envp
@@ -175,6 +178,7 @@ void    get_exit_code(char **command);
 int     is_only_digits(char *str);
 /*echo*/
 void    echo(char **args);
+int find_new_line(char **cmd, int i);
 /*env*/
 int     env(t_shell *cmd);
 /*pwd*/
@@ -188,6 +192,11 @@ int	ft_findchar(char *str, char c);
 int var_exists(t_env *env, char *str);
 int	ft_lstsize_test(t_env *lst);
 void	update_envp_copy(t_shell *cmd);
+void print_sorted_env(t_env **env_lst);
+void	assign_index(t_env **env_lst, char *string, int i);
+char *find_biggest(t_env **env_lst);
+void	sort_env(t_env **env_lst);
+
 /*unset*/
 int unset(t_shell *cmd, char **command);
 void	delete_node_env(t_env **head, t_env *nodeToDelete);
@@ -207,6 +216,7 @@ void	delete_node_cmd(t_single_cmd **head, t_single_cmd *nodeToDelete);
 void	free_cmd_lst(t_single_cmd **cmd_lst);
 void	free_env_lst(t_env **env_lst);
 void free_shell(t_shell *cmd);
+
 //void	free_arr_int(int *arr);
 
 /* libft */

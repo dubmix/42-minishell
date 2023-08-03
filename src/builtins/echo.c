@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 11:55:39 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/02 15:07:19 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/03 17:38:44 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,26 +16,56 @@ void    echo(char **cmd)
 {
     int newline;
     int i;
-    
+    int k;
+    int check;
+
+    check = 0;
+    k = 0;
     newline = 1;
     i = 1;
     if (cmd != NULL)
     {   
-        if (ft_strncmp(cmd[1], " ", ft_strlen(cmd[1])) == 0)
+        if (ft_strncmp(cmd[i], " ", ft_strlen(cmd[i])) == 0)
             i++;
-        if (ft_strncmp(cmd[i], "-n", 2) == 0)
+        else if(cmd[i][0] == '-')
         {
-            newline = 0;
-            i++;
-            if (ft_strncmp(cmd[1], " ", 1) == 0)
-                i++;
-        }
+            k = i;
+            i = find_new_line(cmd, i);
+            if (k != i)
+                 newline = 0;
+        }  
         while(cmd[i] != NULL)
         {
             ft_putstr_fd(cmd[i], STDOUT_FILENO);
+            check = 1;
             i++;
         }
     }
-    if (newline == 1)
+    if (newline == 1 && check == 1)
         printf("\n");
+}
+
+int find_new_line(char **cmd, int i)
+{
+    int k;
+
+    k = 0;
+    while (cmd[i] != NULL)
+    {
+        if (cmd[i][k] == '-')
+        {
+            k++;
+            while (cmd[i][k] == 'n')
+               k++;
+            if (cmd[i][k] != '\0')
+                return (i);
+            i++;
+            k = 0;
+        }
+        else if (cmd[i][k] == ' ')
+            i++;
+        if (cmd[i][k] != '-' && cmd[i][k] != ' ')
+            return (i);
+    }
+    return (i);    
 }

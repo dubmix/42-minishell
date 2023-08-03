@@ -6,7 +6,7 @@
 #    By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/26 12:53:21 by edrouot           #+#    #+#              #
-#    Updated: 2023/08/02 12:58:00 by edrouot          ###   ########.fr        #
+#    Updated: 2023/08/03 09:42:18 by edrouot          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,7 +42,6 @@ OBJS	= $(SRCS:.c=.o)
 CC 	= cc 
 
 CFLAGS = -Wall -Wextra -Werror -g
-#-fsanitize=address 
 
 all:	$(NAME)
 

@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:45:43 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/02 09:48:05 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/03 11:44:33 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ void	new_node_env(t_env **env_list, char **string, char *full_string)
 		return ;
 	new->full_string = ft_strdup(full_string);
 	new->name = ft_strdup(string[0]);
+	new->index = 0;
 	if (!string[1])
 		new->value = ft_strdup("");
 	else

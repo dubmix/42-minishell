@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:45:38 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/02 16:57:30 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/03 16:01:15 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,27 +18,27 @@ void	double_quote_env(t_shell *cmd, t_token *var);
 char	*look_into_envir_quote(t_shell *cmd, char *string);
 
 /*first function : look for two things : either a type variable ($) or double quote (state)*/
-void	expand_var(t_shell *cmde)
+void	expand_var(t_shell *cmd)
 {
 	t_token	*tmp;
 
-	tmp = cmde->tok_lst;
+	tmp = cmd->tok_lst;
+
 	while (tmp != NULL)
 	{
 		if (tmp->type == 4)
 		{
-			look_into_envir(cmde, tmp);
+			look_into_envir(cmd, tmp);
 			tmp->type = 0;
 		}
 		else if (tmp->state == 1)
 		{
-			double_quote_env(cmde, tmp);
+			double_quote_env(cmd, tmp);
 			tmp->type = 0;
 		}
 		tmp = tmp->next;
 	}
 }
-int check_valid_id_test(char c);
 
 char	**string_variables(t_shell *cmd, t_token *var)
 {
@@ -64,6 +64,8 @@ char	**string_variables(t_shell *cmd, t_token *var)
 			start = i;
 			while (var->command[i] != '\0' && !check_valid_id_test(var->command[i]) && var->command[i] != '$')
 				i++;
+			if (var->command[i] == '$')
+				i = i - 1;
 			arr_string[j] = look_into_envir_quote(cmd, ft_substr(var->command,
 					start, i - start));
 
@@ -89,9 +91,8 @@ void	double_quote_env(t_shell *cmd, t_token *var)
 	j = 0;
 	k = 0;
 	int n = 0;
-	arr_var = string_variables(cmd, var); 
-	new_string = (char *)malloc(sizeof(char) * (length_arr_var(arr_var, cmd)
-			+ length_string_without_var(var->command)) + 1);
+	arr_var = string_variables(cmd, var);
+	new_string = (char *)malloc(sizeof(char) * (length_arr_var(arr_var, cmd) + length_string_without_var(var->command)) + 1);
 	if (!new_string)
 		return ;
 	while (var->command[i] != '\0')
@@ -101,7 +102,6 @@ void	double_quote_env(t_shell *cmd, t_token *var)
 			i++;
 			while (var->command[i] != '\0' && !check_valid_id_test(var->command[i]) && var->command[i] != '$')
    				i++;
-			write(1, "LLL", 3);
 			while (arr_var[k][n] != '\0')
 			{
 				new_string[j] = arr_var[k][n];
@@ -115,7 +115,7 @@ void	double_quote_env(t_shell *cmd, t_token *var)
 		{
 			new_string[j] = var->command[i];
 			i++;
-			j++;
+			j++;				
 		}
 	}
 	new_string[j] = '\0';
@@ -170,7 +170,6 @@ void	look_into_envir(t_shell *cmd, t_token *var)
 		free(var->command);
 		var->command = ft_strdup("");
 	}
-	printf("VAR IS %s\n", var->command);
 	return ;
 }
 

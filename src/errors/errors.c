@@ -36,6 +36,7 @@ void	free_all(t_shell *cmd, int type)
 	{
 		free_env_lst(&cmd->env_lst);
 		free_arr(cmd->envp_copy);
+		free(cmd->name_executable);
 		free(cmd->oldpwd);
 	}
 	else if (type == 4)

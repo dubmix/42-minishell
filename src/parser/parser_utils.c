@@ -50,10 +50,11 @@ void	print_list_commands(t_single_cmd *cmd, t_shell *shell)
 	tmp = cmd;
 	int i = 0;
 	int j = 0;
+	printf(" NOT IMPORTANT.%d\n", shell->nb_of_pipes);
 	while (tmp)
 	{
 		printf("node is %d : \n, redir_in is %d : %s\n, redir_out is %d : %s\n, append is %d : %s,\n", tmp->index, tmp->redir_in, tmp->redir_in_str,  tmp->redir_out, tmp->redir_out_str, tmp->append, tmp->append_str);
-		while (i < shell->words_per_pipe[j])
+		while (tmp->command[i] != NULL)
 		{
 			printf("Command are %s \n", tmp->command[i]);
 			i++;

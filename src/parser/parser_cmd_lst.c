@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 16:04:33 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/02 13:56:56 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/03 16:06:16 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ t_single_cmd	*triage_cmd_redir(t_shell *cmd)
 	index_node = 0;
 	cmd_lst = NULL;
 	temp = &(cmd->tok_lst);
+
 	while ((*temp) != NULL && index_node != cmd->nb_of_pipes + 1)
 	{
 		(*temp) = new_node_cmd(&cmd_lst, index_node, *temp, cmd);
@@ -57,6 +58,7 @@ t_token	*new_node_cmd(t_single_cmd **cmd_lst, int index,
 	i = 0;
 	temp = tok_lst;
 	new = NULL;
+
 	init_node_cmd(&new, cmd, index);
 	while (temp != NULL && temp->type != PIPE)
 	{

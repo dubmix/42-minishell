@@ -5,17 +5,11 @@ void	parser(t_shell *cmd)
 	triage_quotes(cmd);
 	adjust_number(cmd);
 	triage_space(cmd);
-	// print_list_tok(cmd->tok_lst);
 	adjust_number(cmd);
 	number_words_per_pipe(cmd);
 	cmd->cmd_lst = triage_cmd_redir(cmd);
-	// print_list_commands(cmd->cmd_lst, cmd);
 	if (cmd->nb_of_heredocs != 0)
-		grab_heredoc(cmd); 
-	
-
-	//single_command(cmd);
-
+		grab_heredoc(cmd);
 }
 
 void	number_words_per_pipe(t_shell *cmd)
