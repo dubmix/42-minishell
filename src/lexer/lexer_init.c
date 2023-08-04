@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:45:43 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/03 11:44:33 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/04 17:09:38 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ t_env	*init_envp(char **envp, t_shell *cmd)
 	{
 		cmd->envp_copy[i] = ft_strdup(envp[i]);
 		string = ft_split(envp[i], '=');
-		new_node_env(&envir, string, envp[i]);
+		new_node_env(cmd, &envir, string, envp[i]);
 		j = 0;
 		free_arr(string);
 		i++;
@@ -77,7 +77,8 @@ void	add_stack_back_env(t_env **env_lst, t_env *new)
 /*create a new node, copy in name and value and 
 add it to the back of the list */
 
-void	new_node_env(t_env **env_list, char **string, char *full_string)
+void	new_node_env(t_shell *cmd, t_env **env_list, 
+	char **string, char *full_string)
 {
 	t_env	*new;
 
@@ -92,7 +93,7 @@ void	new_node_env(t_env **env_list, char **string, char *full_string)
 	else
 		new->value = ft_strdup(string[1]);
 	if (!new->name || !new->value)
-		return ;// error handling
+		ft_error(cmd, "New node Env allocation failed");
 	new->next = NULL;
 	add_stack_back_env(env_list, new);
 }

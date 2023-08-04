@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 11:16:23 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/03 20:51:59 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/04 17:26:54 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ initialize the environnement (envp)
  readline(real function) store in shell->line_command
  store in cmd->tok_lst all the tokens
  */
+int	g_signals = 0;
 
 void	init_shell(t_shell *cmd)
 {
@@ -31,11 +32,11 @@ int	minishell_start(char **envp, char **argv)
 
 	cmd = malloc(sizeof(t_shell));
 	argv = NULL;
-	cmd->name_executable = ft_strdup("minishell");
 	(void)envp;
 	if (!cmd)
 		return (0);
-	//init_signals();
+	cmd->exit_code = 0;
+	// init_signals();
 	cmd->env_lst = init_envp(envp, cmd);
 	while (1)
 	{
@@ -45,11 +46,17 @@ int	minishell_start(char **envp, char **argv)
 		{
 			add_history(cmd->line);
 			cmd->tok_lst = tokenization(cmd);
-			expand_var(cmd);
-			parser(cmd);
-			pre_executor(cmd);
-			free_all(cmd, 4);
+			// expand_var(cmd);
+			// parser(cmd);
+			// if (cmd->exit_code == 0)
+			// 	pre_executor(cmd);
+			// if (g_signals != 0)
+			// 	cmd->exit_code = g_signals;
+			// // printf("ERROR CODE IS %d\n", cmd->exit_code);
+			// free_all(cmd, 4);
 		}
+		// else
+		// 	break;
 		// if (cmd->exit_flag == 1)
         // 	exit(g_exit_code); // pq ca marche pas ca??
 		// printf("2 %d\n", ft_lstsize_test((cmd->env_lst)));

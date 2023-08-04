@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 11:32:47 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/07/30 14:30:50 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/04 16:14:11 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	grab_heredoc(t_shell *cmd)
 	
 	second_line = NULL;
 	i = 0;
+	signal(SIGINT, sigint_heredoc);
 	while(i < cmd->nb_of_heredocs)
 	{
 		line_input = readline("heredoc >");

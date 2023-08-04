@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:45:56 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/03 19:49:03 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/04 17:36:28 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,10 @@ add it to the end of the list */
 void	new_token(t_token **tokens, char *command, int nb, enum e_type type)
 {
 	t_token	*new;
+
 	new = malloc(sizeof(t_token));
 	if (!new)
 		return ;
-
 	new->command = ft_strdup(command);
 	new->index = nb;
 	new->type = type;
@@ -120,7 +120,8 @@ int	tokenization_bis(t_shell *cmd, int i, t_token *tok_lst, int nb_token)
 		new_token(&tok_lst, "|", nb_token, PIPE);
 		cmd->nb_of_pipes++;
 	}
-	else if (cmd->line[i] == '>' && cmd->line[i + 1] != '>')
+	else if (cmd->line[i] == '>' && cmd->line[i + 1] != '>' 
+		&& cmd->line[i + 1] != '\0')
 		new_token(&tok_lst, ">", nb_token, REDIRECT_OUTPUT);
 	else if (cmd->line[i] == '<' && cmd->line[i + 1] != '<')
 		new_token(&tok_lst, "<", nb_token, REDIRECT_INPUT);
@@ -140,6 +141,39 @@ int	tokenization_bis(t_shell *cmd, int i, t_token *tok_lst, int nb_token)
 	return (i);
 }
 
+t_token	*tokenization_simple_char(t_shell *cmd, int i, 
+	t_token *tok_lst, int nb_token)
+{
+	if (cmd->line[i + 1] == '\0')
+		new_token(&tok_lst, &cmd->line[i], nb_token, WORD);
+	else if (cmd->line[i + 2] == '\0')
+		new_token(&tok_lst, ft_substr(cmd->line, 0, 2), nb_token, WORD);
+	return (tok_lst);
+}
+
+t_token *tokenization_special_char(t_shell *cmd, int *i, 
+	t_token *tok_lst, int nb_token)
+{
+		if (cmd->line[*i] == 39 || cmd->line[*i] == 34)
+			*i = new_token_quote(&tok_lst, cmd->line,
+					*i, nb_token) - 1;
+		else if (cmd->line[*i] == '$' && cmd->line[*i + 1] == '0')
+		{
+			new_token(&tok_lst, "minishell", nb_token, WORD);
+			*i = *i + 1;
+		}
+		else if (cmd->line[*i] == '~' && (cmd->line[*i + 1] == ' '
+				|| cmd->line[*i + 1] == '\0'))
+		{
+			new_token(&tok_lst, "$HOME", nb_token, VARIABLE);
+			*i = *i + 1;
+		}
+		else if (cmd->line[*i] == '$')
+			*i = new_token_var_words(&tok_lst, cmd->line, 
+					*i, nb_token) - 1;
+	return (tok_lst);
+}
+
 t_token	*tokenization(t_shell *cmd)
 {
 	int		i;
@@ -151,22 +185,32 @@ t_token	*tokenization(t_shell *cmd)
 	tok_lst = NULL;
 	while (cmd->line[i] != '\0')
 	{
-		if (cmd->line[i] == 39 || cmd->line[i] == 34)
-			i = new_token_quote(&tok_lst, cmd->line,
-					i, nb_token) - 1;
-		else if (cmd->line[i] == '$' && cmd->line[i + 1] == '0')
+		if (cmd->line[i + 1] == '\0' || (cmd->line[i] == cmd->line[i + 1] 
+				&& cmd->line[i + 2] == '\0'))
 		{
-			new_token(&tok_lst, cmd->name_executable, nb_token, WORD);
-			i = i + 1;
+			tok_lst = tokenization_simple_char(cmd, i, tok_lst, nb_token);
+			break ;
 		}
-		else if (cmd->line[i] == '~' && (cmd->line[i + 1] == ' ' || cmd->line[i + 1] == '\0'))
-		{
-			new_token(&tok_lst, "$HOME", nb_token, VARIABLE);
-			i++;
-		}
-		else if (cmd->line[i] == '$')
-			i = new_token_var_words(&tok_lst, cmd->line, 
-					i, nb_token) - 1;
+		else if (cmd->line[i] == 39 || cmd->line[i] == 34)
+			tok_lst = tokenization_special_char(cmd, &i, tok_lst, nb_token);
+
+		// else if (cmd->line[i] == 39 || cmd->line[i] == 34)
+		// 	i = new_token_quote(&tok_lst, cmd->line,
+		// 			i, nb_token) - 1;
+		// else if (cmd->line[i] == '$' && cmd->line[i + 1] == '0')
+		// {
+		// 	new_token(&tok_lst, "minishell", nb_token, WORD);
+		// 	i = i + 1;
+		// }
+		// else if (cmd->line[i] == '~' && (cmd->line[i + 1] == ' '
+		// 		|| cmd->line[i + 1] == '\0'))
+		// {
+		// 	new_token(&tok_lst, "$HOME", nb_token, VARIABLE);
+		// 	i++;
+		// }
+		// else if (cmd->line[i] == '$')
+		// 	i = new_token_var_words(&tok_lst, cmd->line, 
+		// 			i, nb_token) - 1;
 		else if (cmd->line[i] == '>' || cmd->line[i] == '<' || 
 			cmd->line[i] == ' ' || cmd->line[i] == 9 || cmd->line[i] == '|')
 			i = tokenization_bis(cmd, i, tok_lst, nb_token);
@@ -176,6 +220,9 @@ t_token	*tokenization(t_shell *cmd)
 		i++;
 		nb_token++;
 	}
+	printf("-----------");
+	print_list_tok(tok_lst);
+	printf("-----------");
 	free(cmd->line);
 	return (tok_lst);
 }

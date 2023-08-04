@@ -33,6 +33,27 @@ void	triage_space(t_shell *cmd)
 	}
 }
 
+void	triage_space_redir(t_shell *cmd)
+{
+	t_token	**temp;
+	t_token	*nodeToDelete;
+	int		state;
+
+	temp = &(cmd->tok_lst);
+	
+	nodeToDelete = NULL;
+	state = 0;
+	while (*temp != NULL)
+	{
+		if (((*temp)->next != NULL) && ((*temp)->next->type == REDIRECT_INPUT || (*temp)->next->type == REDIRECT_OUTPUT || (*temp)->next->type == APPEND )) //(*temp)->type == SPA || (*temp)->type == WORD) && 
+		{
+			nodeToDelete = *temp;
+			delete_node_tok(&(cmd->tok_lst), nodeToDelete);
+		}
+			temp = &((*temp)->next);
+	}
+}
+
 void	triage_quotes(t_shell *cmd)
 {
 	t_token	**temp;

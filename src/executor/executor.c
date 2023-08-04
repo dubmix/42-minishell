@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 10:45:11 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/03 20:56:00 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/04 15:47:28 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,24 @@
 
 int pre_executor(t_shell *cmd)
 {
-    //signal(SIGQUIT, sigquit_handler);
+    signal(SIGQUIT, sigquit_handler); 
+    cmd->exit_code = 1;
     if (cmd->nb_of_pipes == 0)
         exec_single_command(cmd);
     else
     {
-        cmd->pid = ft_calloc(sizeof(int), cmd->nb_of_pipes);
+        cmd->pid = ft_calloc(sizeof(int), cmd->nb_of_pipes + 2); // maia a +2
         if(!cmd->pid)
-            return(0); //error handling issue malloc 
+            ft_error(cmd, "Pid error"); //error handling issue malloc 
         exec_piped_command(cmd);
     }
-    return (EXIT_SUCCESS);
+    return (cmd->exit_code);
 }
 
 void exec_single_command(t_shell *cmd)
 {
     int pid;
-    int status;
+    int status;    
 
     if(ft_strncmp(cmd->cmd_lst->command[0], "exit", 4) == 0)
         exxit(cmd);    // check corner case exit | ech
@@ -51,11 +52,11 @@ void exec_single_command(t_shell *cmd)
     }
     pid = fork();
     if (pid < 0)
-        return ; // error handling
+        ft_error(cmd, "Fork failure");
     if (pid == 0)
         cmd->exit_code = exec_command(cmd);
     else
-        waitpid(pid, &status, 0);
+        waitpid(pid, &status, 0); // why needed ? 
 }
 
 int exec_piped_command(t_shell *cmd)
@@ -68,7 +69,7 @@ int exec_piped_command(t_shell *cmd)
     head = cmd->cmd_lst;
     i = 0;
     fd = STDIN_FILENO;
-    while (1)
+    while (cmd->cmd_lst)
     {
         if (cmd->cmd_lst->next)
             pipe(pipefd);
@@ -81,7 +82,7 @@ int exec_piped_command(t_shell *cmd)
         else
             break;
     }
-    pipe_wait(cmd->pid, cmd->nb_of_pipes);
+    pipe_wait(cmd);
     cmd->cmd_lst = head;
     return (0);
 }
@@ -90,7 +91,7 @@ int ft_fork(t_shell *cmd, int pipefd[2], int fd, int i)
 {
     cmd->pid[i] = fork();
     if (cmd->pid[i] < 0)
-        return (0); //error handling
+        ft_error(cmd, "Fork error");
     if (cmd->pid[i] == 0)
         dup_cmd(cmd, pipefd, fd);
     i++;
@@ -99,20 +100,16 @@ int ft_fork(t_shell *cmd, int pipefd[2], int fd, int i)
 
 void dup_cmd(t_shell *cmd, int pipefd[2], int fd)
 {
-    int dup;
-
     if (cmd->cmd_lst->index != 0)
     {
-        dup = dup2(fd, STDIN_FILENO);
-        if (dup < 0 && cmd->cmd_lst->index != 0)
-            return ; //error handling
+        if (dup2(fd, STDIN_FILENO) < 0)
+            ft_error(cmd, "Dup failed");
     }
     close(pipefd[0]);
     if (cmd->cmd_lst->next)
     {
-        dup = dup2(pipefd[1], STDOUT_FILENO);
-        if (dup < 0 && cmd->cmd_lst->next)
-            return ; //error handling
+        if (dup2(pipefd[1], STDOUT_FILENO) < 0)
+            ft_error(cmd, "Dup failed");
     }
     close(pipefd[1]);
     if(cmd->cmd_lst->index != 0)
@@ -125,38 +122,42 @@ int exec_command(t_shell *cmd)
     if (cmd->cmd_lst->append == 1 || cmd->cmd_lst->redir_in == 1
             || cmd->cmd_lst->redir_out == 1 || cmd->nb_of_heredocs != 0) //if there are 
         check_redirections(cmd);
-    if (cmd->nb_of_pipes != 0 && cmd->cmd_lst->command != NULL) // nb_of_pipes needs to be reinit // done in init_shell, I put it in the loop
+    // if (cmd->nb_of_pipes != 0 && cmd->cmd_lst->command != NULL) // nb_of_pipes needs to be reinit // done in init_shell, I put it in the loop
+    // {
+    //     cmd->exit_code = single_command(cmd);
+    //     exit(cmd->exit_code); //si ca beug possibilite de lancer export etc dans le parent
+    // }
+    // else // useless since we check both conditions 
+    if (cmd->cmd_lst->command != NULL)
     {
         cmd->exit_code = single_command(cmd);
-        exit(cmd->exit_code); //si ca beug possibilite de lancer export etc dans le parent
-    }
-    else if (cmd->cmd_lst->command != NULL)
-    {
-        cmd->exit_code = single_command(cmd);
-        // printf("%d", g_exit_code);
-        exit(cmd->exit_code); //return (exit_code); // si exit l'env s'efface quand le loop recommence // normalement, l'env est free qu'apres la loop
+            printf("HERE 1 IS %d", cmd->exit_code);
+
+        return (cmd->exit_code); //return (exit_code); // si exit l'env s'efface quand le loop recommence // normalement, l'env est free qu'apres la loop
     }
     return (cmd->exit_code);
 }
 
 int check_redirections(t_shell *cmd)
 {
-    t_single_cmd *head;
-
-    head = cmd->cmd_lst;
-    while (cmd->cmd_lst)
-    {
+    // t_single_cmd *head;
+    // head = cmd->cmd_lst;
+    // while (cmd->cmd_lst != NULL)
+    // {
+    //     ft_putnbr_fd(cmd->cmd_lst->index, STDERR_FILENO);
+    //     ft_putstr_fd(cmd->cmd_lst->redir_out_str, STDERR_FILENO);
+    //     ft_putstr_fd("\n", STDERR_FILENO);
         if (cmd->nb_of_heredocs != 0)
-            exec_heredoc(cmd);
+            cmd->exit_code = exec_heredoc(cmd);
         else if (cmd->cmd_lst->redir_in == 1)
-            exec_infile(cmd->cmd_lst->redir_in_str);
+            cmd->exit_code = exec_infile(cmd->cmd_lst->redir_in_str);
         if (cmd->cmd_lst->append == 1)
-            exec_outfile(cmd);
+            cmd->exit_code = exec_outfile(cmd);
         else if (cmd->cmd_lst->redir_out == 1)
-            exec_outfile(cmd);
-    cmd->cmd_lst = cmd->cmd_lst->next;
-    }
-    cmd->cmd_lst = head;
+            cmd->exit_code = exec_outfile(cmd);
+    //     cmd->cmd_lst = cmd->cmd_lst->next;
+    // }
+    // cmd->cmd_lst = head;
     return (EXIT_SUCCESS);
 }
 
@@ -219,12 +220,10 @@ int exec_outfile(t_shell *cmd)
 
     if (cmd->cmd_lst->append == 1)
         fd = open(cmd->cmd_lst->append_str, 
-                O_CREAT | O_RDWR | O_APPEND, 0644);
+                O_CREAT | O_WRONLY | O_APPEND, 0644);
     else
-    {
         fd = open(cmd->cmd_lst->redir_out_str,
-                O_CREAT | O_RDWR | O_TRUNC, 0644);
-    }
+                O_CREAT | O_WRONLY | O_TRUNC, 0644);
     if (fd < 0)
     {
         printf("minishell: outfile: Error\n");
@@ -241,17 +240,21 @@ int exec_outfile(t_shell *cmd)
     return (EXIT_SUCCESS);
 }
 
-int pipe_wait(int *pid, int nb_of_pipes)
+int pipe_wait(t_shell *cmd)
 {
     int i;
     int status;
-
-    i = 0;
-    while (i < nb_of_pipes)
+    // error code of ctrl C to be checked as condition
+    i = cmd->nb_of_pipes + 1;
+    waitpid(cmd->pid[i], &status, 0); // while loop checking for ctrl c   with flag WNOHANG
+    i--;
+    while (i > 0)
     {
-        waitpid(pid[i], &status, 0);
-        i++;
+        kill(cmd->pid[i], SIGINT);
+        waitpid(cmd->pid[i], &status, 0);
+        i--;
     }
-    waitpid(pid[i], &status, 0);
+    if (WIFEXITED(status))
+		cmd->exit_code = WEXITSTATUS(status);
     return (EXIT_SUCCESS);
 }

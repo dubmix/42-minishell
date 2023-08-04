@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:45:38 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/03 20:57:52 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/04 17:06:48 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,19 @@ void	look_into_envir(t_shell *cmd, t_token *var);
 char	**string_variables(t_shell *cmd, t_token *var);
 void	double_quote_env(t_shell *cmd, t_token *var);
 char	*look_into_envir_quote(t_shell *cmd, char *string);
+char	**string_variables_bis(t_shell *cmd, char *command,
+			char **arr_string, int i);
+char	*double_quote_env_bis(char *command, char *new_string, 
+			char **arr_var, int i);
 
-/*first function : look for two things : either a type variable ($) or double quote (state)*/
+/*first function : look for two things :
+either a type variable ($) or double quote (state)*/
+
 void	expand_var(t_shell *cmd)
 {
 	t_token	*tmp;
 
 	tmp = cmd->tok_lst;
-
 	while (tmp != NULL)
 	{
 		if (tmp->type == 4)
@@ -43,32 +48,38 @@ void	expand_var(t_shell *cmd)
 char	**string_variables(t_shell *cmd, t_token *var)
 {
 	char	**arr_string;
-	char	*temp;
 	int		i;
-	int		j;
-	int		start;
 
-	temp = var->command;
 	i = 0;
-	j = 0;
-	start = 0;
 	cmd->size_arr_var = countsubstr(var->command, '$');
 	arr_string = (char **)malloc(sizeof(char *) * (cmd->size_arr_var + 1));
 	if (!arr_string)
 		return (NULL);
-	while (temp[i] != '\0')
+	arr_string = string_variables_bis(cmd, var->command, arr_string, i);
+	return (arr_string);
+}
+
+char	**string_variables_bis(t_shell *cmd, char *command,
+		char **arr_string, int i)
+{
+	int	j;
+	int	start;
+
+	j = 0;
+	start = 0;
+	while (command[i] != '\0')
 	{
-		if (temp[i] == '$')
+		if (command[i] == '$')
 		{
 			i++;
 			start = i;
-			while (var->command[i] != '\0' && !check_valid_id_test(var->command[i]) && var->command[i] != '$')
+			while (command[i] != '\0' && !check_valid_id_test(command[i])
+				&& command[i] != '$')
 				i++;
-			if (var->command[i] == '$')
+			if (command[i] == '$')
 				i = i - 1;
-			arr_string[j] = look_into_envir_quote(cmd, ft_substr(var->command,
-					start, i - start));
-
+			arr_string[j] = look_into_envir_quote(cmd, ft_substr(command, start,
+						i - start));
 			j++;
 		}
 		i++;
@@ -76,89 +87,89 @@ char	**string_variables(t_shell *cmd, t_token *var)
 	arr_string[j] = 0;
 	return (arr_string);
 }
+/*  create via string_variables an array with the correct values of the variable
+then rewrite the command line with str_join,
+	replacing each var $XXX with the correct value*/
 
-/*  create via string_variables an array with the correct values of the variable 
-then rewrite the command line with str_join, replacing each var $XXX with the correct value*/
 void	double_quote_env(t_shell *cmd, t_token *var)
 {
-	int		i;
 	char	**arr_var;
-	int		j;
 	char	*new_string;
-	int		k;
+	int		i;
 
 	i = 0;
-	j = 0;
-	k = 0;
-	int n = 0;
 	arr_var = string_variables(cmd, var);
-	new_string = (char *)malloc(sizeof(char) * (length_arr_var(arr_var, cmd) + length_string_without_var(var->command)) + 1);
+	new_string = (char *)malloc(sizeof(char) * (length_arr_var(arr_var, cmd)
+				+ length_string_without_var(var->command)) + 1);
 	if (!new_string)
 		return ;
-	while (var->command[i] != '\0')
-	{
-		if (var->command[i] == '$')
-		{
-			i++;
-			while (var->command[i] != '\0' && !check_valid_id_test(var->command[i]) && var->command[i] != '$')
-   				i++;
-			while (arr_var[k][n] != '\0')
-			{
-				new_string[j] = arr_var[k][n];
-				j++;
-				n++;
-			}
-			n = 0;
-			k++;
-		}
-		else
-		{
-			new_string[j] = var->command[i];
-			i++;
-			j++;				
-		}
-	}
-	new_string[j] = '\0';
+	new_string = double_quote_env_bis(var->command, new_string, arr_var, i);
 	free_arr(arr_var);
 	free(var->command);
 	var->command = ft_strdup(new_string);
 	free(new_string);
 }
 
-int check_valid_id_test(char c) 
+char	*double_quote_env_bis(char *command, char *new_string, 
+		char **arr_var, int i)
 {
-    if ((c >= 'a' && c <= 'z') ||       // Lowercase letters
-        (c >= 'A' && c <= 'Z') ||       // Uppercase letters
-        (c >= '0' && c <= '9') ||       // Digits
-        (c == '_')) {                   // Underscore
-        return 0; // Valid character for an identifier
-    } else 
+	int		j;
+	int		k;
+	int		n;
+
+	j = 0;
+	k = 0;
+	while (command[i] != '\0')
 	{
-        return 1; // Invalid character for an identifier
-    }
+		if (command[i] == '$')
+		{
+			i++;
+			n = 0;
+			while (command[i] != '\0'
+				&& !check_valid_id_test(command[i])
+				&& command[i] != '$')
+				i++;
+			while (arr_var[k][n] != '\0')
+				new_string[j++] = arr_var[k][n++];
+			k++;
+		}
+		else
+			new_string[j++] = command[i++];
+	}
+	new_string[j] = '\0';
+	return (new_string);
 }
- /*  we need only what is after the $ ($USER -> USER) and compare with USER with env_lst 
- and replace the correct value in the tok_lst*/
+
+int	check_valid_id_test(char c)
+{
+	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') 
+		|| (c >= '0' && c <= '9') || (c == '_'))
+		return (0);
+	else
+		return (1);
+}
+
+/*  we need only what is after the $ ($USER
+	-> USER) and compare with USER with env_lst
+and replace the correct value in the tok_lst*/
+
 void	look_into_envir(t_shell *cmd, t_token *var)
 {
 	t_env	*tmp;
 	char	**string;
-	int		j;
 
 	tmp = cmd->env_lst;
-	j = 0;
 	string = ft_split(var->command, '$');
+	free(var->command);
 	while (tmp != NULL)
 	{
 		if (ft_strncmp(string[0], "?", 1) == 0)
 		{
-			free(var->command);
 			var->command = ft_strdup(ft_itoa(cmd->exit_code));
-			break;
+			break ;
 		}
 		else if (ft_strncmp(string[0], tmp->name, ft_strlen(var->command)) == 0)
 		{
-			free(var->command);
 			var->command = ft_strdup(tmp->value);
 			break ;
 		}
@@ -166,10 +177,7 @@ void	look_into_envir(t_shell *cmd, t_token *var)
 	}
 	free_arr(string);
 	if (tmp == NULL)
-	{
-		free(var->command);
 		var->command = ft_strdup("");
-	}
 	return ;
 }
 

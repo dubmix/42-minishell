@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:46:21 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/03 20:59:35 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/04 14:21:28 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,13 @@ int	single_command(t_shell *cmd)
 	temp = cmd->cmd_lst;
 	path = check_access(cmd->envp_copy, temp->command, cmd);
 	if (!path)
+	{
+		cmd->exit_code = 127;
+		ft_putstr_fd("Command '", STDERR_FILENO);
+		ft_putstr_fd(temp->command[0], STDERR_FILENO);
+		ft_putstr_fd("' not found\n", STDERR_FILENO);
 		return (cmd->exit_code);
+	}
 	if (ft_strncmp(cmd->cmd_lst->command[0], "echo", 4) == 0)
 		echo(cmd->cmd_lst->command);
 	else if (ft_strncmp(cmd->cmd_lst->command[0], "env", 3) == 0)

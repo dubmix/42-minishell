@@ -13,6 +13,9 @@
     # include <sys/wait.h>
     # include <fcntl.h>
     # include <limits.h>
+    # include <sys/ioctl.h>
+
+extern int g_signals;
 
 enum e_type
 {
@@ -75,7 +78,6 @@ typedef struct s_shell
     int *words_per_pipe;
     int	*pid;
     char *oldpwd;
-    char *name_executable;
     int exit_code;
 } t_shell;
 
@@ -92,7 +94,7 @@ void	init_shell(t_shell *cmd);
 /*lexer_init.c*/
 t_env *init_envp(char **envp, t_shell *cmd);
 void add_stack_back_env(t_env **env_lst, t_env *new);
-void	new_node_env(t_env **env_list, char **string, char *full_string);
+void	new_node_env(t_shell *cmd, t_env **env_list, char **string, char *full_string);
 
 /* lexer_expand_var.c */
 void expand_var(t_shell *cmd);
@@ -124,6 +126,7 @@ void	number_words_per_pipe(t_shell *cmd);
 
 /*parser_triage.c*/
 void    triage_space(t_shell *cmd);
+void	triage_space_redir(t_shell *cmd);
 void	triage_quotes(t_shell *cmd);
 
 /*parser_cmd_lst.c*/
@@ -146,7 +149,7 @@ void	print_list_commands(t_single_cmd *cmd, t_shell *shell);
 /*single_command.c*/
 int   single_command(t_shell *cmd);
 char	**get_path(char **envp);
-char	*check_access(char **envp, char **command, t_shell *cmd); //, int *fds)
+char	*check_access(char **envp, char **command, t_shell *cmd);
 void exec_single_command(t_shell *cmd);
 int pre_executor(t_shell *cmd);
 int exec_piped_command(t_shell *cmd);
@@ -156,7 +159,7 @@ int exec_command(t_shell *cmd);
 int check_redirections(t_shell *cmd);
 int exec_infile(char *file);
 int exec_outfile(t_shell *cmd);
-int pipe_wait(int *pid, int nb_of_pipes);
+int pipe_wait(t_shell *cmd);
 int exec_heredoc(t_shell *cmd);
 
 /*heredoc.c*/
@@ -206,6 +209,7 @@ void	delete_node_env(t_env **head, t_env *nodeToDelete);
 void init_signals();
 void sigquit_handler(int sig);
 void sigint_handler(int sig);
+void	sigint_heredoc(int sig);
 
 /*errors.c*/
 void    free_arr(char **arr); // free any arrays

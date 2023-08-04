@@ -36,7 +36,6 @@ void	free_all(t_shell *cmd, int type)
 	{
 		free_env_lst(&cmd->env_lst);
 		free_arr(cmd->envp_copy);
-		free(cmd->name_executable);
 		free(cmd->oldpwd);
 	}
 	else if (type == 4)
@@ -48,6 +47,7 @@ void	ft_error(t_shell *cmd, char *string)
 	write(2, &string, ft_strlen(string));
 	free_all(cmd,4);
 	free_all(cmd,3);
+	cmd->exit_code = 1;
 	exit(1);
 }
 void free_shell(t_shell *cmd)
@@ -57,7 +57,6 @@ void free_shell(t_shell *cmd)
 	cmd->size_arr_var = 0;
 	if (cmd->nb_of_heredocs != 0)
 	{
-		free_arr(cmd->heredoc_arr);
 		free(cmd->heredoc_string);
 	}
 	cmd->nb_of_heredocs = 0;
