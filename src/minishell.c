@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 11:16:23 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/05 15:09:25 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/05 15:30:51 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	minishell_start(char **envp, char **argv)
 	if (!cmd)
 		return (0);
 	cmd->exit_code = 0;
-	init_signals();
+	// init_signals();
 	cmd->env_lst = init_envp(envp, cmd);
 	while (1)
 	{

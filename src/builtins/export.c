@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 13:29:20 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/05 14:51:40 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/05 15:20:34 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,9 +153,9 @@ int	ft_findchar(char *str, char c)
 void print_sorted_env(t_env **env_lst)
 {
 	t_env	*tmp;
+	int i;
 
 	tmp = *env_lst;
-	int i;
 	i = ft_lstsize_test(*env_lst);
 	while (i > 0)
 	{

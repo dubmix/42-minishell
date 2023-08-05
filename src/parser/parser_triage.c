@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 11:56:11 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/05 13:15:36 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/05 15:48:32 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void	triage_quotes(t_shell *cmd)
 			if (cmd_splitted[0])
 				(*temp)->command = ft_strdup(cmd_splitted[0]);
 			else
-				(*temp)->command = ft_strdup("\'\'");
+				(*temp)->command = ft_strdup("");
 			(*temp)->type = 0;
 			free_arr(cmd_splitted);
 		}
@@ -106,6 +106,6 @@ void	triage_quotes_bis(t_token **temp, char **cmd_splitted)
 	if (cmd_splitted[0])
 		(*temp)->command = ft_strdup(cmd_splitted[0]);
 	else
-		(*temp)->command = ft_strdup("\"\"");
+		(*temp)->command = ft_strdup("");
 	free_arr(cmd_splitted);
 }

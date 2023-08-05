@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:45:56 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/05 15:17:05 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/05 15:49:16 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,8 +144,6 @@ int	tokenization_bis(t_shell *cmd, int i, t_token *tok_lst, int nb_token)
 t_token	*tokenization_simple_char(t_shell *cmd, int i, 
 	t_token *tok_lst, int nb_token)
 {
-	printf("OR '%c'\n", cmd->line[i]);
-
 	if (cmd->line[i + 1] == '\0')
 		new_token(&tok_lst, &cmd->line[i], nb_token, WORD);
 	else if (cmd->line[i + 2] == '\0')
@@ -153,17 +151,16 @@ t_token	*tokenization_simple_char(t_shell *cmd, int i,
 	return (tok_lst);
 }
 
-		/*else if (cmd->line[*i] == '~' && (cmd->line[*i + 1] == ' '
-				|| cmd->line[*i + 1] == '\0'))
-		{
-			new_token(&tok_lst, "$HOME", nb_token, VARIABLE);
-			i++;
-		}*/
+/*else if (cmd->line[*i] == '~' && (cmd->line[*i + 1] == ' '
+		|| cmd->line[*i + 1] == '\0'))
+{
+	new_token(&tok_lst, "$HOME", nb_token, VARIABLE);
+	i++;
+}*/
 
 t_token	*tokenization_special_char(t_shell *cmd, int *i, 
 	t_token *tok_lst, int nb_token)
 {
-	printf("HERE '%c'\n", cmd->line[*i]);
 	if (cmd->line[*i] == 39 || cmd->line[*i] == 34)
 		*i = new_token_quote(&tok_lst, cmd->line,
 				*i, nb_token) - 1;
@@ -189,8 +186,8 @@ t_token	*tokenization(t_shell *cmd)
 	tok_lst = NULL;
 	while (cmd->line[i] != '\0')
 	{
-		if (i == 0 && (cmd->line[i + 1] == '\0' || (cmd->line[i] == cmd->line[i + 1] 
-				&& cmd->line[i + 2] == '\0')))
+		if (i == 0 && (cmd->line[i + 1] == '\0' || ((cmd->line[i] == cmd->line[i + 1] 
+				&& cmd->line[i + 2] == '\0'))))
 			tok_lst = tokenization_simple_char(cmd, i, tok_lst, nb_token);
 		else if (cmd->line[i] == 39 || cmd->line[i] == 34 
 			|| cmd->line[i] == '$')
