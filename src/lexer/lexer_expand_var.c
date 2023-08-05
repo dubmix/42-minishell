@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:45:38 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/04 17:06:48 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/05 15:00:47 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ char	**string_variables_bis(t_shell *cmd, char *command,
 		{
 			i++;
 			start = i;
-			while (command[i] != '\0' && !check_valid_id_test(command[i])
+			while (command[i] != '\0' && !check_valid_id(command[i])
 				&& command[i] != '$')
 				i++;
 			if (command[i] == '$')
@@ -126,7 +126,7 @@ char	*double_quote_env_bis(char *command, char *new_string,
 			i++;
 			n = 0;
 			while (command[i] != '\0'
-				&& !check_valid_id_test(command[i])
+				&& !check_valid_id(command[i])
 				&& command[i] != '$')
 				i++;
 			while (arr_var[k][n] != '\0')
@@ -140,14 +140,6 @@ char	*double_quote_env_bis(char *command, char *new_string,
 	return (new_string);
 }
 
-int	check_valid_id_test(char c)
-{
-	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') 
-		|| (c >= '0' && c <= '9') || (c == '_'))
-		return (0);
-	else
-		return (1);
-}
 
 /*  we need only what is after the $ ($USER
 	-> USER) and compare with USER with env_lst

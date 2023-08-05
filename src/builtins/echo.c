@@ -6,11 +6,13 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 11:55:39 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/03 19:24:32 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/05 08:47:52 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+
+// need to code the echo ~ -> should return home
 
 void    echo(char **cmd)
 {

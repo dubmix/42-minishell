@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:46:03 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/03 15:38:13 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/05 15:00:58 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,7 @@ void	print_list_tok(t_token *tok)
 	tmp = tok;
 	while (tmp)
 	{
-	// 	write(2, "TTT", 3);
-	// 	write(2, &tmp->command, ft_strlen(tmp->command));
-		printf("node is %s, number is %d, state is %d, type is %d, index is %d\n",
-			tmp->command, tmp->index, tmp->state, tmp->type, tmp->index);
+		printf("node is %s, nb is %d, state is %d, type is %d\n", tmp->command, tmp->index, tmp->state, tmp->type);
 		tmp = tmp->next;
 	}
 }
@@ -74,7 +71,8 @@ int	length_string_without_var(char *string)
 	{
 		if (string[i] == '$')
 		{
-			while (string[i] != '\0' && !check_valid_id_test(string[i]) && string[i] != '$') // string[i] != ' ' && 
+			while (string[i] != '\0' && 
+				!check_valid_id(string[i]) && string[i] != '$') 
 				i++;
 		}
 		else

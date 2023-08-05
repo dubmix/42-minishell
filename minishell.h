@@ -102,7 +102,6 @@ void	look_into_envir(t_shell *cmd, t_token *var);
 char	**string_variables(t_shell *cmd, t_token *var);
 void	double_quote_env(t_shell *cmd, t_token *var);
 char	*look_into_envir_quote(t_shell *cmd, char *string);
-int check_valid_id_test(char c);
 
 /* lexer_utils.c */
 void    print_list(t_env *env); // print the envp
@@ -136,8 +135,8 @@ t_token	*new_node_cmd(t_single_cmd **cmd_lst, int index, t_token *temp, t_shell 
 void	add_stack_back_cmd(t_single_cmd **cmd_lst, t_single_cmd *new);
 
 /*parser_redir.c*/
-void	handle_redir_in(t_single_cmd *new, t_token *temp);
-void	handle_redir_in_out(t_single_cmd *new, t_token *temp);
+int     handle_redir_in(int fd, t_single_cmd *new, t_token *temp);
+void	handle_redir_in_out(t_shell *cmd, t_single_cmd *new, t_token *temp);
 
 /*parser_utils.c*/
 void    delete_node_tok(t_token **head, t_token *nodeToDelete);

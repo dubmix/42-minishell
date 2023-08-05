@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 11:32:47 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/04 16:14:11 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/05 11:25:20 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,9 @@ void	grab_heredoc(t_shell *cmd)
 	int i;
 	char *line_input;
 	char *first_line;
-	char *second_line;
 	char *final_line;
 	
-	second_line = NULL;
+	final_line = NULL;
 	i = 0;
 	signal(SIGINT, sigint_heredoc);
 	while(i < cmd->nb_of_heredocs)
@@ -30,16 +29,14 @@ void	grab_heredoc(t_shell *cmd)
 			i++;
 		else if (i == (cmd->nb_of_heredocs - 1))
 		{
-			
 			first_line = double_quote_env_heredoc(cmd, line_input);
+			first_line = ft_strjoin(first_line, "\n");
 			free(line_input);
-			if (second_line == NULL)
-				second_line = ft_strdup(first_line);
+			if (final_line == NULL)
+				final_line = ft_strdup(first_line);
 			else
-				second_line = ft_strjoin(second_line, first_line);
+				final_line = ft_strjoin(final_line, first_line);
 			free(first_line);
-			final_line = ft_strjoin(second_line, "\n");
-			free(second_line);
 		}
 	}
 	cmd->heredoc_string = ft_strdup(final_line);
@@ -78,8 +75,10 @@ char	**string_variables_heredoc(t_shell *cmd, char *string)
 	arr_string[j] = 0;
 	return (arr_string);
 }
+
 /*  create via string_variables an array with the correct values of the variable 
 then rewrite the command line with str_join, replacing each var $XXX with the correct value*/
+
 char *double_quote_env_heredoc(t_shell *cmd, char *string)
 {
 	int		i;

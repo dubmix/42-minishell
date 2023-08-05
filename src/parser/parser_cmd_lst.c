@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 16:04:33 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/04 10:57:42 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/05 09:00:41 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ t_single_cmd	*triage_cmd_redir(t_shell *cmd)
 	index_node = 0;
 	cmd_lst = NULL;
 	temp = &(cmd->tok_lst);
-
 	while ((*temp) != NULL && index_node != cmd->nb_of_pipes + 1)
 	{
 		(*temp) = new_node_cmd(&cmd_lst, index_node, *temp, cmd);
@@ -44,8 +43,8 @@ void	init_node_cmd(t_single_cmd **new, t_shell *cmd, int index)
 	(*new)->redir_in_str = NULL;
 	(*new)->redir_out_str = NULL;
 	(*new)->append = 0;
-    (*new)->redir_in = 0;
-    (*new)->redir_out = 0;
+	(*new)->redir_in = 0;
+	(*new)->redir_out = 0;
 }
 
 t_token	*new_node_cmd(t_single_cmd **cmd_lst, int index, 
@@ -57,20 +56,14 @@ t_token	*new_node_cmd(t_single_cmd **cmd_lst, int index,
 
 	i = 0;
 	temp = tok_lst;
-	new = NULL;
 	init_node_cmd(&new, cmd, index);
 	while (temp != NULL && temp->type != PIPE)
 	{
 		if ((temp->type == WORD) && i < cmd->words_per_pipe[index])
-		{
-			new->command[i] = ft_strdup(temp->command);
-			i++;
-		}
-		else if (temp->type == REDIRECT_INPUT || temp->type == REDIRECT_OUTPUT || temp->type == APPEND)
-		{
+			new->command[i++] = ft_strdup(temp->command);
+		else if (temp->type == REDIRECT_INPUT 
+			|| temp->type == REDIRECT_OUTPUT || temp->type == APPEND)
 			handle_redir_in_out(new, temp);
-			temp = temp->next;
-		}
 		else if (temp->type == HEREDOC)
 			temp = temp->next->next;
 		if (temp != NULL)

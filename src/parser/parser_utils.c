@@ -1,21 +1,33 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser_utils.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/08/05 13:24:27 by edrouot           #+#    #+#             */
+/*   Updated: 2023/08/05 14:22:26 by edrouot          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../minishell.h"
 
 void	delete_node_tok(t_token **head, t_token *nodeToDelete)
 {
-	t_token *prevNode;
+	t_token	*prev_node;
 
-	prevNode = NULL;
+	prev_node = NULL;
 	if (*head == NULL || nodeToDelete == NULL)
 		return ;
 	if (*head == nodeToDelete)
 		*head = nodeToDelete->next;
 	else
 	{
-		prevNode = *head;
-		while (prevNode->next != NULL && prevNode->next != nodeToDelete)
-			prevNode = prevNode->next;
-		if (prevNode->next == nodeToDelete)
-			prevNode->next = nodeToDelete->next;
+		prev_node = *head;
+		while (prev_node->next != NULL && prev_node->next != nodeToDelete)
+			prev_node = prev_node->next;
+		if (prev_node->next == nodeToDelete)
+			prev_node->next = nodeToDelete->next;
 		else
 			return ;
 	}
@@ -34,7 +46,8 @@ void	adjust_number(t_shell *cmd)
 	while (*temp != NULL)
 	{
 		(*temp)->index = i;
-		if (ft_strncmp((*temp)->command, " ", ft_strlen((*temp)->command)) == 0 && i == 0)
+		if (ft_strncmp((*temp)->command, " ", 
+				ft_strlen((*temp)->command)) == 0 && i == 0)
 			i = -1;
 		i++;
 		if (ft_strncmp((*temp)->command, "|", ft_strlen((*temp)->command)) == 0)
@@ -46,14 +59,19 @@ void	adjust_number(t_shell *cmd)
 void	print_list_commands(t_single_cmd *cmd, t_shell *shell)
 {
 	t_single_cmd	*tmp;
+	int				i;
+	int				j;
 
+	i = 0;
+	j = 0;
 	tmp = cmd;
-	int i = 0;
-	int j = 0;
-	printf(" NOT IMPORTANT.%d\n", shell->nb_of_pipes);
+	printf("printing commands %d\n", shell->nb_of_pipes);
 	while (tmp)
 	{
-		printf("node is %d : \n, redir_in is %d : %s\n, redir_out is %d : %s\n, append is %d : %s,\n", tmp->index, tmp->redir_in, tmp->redir_in_str,  tmp->redir_out, tmp->redir_out_str, tmp->append, tmp->append_str);
+		printf("node is %d : \n", tmp->index);
+		printf("redir_in is %d : %s\n", tmp->redir_in, tmp->redir_in_str);
+		printf("redir_out is %d : %s\n", tmp->redir_out, tmp->redir_out_str);
+		printf("append is %d : %s,\n", tmp->append, tmp->append_str);
 		while (tmp->command[i] != NULL)
 		{
 			printf("Command are %s \n", tmp->command[i]);

@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 13:29:20 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/03 15:40:27 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/05 14:51:40 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	export(t_shell *cmd, char **command)
 			str = ft_split((command[i]), '=');
 			if (check_param(command[i]) == 0 &&
 					var_exists((*tmp)->env_lst, str[0]) == 0)
-				new_node_env(&(*tmp)->env_lst, str, command[i]);
+				new_node_env(cmd, &(*tmp)->env_lst, str, command[i]);
 			free_arr(str);
 		}
 		i++;
@@ -91,19 +91,15 @@ int	export_error(char *str)
 	printf("minishell: export: '%s': not a valid identifier\n", str);
 	return(EXIT_FAILURE);
 }
+
 // can we replace it by check valid id test ? 
-int check_valid_id(char c)
+int	check_valid_id(char c)
 {
-	if (c >= 32 && c <= 47)
-		return (1);
-	else if (c >= 58 && c <= 64)
-		return (1);
-	else if (c >= 91 && c <= 96)
-		return (1);
-	else if (c >= 123 && c <= 126)
-		return (1);
-	else
+	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') 
+		|| (c >= '0' && c <= '9') || (c == '_'))
 		return (0);
+	else
+		return (1);
 }
 
 int var_exists(t_env *env, char *str)
@@ -239,7 +235,6 @@ char *find_biggest(t_env **env_lst)
 		}
 		if (tmp != NULL)
 			tmp = tmp->next;
-		// printf("HERE %s\n", string);
 	}
 	return (string);
 }

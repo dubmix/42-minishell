@@ -1,15 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser_triage.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/08/05 11:56:11 by edrouot           #+#    #+#             */
+/*   Updated: 2023/08/05 13:15:36 by edrouot          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../minishell.h"
 
-void	triage_space(t_shell *cmd)
-{
-	t_token	**temp;
-	t_token	*nodeToDelete;
-	int		state;
+void	triage_quotes_bis(t_token **temp, char **cmd_splitted);
 
-	temp = &(cmd->tok_lst);
-	
-	nodeToDelete = NULL;
-	state = 0;
+void	triage_space_bis(t_shell *cmd, t_token **temp, t_token *node_to_delete, 
+	int state)
+{
 	while (*temp != NULL)
 	{
 		if ((*temp)->type == 0)
@@ -19,8 +26,8 @@ void	triage_space(t_shell *cmd)
 		}
 		else if ((*temp)->type == 3 && (state == 1 || state == 2))
 		{
-			nodeToDelete = *temp;
-			delete_node_tok(&(cmd->tok_lst), nodeToDelete);
+			node_to_delete = *temp;
+			delete_node_tok(&(cmd->tok_lst), node_to_delete);
 			state = 2;
 		}
 		else
@@ -33,24 +40,37 @@ void	triage_space(t_shell *cmd)
 	}
 }
 
-void	triage_space_redir(t_shell *cmd)
+void	triage_space(t_shell *cmd)
 {
 	t_token	**temp;
-	t_token	*nodeToDelete;
+	t_token	*node_to_delete;
 	int		state;
 
 	temp = &(cmd->tok_lst);
-	
-	nodeToDelete = NULL;
+	node_to_delete = NULL;
+	state = 0;
+	triage_space_bis(cmd, temp, node_to_delete, state);
+}
+
+void	triage_space_redir(t_shell *cmd)
+{
+	t_token	**temp;
+	t_token	*node_to_delete;
+	int		state;
+
+	temp = &(cmd->tok_lst);
+	node_to_delete = NULL;
 	state = 0;
 	while (*temp != NULL)
 	{
-		if (((*temp)->next != NULL) && ((*temp)->next->type == REDIRECT_INPUT || (*temp)->next->type == REDIRECT_OUTPUT || (*temp)->next->type == APPEND )) //(*temp)->type == SPA || (*temp)->type == WORD) && 
+		if (((*temp)->next != NULL) && ((*temp)->next->type == REDIRECT_INPUT
+				|| (*temp)->next->type == REDIRECT_OUTPUT
+				|| (*temp)->next->type == APPEND))
 		{
-			nodeToDelete = *temp;
-			delete_node_tok(&(cmd->tok_lst), nodeToDelete);
+			node_to_delete = *temp;
+			delete_node_tok(&(cmd->tok_lst), node_to_delete);
 		}
-			temp = &((*temp)->next);
+		temp = &((*temp)->next);
 	}
 }
 
@@ -63,15 +83,7 @@ void	triage_quotes(t_shell *cmd)
 	while (*temp != NULL)
 	{
 		if ((*temp)->state == 1)
-		{
-			cmd_splitted = ft_split((*temp)->command, '\"');
-			free((*temp)->command);
-			if (cmd_splitted[0])
-				(*temp)->command = ft_strdup(cmd_splitted[0]);
-			else
-				(*temp)->command = ft_strdup("\"\"");
-			free_arr(cmd_splitted);
-		}
+			triage_quotes_bis(temp, cmd_splitted);
 		else if ((*temp)->state == 2)
 		{
 			cmd_splitted = ft_split((*temp)->command, '\'');
@@ -85,4 +97,15 @@ void	triage_quotes(t_shell *cmd)
 		}
 		temp = &((*temp)->next);
 	}
+}
+
+void	triage_quotes_bis(t_token **temp, char **cmd_splitted)
+{
+	cmd_splitted = ft_split((*temp)->command, '\"');
+	free((*temp)->command);
+	if (cmd_splitted[0])
+		(*temp)->command = ft_strdup(cmd_splitted[0]);
+	else
+		(*temp)->command = ft_strdup("\"\"");
+	free_arr(cmd_splitted);
 }

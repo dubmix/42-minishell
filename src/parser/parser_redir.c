@@ -6,13 +6,25 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 16:13:54 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/04 10:58:22 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/05 11:55:25 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-void	handle_redir_in_out(t_single_cmd *new, t_token *temp)
+int	handle_redir_in(int fd, t_single_cmd *new, t_token *temp)
+{
+	if (temp->type == REDIRECT_INPUT)
+	{
+		free(new->redir_in_str);
+		new->redir_in_str = ft_strdup(temp->next->command);
+		fd = open(new->redir_in_str, O_RDONLY | O_CREAT, 0644);
+		new->redir_in = 1;
+	}
+	return (fd);
+}
+
+void	handle_redir_in_out(t_shell *cmd, t_single_cmd *new, t_token *temp)
 {
 	int	fd;
 
@@ -32,13 +44,8 @@ void	handle_redir_in_out(t_single_cmd *new, t_token *temp)
 		new->append = 1;
 	}
 	else if (temp->type == REDIRECT_INPUT)
-	{
-		free(new->redir_in_str);
-		new->redir_in_str = ft_strdup(temp->next->command);
-		fd = open(new->redir_in_str, O_RDONLY | O_CREAT, 0644);
-		new->redir_in = 1;
-	}
+		fd = handle_redir_in(fd, new, temp);
 	if (fd < 0)
-		printf("REDIR OUT SIMPLE ERROR") ; // error handling
+		ft_error(cmd, "File descriptor error");
 	close(fd);
 }

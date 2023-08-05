@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 10:45:11 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/04 15:47:28 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/05 14:54:31 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,17 +122,9 @@ int exec_command(t_shell *cmd)
     if (cmd->cmd_lst->append == 1 || cmd->cmd_lst->redir_in == 1
             || cmd->cmd_lst->redir_out == 1 || cmd->nb_of_heredocs != 0) //if there are 
         check_redirections(cmd);
-    // if (cmd->nb_of_pipes != 0 && cmd->cmd_lst->command != NULL) // nb_of_pipes needs to be reinit // done in init_shell, I put it in the loop
-    // {
-    //     cmd->exit_code = single_command(cmd);
-    //     exit(cmd->exit_code); //si ca beug possibilite de lancer export etc dans le parent
-    // }
-    // else // useless since we check both conditions 
     if (cmd->cmd_lst->command != NULL)
     {
         cmd->exit_code = single_command(cmd);
-            printf("HERE 1 IS %d", cmd->exit_code);
-
         return (cmd->exit_code); //return (exit_code); // si exit l'env s'efface quand le loop recommence // normalement, l'env est free qu'apres la loop
     }
     return (cmd->exit_code);

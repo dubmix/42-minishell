@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 11:16:23 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/04 17:26:54 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/05 15:09:25 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	minishell_start(char **envp, char **argv)
 	if (!cmd)
 		return (0);
 	cmd->exit_code = 0;
-	// init_signals();
+	init_signals();
 	cmd->env_lst = init_envp(envp, cmd);
 	while (1)
 	{
@@ -46,20 +46,13 @@ int	minishell_start(char **envp, char **argv)
 		{
 			add_history(cmd->line);
 			cmd->tok_lst = tokenization(cmd);
-			// expand_var(cmd);
-			// parser(cmd);
-			// if (cmd->exit_code == 0)
-			// 	pre_executor(cmd);
-			// if (g_signals != 0)
-			// 	cmd->exit_code = g_signals;
-			// // printf("ERROR CODE IS %d\n", cmd->exit_code);
-			// free_all(cmd, 4);
+			expand_var(cmd);
+			parser(cmd);
+			pre_executor(cmd);
+			if (g_signals != 0)
+				cmd->exit_code = g_signals;
+			free_all(cmd, 4);
 		}
-		// else
-		// 	break;
-		// if (cmd->exit_flag == 1)
-        // 	exit(g_exit_code); // pq ca marche pas ca??
-		// printf("2 %d\n", ft_lstsize_test((cmd->env_lst)));
 	}
 	rl_clear_history();
 	free_all(cmd, 3);
