@@ -86,7 +86,7 @@ typedef struct s_shell
 void print_chararr(char **envp);
 
 /* main.c */
-int minishell_start(char **envp, char **argv);
+int     minishell_start(char **envp);
 void	init_shell(t_shell *cmd);
 
 /////////////////////////////////// LEXER //////////////////////////////////
@@ -218,8 +218,7 @@ void	delete_node_cmd(t_single_cmd **head, t_single_cmd *nodeToDelete);
 void	free_cmd_lst(t_single_cmd **cmd_lst);
 void	free_env_lst(t_env **env_lst);
 void    free_shell(t_shell *cmd);
-void	ft_error(t_shell *cmd, char *string);
-
+void	ft_error(t_shell *cmd, char *string, int type, int exit_code);
 
 //void	free_arr_int(int *arr);
 

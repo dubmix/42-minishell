@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:45:43 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/04 17:09:38 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/05 16:46:31 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ t_env	*init_envp(char **envp, t_shell *cmd)
 
 	size_env = size_envp(envp);
 	cmd->envp_copy = (char **)malloc(sizeof(char *) * (size_env + 1));
+	if (!cmd->envp_copy)
+		ft_error(cmd, "Env allocation failure", 5, 50);
 	envir = NULL;
 	i = 0;
 	while (envp[i] != NULL)
@@ -37,7 +39,6 @@ t_env	*init_envp(char **envp, t_shell *cmd)
 		cmd->envp_copy[i] = ft_strdup(envp[i]);
 		string = ft_split(envp[i], '=');
 		new_node_env(cmd, &envir, string, envp[i]);
-		j = 0;
 		free_arr(string);
 		i++;
 	}
@@ -84,7 +85,7 @@ void	new_node_env(t_shell *cmd, t_env **env_list,
 
 	new = (t_env *)malloc(sizeof(t_env));
 	if (!new)
-		return ;
+		ft_error(cmd, "New node env allocation failure", 5, 50);
 	new->full_string = ft_strdup(full_string);
 	new->name = ft_strdup(string[0]);
 	new->index = 0;
@@ -93,7 +94,7 @@ void	new_node_env(t_shell *cmd, t_env **env_list,
 	else
 		new->value = ft_strdup(string[1]);
 	if (!new->name || !new->value)
-		ft_error(cmd, "New node Env allocation failed");
+		ft_error(cmd, "New node env allocation failure", 5, 50);
 	new->next = NULL;
 	add_stack_back_env(env_list, new);
 }

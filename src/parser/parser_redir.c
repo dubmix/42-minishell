@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 16:13:54 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/05 11:55:25 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/05 16:56:59 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,6 @@ void	handle_redir_in_out(t_shell *cmd, t_single_cmd *new, t_token *temp)
 	else if (temp->type == REDIRECT_INPUT)
 		fd = handle_redir_in(fd, new, temp);
 	if (fd < 0)
-		ft_error(cmd, "File descriptor error");
+		ft_error(cmd, "File descriptor error", 6, 1);
 	close(fd);
 }

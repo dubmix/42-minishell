@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 11:16:23 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/05 15:30:51 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/05 16:32:38 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,16 @@ void	init_shell(t_shell *cmd)
 	cmd->nb_of_pipes = 0;
 }
 
-int	minishell_start(char **envp, char **argv)
+int	minishell_start(char **envp)
 {
 	t_shell	*cmd;
 
 	cmd = malloc(sizeof(t_shell));
-	argv = NULL;
-	(void)envp;
 	if (!cmd)
-		return (0);
+	{
+		ft_putstr_fd("Malloc cmd allocation failed", STDERR_FILENO);
+		exit(1);
+	}
 	cmd->exit_code = 0;
 	// init_signals();
 	cmd->env_lst = init_envp(envp, cmd);
@@ -55,18 +56,18 @@ int	minishell_start(char **envp, char **argv)
 		}
 	}
 	rl_clear_history();
-	free_all(cmd, 3);
+	free_all(cmd, 5);
 	free(cmd);
 	return (0);
 }
 
-
 /* launch minishell */
 int	main(int argc, char **argv, char **envp)
 {
+	argv = NULL;
 	if (argc != 1)
 		printf("Error, this program should not take any arguments");
 	else
-		minishell_start(envp, argv);
+		minishell_start(envp);
 	return (0);
 }

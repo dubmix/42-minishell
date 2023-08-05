@@ -20,6 +20,7 @@ void	free_all(t_shell *cmd, int type)
 	//type = 2 -> free tok_lst + cmd_lst
 	// type = 3 -> free env_lst
 	// type = 4 -> free shell (tok_lst, cmd_lst + all value of t_shell)
+	// type = 5 -> free env_lst + all the values from shell who are to be freed outside of the while loop
 
 	//to free : tok_lst        cmd_lst       env_lst 
 
@@ -33,21 +34,42 @@ void	free_all(t_shell *cmd, int type)
 		free_cmd_lst(&cmd->cmd_lst);
 	}
 	else if (type == 3)
+		free_env_lst(&cmd->env_lst);
+	else if (type == 4)
+		free_shell(cmd);
+	else if (type == 5)
 	{
 		free_env_lst(&cmd->env_lst);
 		free_arr(cmd->envp_copy);
 		free(cmd->oldpwd);
 	}
-	else if (type == 4)
-		free_shell(cmd);
 }
 
-void	ft_error(t_shell *cmd, char *string)
+void	ft_error(t_shell *cmd, char *string, int type, int exit_code)
 {
 	write(2, &string, ft_strlen(string));
-	free_all(cmd,4);
-	free_all(cmd,3);
-	cmd->exit_code = 1;
+	if (type == 0)
+		free_all(cmd, 0);
+	else if (type == 1)
+		free_all(cmd, 1);
+	else if (type == 2)
+		free_all(cmd, 2);
+	else if (type == 3)
+		free_all(cmd, 3);
+	else if (type == 4)
+		free_all(cmd, 4);
+	else if (type == 5)
+	{
+		free_all(cmd, 1);
+		free_all(cmd, 3);
+	}
+	else if (type == 6)
+	{
+		free_all(cmd, 1);
+		free_all(cmd, 2);
+		free_all(cmd, 3);
+	}
+	cmd->exit_code = exit_code;
 	exit(1);
 }
 void free_shell(t_shell *cmd)
@@ -65,21 +87,7 @@ void free_shell(t_shell *cmd)
 	cmd->nb_of_heredocs = 0;
 	free(cmd->tok_lst);
 	free(cmd->cmd_lst);
-	//cmd->exit_flag = 0;
 }
-
-
-// void delete_all_nodes(t_token **head) 
-// {
-//     t_token *current = *head;
-//     t_token *next;
-
-//     while (current != NULL) {
-//         next = current->next;
-//         delete_node_tok(head, current);
-//         current = next;
-//     }
-// }
 
 void	free_tok_lst(t_token **tok_lst)
 {
@@ -121,7 +129,6 @@ void	free_env_lst(t_env **env_lst)
 	}
 	*env_lst = NULL;
 }
-
 
 void	delete_node_cmd(t_single_cmd **head, t_single_cmd *nodeToDelete)
 {
