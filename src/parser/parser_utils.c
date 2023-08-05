@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
+/*   By: emiliedrouot <emiliedrouot@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 13:24:27 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/05 14:22:26 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/06 00:07:34 by emiliedrouo      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,8 @@ void	print_list_commands(t_single_cmd *cmd, t_shell *shell)
 		printf("redir_in is %d : %s\n", tmp->redir_in, tmp->redir_in_str);
 		printf("redir_out is %d : %s\n", tmp->redir_out, tmp->redir_out_str);
 		printf("append is %d : %s,\n", tmp->append, tmp->append_str);
+		printf("Command are %s \n", tmp->command[i]);
+
 		while (tmp->command[i] != NULL)
 		{
 			printf("Command are %s \n", tmp->command[i]);

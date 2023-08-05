@@ -136,7 +136,7 @@ void	add_stack_back_cmd(t_single_cmd **cmd_lst, t_single_cmd *new);
 
 /*parser_redir.c*/
 int     handle_redir_in(int fd, t_single_cmd *new, t_token *temp);
-void	handle_redir_in_out(t_shell *cmd, t_single_cmd *new, t_token *temp);
+int	handle_redir_in_out(t_shell *cmd, t_single_cmd *new, t_token *temp, int i);
 
 /*parser_utils.c*/
 void    delete_node_tok(t_token **head, t_token *nodeToDelete);

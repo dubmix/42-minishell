@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_triage.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
+/*   By: emiliedrouot <emiliedrouot@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 11:56:11 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/05 15:48:32 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/05 23:50:29 by emiliedrouo      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,14 +56,12 @@ void	triage_space_redir(t_shell *cmd)
 {
 	t_token	**temp;
 	t_token	*node_to_delete;
-	int		state;
 
 	temp = &(cmd->tok_lst);
 	node_to_delete = NULL;
-	state = 0;
 	while (*temp != NULL)
 	{
-		if (((*temp)->next != NULL) && ((*temp)->next->type == REDIRECT_INPUT
+		if (((*temp)->next != NULL) && (ft_strncmp((*temp)->command, " ", ft_strlen((*temp)->command)) == 0) && ((*temp)->next->type == REDIRECT_INPUT
 				|| (*temp)->next->type == REDIRECT_OUTPUT
 				|| (*temp)->next->type == APPEND))
 		{

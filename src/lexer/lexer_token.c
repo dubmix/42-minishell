@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_token.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
+/*   By: emiliedrouot <emiliedrouot@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:45:56 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/05 16:49:36 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/05 22:49:49 by emiliedrouo      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,32 +116,31 @@ int	new_token_quote(t_token **tokens, char *string, int i, int nb_token)
 
 /* Order every type into a list of token (see enum e_type) */
 
-int	tokenization_bis(t_shell *cmd, int i, t_token *tok_lst, int nb_token)
+t_token	*tokenization_bis(t_shell *cmd, int *i, t_token *tok_lst, int nb_token)
 {
-	if (cmd->line[i] == '|')
+	if (cmd->line[*i] == '|')
 	{
 		new_token(&tok_lst, "|", nb_token, PIPE);
 		cmd->nb_of_pipes++;
 	}
-	else if (cmd->line[i] == '>' && cmd->line[i + 1] != '>' 
-		&& cmd->line[i + 1] != '\0')
+	else if (cmd->line[*i] == '>' && cmd->line[*i + 1] != '>')
 		new_token(&tok_lst, ">", nb_token, REDIRECT_OUTPUT);
-	else if (cmd->line[i] == '<' && cmd->line[i + 1] != '<')
+	else if (cmd->line[*i] == '<' && cmd->line[*i + 1] != '<')
 		new_token(&tok_lst, "<", nb_token, REDIRECT_INPUT);
-	else if (cmd->line[i] == '>' && cmd->line[i + 1] == '>')
+	else if (cmd->line[*i] == '>' && cmd->line[*i + 1] == '>')
 	{
 		new_token(&tok_lst, ">>", nb_token, APPEND);
-		i++;
+		*i = *i + 1;
 	}
-	else if (cmd->line[i] == '<' && cmd->line[i + 1] == '<')
+	else if (cmd->line[*i] == '<' && cmd->line[*i + 1] == '<')
 	{
 		new_token(&tok_lst, "<<", nb_token, HEREDOC);
 		cmd->nb_of_heredocs++;
-		i++;
+		*i = *i + 1;
 	}
-	else if (cmd->line[i] == ' ' || cmd->line[i] == 9)
+	else if (cmd->line[*i] == ' ' || cmd->line[*i] == 9)
 		new_token(&tok_lst, " ", nb_token, SPA);
-	return (i);
+	return (tok_lst);
 }
 
 t_token	*tokenization_simple_char(t_shell *cmd, int i, 
@@ -197,7 +196,7 @@ t_token	*tokenization(t_shell *cmd)
 			tok_lst = tokenization_special_char(cmd, &i, tok_lst, nb_token);
 		else if (cmd->line[i] == '>' || cmd->line[i] == '<' || 
 			cmd->line[i] == ' ' || cmd->line[i] == 9 || cmd->line[i] == '|')
-			i = tokenization_bis(cmd, i, tok_lst, nb_token);
+			tok_lst = tokenization_bis(cmd, &i, tok_lst, nb_token);
 		else
 			i = new_token_var_words(&tok_lst, cmd->line, i, nb_token);
 		i++;

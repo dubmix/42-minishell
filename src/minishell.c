@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
+/*   By: emiliedrouot <emiliedrouot@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 11:16:23 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/05 16:32:38 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/05 23:59:36 by emiliedrouo      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,14 @@ int	minishell_start(char **envp)
 			cmd->tok_lst = tokenization(cmd);
 			expand_var(cmd);
 			parser(cmd);
-			pre_executor(cmd);
-			if (g_signals != 0)
-				cmd->exit_code = g_signals;
-			free_all(cmd, 4);
+			// pre_executor(cmd);
+			// if (g_signals != 0)
+			// 	cmd->exit_code = g_signals;
+			// free_all(cmd, 4);
 		}
 	}
-	rl_clear_history();
+	// rl_clear_history(); // TO PUT AGAIN
+	clear_history;
 	free_all(cmd, 5);
 	free(cmd);
 	return (0);
@@ -66,7 +67,7 @@ int	main(int argc, char **argv, char **envp)
 {
 	argv = NULL;
 	if (argc != 1)
-		printf("Error, this program should not take any arguments");
+		printf("Error, this program should not take any arguments, %s", argv[0]);
 	else
 		minishell_start(envp);
 	return (0);

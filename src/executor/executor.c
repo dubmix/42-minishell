@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
+/*   By: emiliedrouot <emiliedrouot@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 10:45:11 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/05 14:54:31 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/05 21:59:32 by emiliedrouo      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int pre_executor(t_shell *cmd)
     {
         cmd->pid = ft_calloc(sizeof(int), cmd->nb_of_pipes + 2); // maia a +2
         if(!cmd->pid)
-            ft_error(cmd, "Pid error"); //error handling issue malloc 
+            ft_error(cmd, "Pid error", 4, 1);
         exec_piped_command(cmd);
     }
     return (cmd->exit_code);
@@ -52,7 +52,7 @@ void exec_single_command(t_shell *cmd)
     }
     pid = fork();
     if (pid < 0)
-        ft_error(cmd, "Fork failure");
+        ft_error(cmd, "Fork error", 4, 1);
     if (pid == 0)
         cmd->exit_code = exec_command(cmd);
     else
@@ -91,7 +91,7 @@ int ft_fork(t_shell *cmd, int pipefd[2], int fd, int i)
 {
     cmd->pid[i] = fork();
     if (cmd->pid[i] < 0)
-        ft_error(cmd, "Fork error");
+        ft_error(cmd, "Fork error", 4, 1);
     if (cmd->pid[i] == 0)
         dup_cmd(cmd, pipefd, fd);
     i++;
@@ -103,13 +103,13 @@ void dup_cmd(t_shell *cmd, int pipefd[2], int fd)
     if (cmd->cmd_lst->index != 0)
     {
         if (dup2(fd, STDIN_FILENO) < 0)
-            ft_error(cmd, "Dup failed");
+            ft_error(cmd, "Dup failed", 4, 1);
     }
     close(pipefd[0]);
     if (cmd->cmd_lst->next)
     {
         if (dup2(pipefd[1], STDOUT_FILENO) < 0)
-            ft_error(cmd, "Dup failed");
+            ft_error(cmd, "Dup failed", 4, 1);
     }
     close(pipefd[1]);
     if(cmd->cmd_lst->index != 0)

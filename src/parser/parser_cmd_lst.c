@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_cmd_lst.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
+/*   By: emiliedrouot <emiliedrouot@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 16:04:33 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/05 16:56:05 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/06 00:11:43 by emiliedrouo      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,11 +59,12 @@ t_token	*new_node_cmd(t_single_cmd **cmd_lst, int index,
 	init_node_cmd(&new, cmd, index);
 	while (temp != NULL && temp->type != PIPE)
 	{
+		ft_putstr_fd(temp->command, STDERR_FILENO);
 		if ((temp->type == WORD) && i < cmd->words_per_pipe[index])
 			new->command[i++] = ft_strdup(temp->command);
 		else if (temp->type == REDIRECT_INPUT 
 			|| temp->type == REDIRECT_OUTPUT || temp->type == APPEND)
-			handle_redir_in_out(cmd, new, temp);
+			i = handle_redir_in_out(cmd, new, temp, i) + 1;
 		else if (temp->type == HEREDOC)
 			temp = temp->next->next;
 		if (temp != NULL)

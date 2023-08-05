@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
+/*   By: emiliedrouot <emiliedrouot@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 13:29:20 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/05 15:20:34 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/05 22:00:49 by emiliedrouo      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,13 +175,12 @@ void print_sorted_env(t_env **env_lst)
 
 void	sort_env(t_env **env_lst)
 {
-	t_env	*tmp;
-
-	tmp = *env_lst;
-	int i;
-	i = 1;
+	// t_env	*tmp; // au final I dont use it
 	char *string;
-	
+	int i;
+
+	// tmp = *env_lst;
+	i = 1;
 	while (i < ft_lstsize_test(*env_lst))
 	{
 		string = find_biggest(env_lst);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_main.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
+/*   By: emiliedrouot <emiliedrouot@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 09:01:11 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/05 16:56:41 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/05 23:59:54 by emiliedrouo      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void	parser(t_shell *cmd)
 		grab_heredoc(cmd);
 	}
 	cmd->cmd_lst = triage_cmd_redir(cmd);
+	print_list_commands(cmd->cmd_lst, cmd);
 }
 
 void	number_heredocs(t_shell *cmd)
@@ -75,7 +76,8 @@ void	number_words_per_pipe(t_shell *cmd)
 				temp = temp->next;
 			else if (temp->type == WORD)
 				j++;
-			temp = temp->next;
+			if (temp != NULL)
+				temp = temp->next;
 		}
 		cmd->words_per_pipe[i++] = j;
 		if (temp != NULL)

@@ -6,7 +6,7 @@
 /*   By: emiliedrouot <emiliedrouot@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 16:00:35 by edrouot           #+#    #+#             */
-/*   Updated: 2023/07/21 15:29:32 by emiliedrouo      ###   ########.fr       */
+/*   Updated: 2023/08/05 22:07:32 by emiliedrouo      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,4 +205,158 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t size)
 	if (i < size)
 		dst[i] = '\0';
 	return (lengthstr(src));
+}
+
+
+void	ft_bzero(void *s, size_t n);
+
+void	*ft_calloc(size_t nmemb, size_t size)
+{
+	void	*str;
+
+	str = malloc (nmemb * size);
+	if (!str)
+		return (NULL);
+	ft_bzero(str, size * nmemb);
+	return (str);
+}
+
+int	ft_isdigit(int c)
+{
+	if (c >= '0' && c <= '9')
+		return (1);
+	else
+		return (0);
+}
+
+int	ft_intlen(int n)
+{
+	int	len;
+
+	len = 0;
+	if (n == -2147483648)
+		len = 12;
+	if (n <= 0)
+	{
+		n = n * -1;
+		len++;
+	}
+	while (n > 0)
+	{
+		n = n / 10;
+		len++;
+	}
+	return (len);
+}
+
+char	*checkitoa(char *str, int n, int index)
+{
+	if (n < 0)
+	{
+		str[0] = 45;
+		n = n * (-1);
+	}
+	if (n == 0)
+		str[0] = 48;
+	while (n > 0)
+	{
+		str[index] = 48 + (n % 10);
+		n = n / 10;
+		index--;
+	}
+	return (str);
+}
+
+char	*ft_itoa(int n)
+{
+	char	*str;
+	int		index;
+
+	index = ft_intlen(n);
+	if (n == -2147483648)
+	{
+		str = malloc(sizeof(char) * (index - 1));
+		if (!str)
+			return (NULL);
+		ft_strlcpy(str, "-2147483648", 12);
+		return (str);
+	}
+	else
+	{
+		str = malloc(sizeof (char) * (index + 1));
+		if (!str)
+			return (NULL);
+		str[index] = '\0';
+		index = index - 1;
+		str = checkitoa(str, n, index);
+	}
+	return (str);
+}
+
+
+int	lengthint(int nb)
+{
+	int	div;
+
+	div = 1;
+	while (nb >= 10)
+	{
+		nb = nb / 10;
+		div = div * 10;
+	}
+	return (div);
+}
+
+void	ft_putnbr_fd(int nb, int fd)
+{
+	int	n;
+	int	div;
+
+	n = nb;
+	if (nb == -2147483648)
+		write (fd, "-2147483648", 11);
+	if (nb < 0 && nb != -2147483648)
+	{
+		write(fd, "-", 1);
+		nb = nb * -1;
+	}
+	div = lengthint(nb);
+	while (nb >= 0)
+	{
+		n = nb / div + 48;
+		write (fd, &n, 1);
+		nb = nb % div;
+		div = div / 10;
+		if (div == 0)
+			break ;
+	}
+}
+
+
+void	ft_putstr_fd(char *s, int fd)
+{
+	int	index;
+
+	index = 0;
+	if (!s)
+		return ;
+	while (s[index] != '\0')
+	{
+		write(fd, &s[index], 1);
+		index++;
+	}
+}
+
+
+void	ft_bzero(void *s, size_t n)
+{
+	unsigned char	*str;
+
+	str = s;
+	while (n != 0)
+	{
+		*str = '\0';
+		n--;
+		str++;
+	}
 }
