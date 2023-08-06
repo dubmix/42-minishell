@@ -150,6 +150,7 @@ void	print_list_commands(t_single_cmd *cmd, t_shell *shell);
 int   single_command(t_shell *cmd);
 char	**get_path(char **envp);
 char	*check_access(char **envp, char **command, t_shell *cmd);
+int	check_redirections(t_shell *cmd);
 void exec_single_command(t_shell *cmd);
 int pre_executor(t_shell *cmd);
 int exec_piped_command(t_shell *cmd);
@@ -161,6 +162,8 @@ int exec_infile(char *file);
 int exec_outfile(t_shell *cmd);
 int pipe_wait(t_shell *cmd);
 int exec_heredoc(t_shell *cmd);
+int   exec_piped_command_sub(t_shell *cmd, int pipefd[], int fd, int i);
+int    exec_single_command_sub(t_shell *cmd);
 
 /*heredoc.c*/
 void	grab_heredoc(t_shell *cmd);
@@ -171,6 +174,7 @@ char *double_quote_env_heredoc(t_shell *cmd, char *string);
 
 /*cd*/
 int     cd(t_shell *cmd);
+void	cd_sub(t_shell *cmd);
 int	    go_to_path(t_shell *cmd, char *str);
 char    *get_path_cd(t_shell *cmd, char *str);
 t_env   *add_path_to_env(t_shell *cmd);
@@ -181,6 +185,7 @@ int     is_only_digits(char *str);
 /*echo*/
 void    echo(char **args);
 int find_new_line(char **cmd, int i);
+int	echo_sub(char **cmd, int i);
 /*env*/
 int     env(t_shell *cmd);
 /*pwd*/
@@ -201,7 +206,9 @@ void	sort_env(t_env **env_lst);
 
 /*unset*/
 int unset(t_shell *cmd, char **command);
-void	delete_node_env(t_env **head, t_env *nodeToDelete);
+int	unset_error(char **command);
+void	delete_node_env(t_env **head, t_env *node_to_delete);
+void unset_sub(t_shell *cmd, char **command);
 
 /////////////////////////////////// OTHERS //////////////////////////////////
 
@@ -210,13 +217,14 @@ void init_signals();
 void sigquit_handler(int sig);
 void sigint_handler(int sig);
 void	sigint_heredoc(int sig);
-void sigint_process(int sig);
+void sigint_child(int sig);
+void	sigterm_handler(int sig);
 
 /*errors.c*/
 void    free_arr(char **arr); // free any arrays
 void	free_all(t_shell *cmd, int type);
 void	free_tok_lst(t_token **tok_lst);
-void	delete_node_cmd(t_single_cmd **head, t_single_cmd *nodeToDelete);
+void	delete_node_cmd(t_single_cmd **head, t_single_cmd *node_to_delete);
 void	free_cmd_lst(t_single_cmd **cmd_lst);
 void	free_env_lst(t_env **env_lst);
 void    free_shell(t_shell *cmd);
