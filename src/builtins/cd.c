@@ -40,7 +40,7 @@ int	cd(t_shell *cmd)
 	{
 		ret = chdir((*tmp)->cmd_lst->command[1]);
 		if (ret != 0)
-			printf("minishell: %s\n", (*tmp)->cmd_lst->command[0]);
+			printf("minishell: %s No such file or directory \n", (*tmp)->cmd_lst->command[0]); // what's this ?
 	}
 	if (ret != 0)
 		return (EXIT_FAILURE);
@@ -75,19 +75,25 @@ void	add_path_to_env(t_shell *cmd)
 	char	cwd[PATH_MAX];
 
 	tmp = cmd->env_lst;
+	head = &tmp;
 	while (tmp)
 	{
 		if (ft_strncmp(tmp->name, "PWD", 3) == 0)
 		{
-			tmp->value = getcwd(cwd, sizeof(cwd));
+			printf("OLD PWD IS %s", tmp->value);
+			free(tmp->value);
+			tmp->value = ft_strdup(getcwd(cwd, sizeof(cwd)));
+			printf("NEW PWD IS %s", tmp->value);
 		}
-		else if (ft_strncmp(tmp->name, "OLDPWD", 6) == 0)
+		if (ft_strncmp(tmp->name, "OLDPWD", 6) == 0)
 		{
-			tmp->value = cmd->oldpwd;
-			free(cmd->oldpwd);
+			free(tmp->value);
+			tmp->value = ft_strdup(cmd->oldpwd);
 		}
 		tmp = tmp->next;
 	}
+	tmp = *head;
+	return (*head);
 }
 
 char	*get_path_cd(t_shell *cmd, char *str)
@@ -116,9 +122,5 @@ int	go_to_path(t_shell *cmd, char *str)
 	tmp = get_path_cd(cmd, str);
 	ret = chdir(tmp);
 	free(tmp);
-	if (ret != 0)
-	{
-		/* error handling */
-	}
 	return (ret);
 }

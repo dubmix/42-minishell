@@ -12,9 +12,9 @@
 
 #include "../../minishell.h"
 
-int env(t_shell *cmd)
+int	env(t_shell *cmd)
 {
-	t_env	*tmp;
+	t_env *tmp;
 
 	tmp = cmd->env_lst;
 	while (tmp != NULL)
@@ -22,5 +22,5 @@ int env(t_shell *cmd)
 		printf("%s\n", tmp->full_string);
 		tmp = tmp->next;
 	}
-    return (EXIT_SUCCESS);
+	return (EXIT_SUCCESS);
 }
