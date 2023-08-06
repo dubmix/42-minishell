@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 13:14:26 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/06 09:44:10 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/06 12:16:51 by pdelanno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,21 +24,11 @@ int	exxit(t_shell *cmd)
 	return (EXIT_SUCCESS);
 }
 
-void get_exit_code(char **command)
+void	get_exit_code(char **command)
 {
-int	g_exit_code; //need to be changed for the cmd->exit_code;
-	// if (str[1] == '\0')
-	// 	exit_code = 0;
-	// if (is_only_digits(str[1]) != 0)
-	// 	exit_code = ft_atoi(str[1]);
-	// else
-	// {
-	// 	printf("minishell: exit: %s: numeric argument required\n");
-	g_exit_code = 0;
-	// }		
-	//free_arr(str);
+	int	g_exit_code;
 
-	exit(0); //child process??
+	g_exit_code = 0;
 	if (!command[1])
 		g_exit_code = 0;
 	else if (is_only_digits(command[1]) == 0)
@@ -47,14 +37,13 @@ int	g_exit_code; //need to be changed for the cmd->exit_code;
 	{
 		printf("minishell: exit: %s: numeric argument required\n", command[1]);
 		g_exit_code = 255;
-	}		
-	//free_all(command);
+	}
 	exit(g_exit_code);
 }
 
-int is_only_digits(char *str)
+int	is_only_digits(char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (!str)
