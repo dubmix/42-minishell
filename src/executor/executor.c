@@ -34,7 +34,7 @@ void exec_single_command(t_shell *cmd)
     int status;    
 
     if(ft_strncmp(cmd->cmd_lst->command[0], "exit", 4) == 0)
-        exxit(cmd);    // check corner case exit | ech
+        exxit(cmd);    // check corner case exit | echo
     else if (ft_strncmp(cmd->cmd_lst->command[0], "export", 6) == 0)
     {
 		export(cmd, cmd->cmd_lst->command);
@@ -50,13 +50,19 @@ void exec_single_command(t_shell *cmd)
         cd(cmd);
         return ;
     }
+    signal(SIGINT, sigint_process);
     pid = fork();
     if (pid < 0)
         ft_error(cmd, "Fork failure");
     if (pid == 0)
+    {
         cmd->exit_code = exec_command(cmd);
+        exit(0);
+    }
     else
-        waitpid(pid, &status, 0); // why needed ? 
+    {
+        waitpid(pid, &status, 0);
+    }
 }
 
 int exec_piped_command(t_shell *cmd)
@@ -75,13 +81,19 @@ int exec_piped_command(t_shell *cmd)
             pipe(pipefd);
         i = ft_fork(cmd, pipefd, fd, i);
         if (cmd->cmd_lst->index != 0)
+        {
+            close(fd);
+            close(pipefd[0]);
             close(pipefd[1]);
+        }
         fd = pipefd[0];
         if (cmd->cmd_lst->next)
             cmd->cmd_lst = cmd->cmd_lst->next;
         else
             break;
     }
+    //close(pipefd[0]);
+    //close(pipefd[1]);
     pipe_wait(cmd);
     cmd->cmd_lst = head;
     return (0);
@@ -91,7 +103,7 @@ int ft_fork(t_shell *cmd, int pipefd[2], int fd, int i)
 {
     cmd->pid[i] = fork();
     if (cmd->pid[i] < 0)
-        ft_error(cmd, "Fork error");
+        ft_error(cmd, "Fork error\n");
     if (cmd->pid[i] == 0)
         dup_cmd(cmd, pipefd, fd);
     i++;
@@ -103,13 +115,14 @@ void dup_cmd(t_shell *cmd, int pipefd[2], int fd)
     if (cmd->cmd_lst->index != 0)
     {
         if (dup2(fd, STDIN_FILENO) < 0)
-            ft_error(cmd, "Dup failed");
+            ft_error(cmd, "Dup failed\n");
     }
+    write(1, "l", 1);
     close(pipefd[0]);
     if (cmd->cmd_lst->next)
     {
         if (dup2(pipefd[1], STDOUT_FILENO) < 0)
-            ft_error(cmd, "Dup failed");
+            ft_error(cmd, "Dup failed\n");
     }
     close(pipefd[1]);
     if(cmd->cmd_lst->index != 0)
@@ -125,9 +138,11 @@ int exec_command(t_shell *cmd)
     if (cmd->cmd_lst->command != NULL)
     {
         cmd->exit_code = single_command(cmd);
-        return (cmd->exit_code); //return (exit_code); // si exit l'env s'efface quand le loop recommence // normalement, l'env est free qu'apres la loop
+        write(1, "j", 1);
+        exit(0); //return (cmd->exit_code); // si exit l'env s'efface quand le loop recommence // normalement, l'env est free qu'apres la loop
     }
-    return (cmd->exit_code);
+    exit(0);
+    //return (cmd->exit_code);
 }
 
 int check_redirections(t_shell *cmd)

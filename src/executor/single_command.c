@@ -81,7 +81,7 @@ int	single_command(t_shell *cmd)
 		ft_putstr_fd("Command '", STDERR_FILENO);
 		ft_putstr_fd(temp->command[0], STDERR_FILENO);
 		ft_putstr_fd("' not found\n", STDERR_FILENO);
-		return (cmd->exit_code);
+		exit(cmd->exit_code);
 	}
 	if (ft_strncmp(cmd->cmd_lst->command[0], "echo", 4) == 0)
 		echo(cmd->cmd_lst->command);
@@ -97,5 +97,5 @@ int	single_command(t_shell *cmd)
 		}
 	}
 	free(path);
-	return(EXIT_SUCCESS);
+	return (EXIT_SUCCESS);
 }

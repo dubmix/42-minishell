@@ -12,11 +12,6 @@
 
 #include "../../minishell.h"
 
-int	event(void)
-{
-	return (EXIT_SUCCESS);
-}
-
 void	sigint_heredoc(int sig)
 {
 	(void)sig;
@@ -24,23 +19,41 @@ void	sigint_heredoc(int sig)
 	g_signals = 130;
 }
 
-void sigint_handler(int sig)
+void sigint_process(int sig)
 {
-	printf("\n");
+	(void)sig;
+	ft_putstr_fd("\n", STDERR_FILENO);
+}
+
+void sigint_handler(int sig)
+{	
+	ft_putstr_fd("\n", STDERR_FILENO);
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
-	(void) sig;
+	(void)sig;
 }
 
 void sigquit_handler(int sig)
 {
-	printf("Quit: %d\n", sig);
+	(void)sig;
+	ft_putstr_fd("Quit (core dumped)\n", STDERR_FILENO);
+	g_signals = 131;
+}
+
+void sigterm_handler(int sig)
+{
+	(void)sig;
+	ft_putstr_fd("Exit\n", STDERR_FILENO);
+	rl_replace_line("", 0);
+	rl_on_new_line();
+	rl_redisplay();
+	exit(0);
 }
 
 void init_signals()
 {
-	rl_event_hook = event;
 	signal(SIGINT, sigint_handler);
 	signal(SIGQUIT, SIG_IGN);
+	signal(SIGTERM, sigterm_handler);
 }

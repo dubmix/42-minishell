@@ -209,6 +209,7 @@ void init_signals();
 void sigquit_handler(int sig);
 void sigint_handler(int sig);
 void	sigint_heredoc(int sig);
+void sigint_process(int sig);
 
 /*errors.c*/
 void    free_arr(char **arr); // free any arrays

@@ -36,12 +36,17 @@ int	minishell_start(char **envp, char **argv)
 	if (!cmd)
 		return (0);
 	cmd->exit_code = 0;
-	init_signals();
 	cmd->env_lst = init_envp(envp, cmd);
 	while (1)
 	{
 		init_shell(cmd);
+		init_signals();
 		cmd->line = readline("Minishell >");
+		if (cmd->line == NULL)
+		{
+			printf("exit\n");
+			exit(0);
+		}
 		if (ft_strncmp(cmd->line, "", ft_strlen(cmd->line)) != 0)
 		{
 			add_history(cmd->line);

@@ -63,7 +63,7 @@ t_token	*new_node_cmd(t_single_cmd **cmd_lst, int index,
 			new->command[i++] = ft_strdup(temp->command);
 		else if (temp->type == REDIRECT_INPUT 
 			|| temp->type == REDIRECT_OUTPUT || temp->type == APPEND)
-			handle_redir_in_out(new, temp);
+			handle_redir_in_out(cmd, new, temp);
 		else if (temp->type == HEREDOC)
 			temp = temp->next->next;
 		if (temp != NULL)
