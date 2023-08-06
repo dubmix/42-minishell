@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 11:16:23 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/06 08:34:08 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/06 11:20:13 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ void	init_shell(t_shell *cmd)
 {
 	cmd->nb_of_heredocs = 0;
 	cmd->nb_of_pipes = 0;
+	cmd->oldpwd = (char *)malloc(sizeof(char *));
+	cmd->oldpwd = ft_strdup("");
 }
 
 void	clear_line_space(char *line, t_shell *cmd)
@@ -75,9 +77,10 @@ int	minishell_start(char **envp)
 			cmd->tok_lst = tokenization(cmd);
 			expand_var(cmd);
 			parser(cmd);
-			pre_executor(cmd);
 			if (g_signals != 0)
 				cmd->exit_code = g_signals;
+			else
+				pre_executor(cmd);
 			free_all(cmd, 4);
 		}
 	}

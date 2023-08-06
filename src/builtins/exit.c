@@ -24,9 +24,9 @@ int	exxit(t_shell *cmd)
 	return (EXIT_SUCCESS);
 }
 
-void get_exit_code(char **command)
+void	get_exit_code(char **command)
 {
-int	g_exit_code; //need to be changed for the cmd->exit_code;
+	int g_exit_code; // need to be changed for the cmd->exit_code;
 	// if (str[1] == '\0')
 	// 	exit_code = 0;
 	// if (is_only_digits(str[1]) != 0)
@@ -35,10 +35,9 @@ int	g_exit_code; //need to be changed for the cmd->exit_code;
 	// {
 	// 	printf("minishell: exit: %s: numeric argument required\n");
 	g_exit_code = 0;
-	// }		
-	//free_arr(str);
-
-	exit(0); //child process??
+	// }
+	// free_arr(str);
+	exit(0); // child process??
 	if (!command[1])
 		g_exit_code = 0;
 	else if (is_only_digits(command[1]) == 0)
@@ -47,12 +46,12 @@ int	g_exit_code; //need to be changed for the cmd->exit_code;
 	{
 		printf("minishell: exit: %s: numeric argument required\n", command[1]);
 		g_exit_code = 255;
-	}		
-	//free_all(command);
+	}
+	// free_all(command);
 	exit(g_exit_code);
 }
 
-int is_only_digits(char *str)
+int	is_only_digits(char *str)
 {
 	int i;
 

@@ -172,7 +172,7 @@ char *double_quote_env_heredoc(t_shell *cmd, char *string);
 int     cd(t_shell *cmd);
 int	    go_to_path(t_shell *cmd, char *str);
 char    *get_path_cd(t_shell *cmd, char *str);
-void    add_path_to_env(t_shell *cmd);
+t_env   *add_path_to_env(t_shell *cmd);
 /*exit*/
 int	    exxit(t_shell *cmd);
 void    get_exit_code(char **command);

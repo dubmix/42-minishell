@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 11:32:47 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/05 11:25:20 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/06 11:26:15 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,9 @@ void	grab_heredoc(t_shell *cmd)
 	while(i < cmd->nb_of_heredocs)
 	{
 		line_input = readline("heredoc >");
-		if(!ft_strncmp(line_input, cmd->heredoc_arr[i], ft_strlen(line_input)))
+		if (ft_strncmp(line_input, "", ft_strlen(line_input)) == 0)
+			break;
+		else if(!ft_strncmp(line_input, cmd->heredoc_arr[i], ft_strlen(line_input)))
 			i++;
 		else if (i == (cmd->nb_of_heredocs - 1))
 		{

@@ -6,76 +6,87 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 12:21:08 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/07/19 11:13:09 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/06 11:05:05 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-int cd(t_shell *cmd)
+int	cd(t_shell *cmd)
 {
-	int ret;
-	char *oldpwd;
-	t_shell **tmp;
+	int		ret;
+	t_shell	**tmp;
 
 	tmp = &cmd;
 	while ((*tmp)->env_lst)
 	{
-		if(ft_strncmp((*tmp)->env_lst->name, "PWD", 3))
+		if (ft_strncmp((*tmp)->env_lst->name, "PWD", 3))
 		{
-			oldpwd = malloc(sizeof(char *) * ft_strlen(((*tmp)->env_lst->value)));
-			oldpwd = (*tmp)->env_lst->value;
-			(*tmp)->oldpwd = oldpwd;
+			free((*tmp)->oldpwd);			
+			(*tmp)->oldpwd = ft_strdup((*tmp)->env_lst->value);
+			// printf("PWD IS %s",(*tmp)->env_lst->value );
 			break ;
 		}
 		(*tmp)->env_lst = (*tmp)->env_lst->next;
 	}
 	if (!(*tmp)->cmd_lst->command)
 		ret = go_to_path(cmd, "HOME");
-	else if(ft_strncmp((*tmp)->cmd_lst->command[0], "-", 1) == 0)
+	else if (ft_strncmp((*tmp)->cmd_lst->command[0], "-", 1) == 0)
 		ret = go_to_path(cmd, "OLDPWD");
 	else
 	{
 		ret = chdir((*tmp)->cmd_lst->command[1]);
+		write(1, "MM", 2);
 		if (ret != 0)
-			printf("minishell: %s\n", (*tmp)->cmd_lst->command[0]);
+			printf("minishell: %s\n", (*tmp)->cmd_lst->command[0]); // what's this ?
 	}
 	if (ret != 0)
-		return (EXIT_FAILURE); // exit_failure value = 8;
-	add_path_to_env(cmd);
+		return (8); // exit_failure value = 8;
+	cmd->env_lst = add_path_to_env(cmd);
+	printf("--------------\n");
+	print_list(cmd->env_lst);
+	printf("--------------\n");
 	return (EXIT_SUCCESS);
 }
 
-void add_path_to_env(t_shell *cmd)
+t_env	*add_path_to_env(t_shell *cmd)
 {
-	t_env *tmp;
-	char cwd[PATH_MAX];
+	t_env	*tmp;
+	t_env	**head;
+	char	cwd[PATH_MAX];
 
 	tmp = cmd->env_lst;
+	head = &tmp;
 	while (tmp)
 	{
 		if (ft_strncmp(tmp->name, "PWD", 3) == 0)
 		{
-			tmp->value = getcwd(cwd, sizeof(cwd));
+			printf("OLD PWD IS %s", tmp->value);
+			free(tmp->value);
+			tmp->value = ft_strdup(getcwd(cwd, sizeof(cwd)));
+			printf("NEW PWD IS %s", tmp->value);
 		}
-		else if (ft_strncmp(tmp->name, "OLDPWD", 6) == 0)
+		if (ft_strncmp(tmp->name, "OLDPWD", 6) == 0)
 		{
-			tmp->value = cmd->oldpwd;
-			free(cmd->oldpwd);
+			free(tmp->value);
+			tmp->value = ft_strdup(cmd->oldpwd);
 		}
 		tmp = tmp->next;
 	}
+	tmp = *head;
+	return (*head);
+
 }
 
-char *get_path_cd(t_shell *cmd, char *str)
+char	*get_path_cd(t_shell *cmd, char *str)
 {
-	t_env *tmp;
-	char *path;
+	t_env	*tmp;
+	char	*path;
 
 	tmp = cmd->env_lst;
-	while(tmp)
+	while (tmp)
 	{
-		if(ft_strncmp(tmp->name, str, ft_strlen(str)) == 0)
+		if (ft_strncmp(tmp->name, str, ft_strlen(str)) == 0)
 		{
 			path = ft_strdup(tmp->value);
 			return (path);

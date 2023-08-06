@@ -14,60 +14,60 @@
 
 // need to code the echo ~ -> should return home
 
-void    echo(char **cmd)
+void	echo(char **cmd)
 {
-    int newline;
-    int i;
-    int k;
-    int check;
+	int	newline;
+	int	i;
+	int	k;
+	int	check;
 
-    check = 0;
-    k = 0;
-    newline = 1;
-    i = 1;
-    if (cmd != NULL)
-    {   
-        if (ft_strncmp(cmd[i], " ", ft_strlen(cmd[i])) == 0)
-            i++;
-        else if(cmd[i][0] == '-')
-        {
-            k = i;
-            i = find_new_line(cmd, i);
-            if (k != i)
-                 newline = 0;
-        }  
-        while(cmd[i] != NULL)
-        {
-            ft_putstr_fd(cmd[i], STDOUT_FILENO);
-            check = 1;
-            i++;
-        }
-    }
-    if (newline == 1 && check == 1)
-        printf("\n");
+	check = 0;
+	k = 0;
+	newline = 1;
+	i = 1;
+	if (cmd != NULL)
+	{
+		if (ft_strncmp(cmd[i], " ", ft_strlen(cmd[i])) == 0)
+			i++;
+		else if (cmd[i][0] == '-')
+		{
+			k = i;
+			i = find_new_line(cmd, i);
+			if (k != i)
+				newline = 0;
+		}
+		while (cmd[i] != NULL)
+		{
+			ft_putstr_fd(cmd[i], STDOUT_FILENO);
+			check = 1;
+			i++;
+		}
+	}
+	if (newline == 1 && check == 1)
+		printf("\n");
 }
 
-int find_new_line(char **cmd, int i)
+int	find_new_line(char **cmd, int i)
 {
-    int k;
+	int k;
 
-    k = 0;
-    while (cmd[i] != NULL)
-    {
-        if (cmd[i][k] == '-')
-        {
-            k++;
-            while (cmd[i][k] == 'n')
-               k++;
-            if (cmd[i][k] != '\0')
-                return (i);
-            i++;
-            k = 0;
-        }
-        else if (cmd[i][k] == ' ')
-            i++;
-        if (cmd[i][k] != '-' && cmd[i][k] != ' ')
-            return (i);
-    }
-    return (i);    
+	k = 0;
+	while (cmd[i] != NULL)
+	{
+		if (cmd[i][k] == '-')
+		{
+			k++;
+			while (cmd[i][k] == 'n')
+				k++;
+			if (cmd[i][k] != '\0')
+				return (i);
+			i++;
+			k = 0;
+		}
+		else if (cmd[i][k] == ' ')
+			i++;
+		if (cmd[i][k] != '-' && cmd[i][k] != ' ')
+			return (i);
+	}
+	return (i);
 }

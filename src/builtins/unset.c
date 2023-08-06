@@ -12,64 +12,65 @@
 
 #include "../../minishell.h"
 
-int unset_error(char **command)
+int	unset_error(char **command)
 {
-    int i;
-    int j;
+	int	i;
+	int	j;
 
-    i = 1;
-    j = 0;
-    if (!command[i])
-    {
-        printf("minishell: unset: not enough arguments\n");
-        return (1);
-    }
-    while (command[i])
-    {
-        while (command[i][j])
-        {
-            if (command[i][j] == '/' || command[i][j] == '=')
-            {    
-                printf("minishell: unset: %s: invalid parameter name\n", command[i]);
-                return (1);
-            }
-            j++;
-        }
-        i++;
-    }
-    return (EXIT_SUCCESS);
+	i = 1;
+	j = 0;
+	if (!command[i])
+	{
+		printf("minishell: unset: not enough arguments\n");
+		return (1);
+	}
+	while (command[i])
+	{
+		while (command[i][j])
+		{
+			if (command[i][j] == '/' || command[i][j] == '=')
+			{
+				printf("minishell: unset: %s: invalid parameter name\n",
+					command[i]);
+				return (1);
+			}
+			j++;
+		}
+		i++;
+	}
+	return (EXIT_SUCCESS);
 }
 
-int unset(t_shell *cmd, char **command)
+int	unset(t_shell *cmd, char **command)
 {
-    t_shell **tmp;
-    t_env *tmp_env;
-    int i;
+	t_shell	**tmp;
+	t_env	*tmp_env;
+	int		i;
 
-    tmp = &cmd;
-    i = 1;
-    if (unset_error(command) == 1)
-        return(EXIT_FAILURE);
-    while (command[i])
-    {
-        if (ft_strncmp(command[i], " ", 1) != 0)
-        {
-            tmp_env = (*tmp)->env_lst;
-            while(tmp_env)
-            {
-                if (ft_strncmp(tmp_env->name, command[i], 
-                        ft_strlen(tmp_env->name)) == 0)
-                {
-                    delete_node_env(&(*tmp)->env_lst, tmp_env);
-                    break ;
-                }
-                tmp_env = tmp_env->next;
-            }
-        }
-        i++;
-    }
-    update_envp_copy(cmd);
-    return (EXIT_SUCCESS);
+	tmp = &cmd;
+	i = 1;
+	if (unset_error(command) == 1)
+		return (EXIT_FAILURE);
+	while (command[i])
+	{
+		if (ft_strncmp(command[i], " ", 1) != 0)
+		{
+			tmp_env = (*tmp)->env_lst;
+			while (tmp_env)
+			{
+				if (ft_strncmp(tmp_env->name, command[i],
+						ft_strlen(tmp_env->name)) == 0)
+				{
+					delete_node_env(&(*tmp)->env_lst, tmp_env);
+					break ;
+				}
+				tmp_env = tmp_env->next;
+			}
+		}
+		i++;
+	}
+	update_envp_copy(cmd);
+	return (EXIT_SUCCESS);
 }
 
 void	delete_node_env(t_env **head, t_env *node_to_delete)
@@ -92,8 +93,8 @@ void	delete_node_env(t_env **head, t_env *node_to_delete)
 			return ;
 	}
 	free(node_to_delete->name);
-    free(node_to_delete->value);
-    free(node_to_delete->full_string);
+	free(node_to_delete->value);
+	free(node_to_delete->full_string);
 	free(node_to_delete);
 	return ;
 }

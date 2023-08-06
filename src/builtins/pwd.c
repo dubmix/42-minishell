@@ -12,15 +12,15 @@
 
 #include "../../minishell.h"
 
-int    pwd(void)
+int	pwd(void)
 {
-    char cwd[PATH_MAX];
+	char cwd[PATH_MAX];
 
-    if (getcwd(cwd, sizeof(cwd)) != NULL)
-    {
-        printf("%s\n", cwd);
-        return (EXIT_SUCCESS);
-    }
-    else
-        return (EXIT_FAILURE);
+	if (getcwd(cwd, sizeof(cwd)) != NULL)
+	{
+		printf("%s\n", cwd);
+		return (EXIT_SUCCESS);
+	}
+	else
+		return (EXIT_FAILURE);
 }

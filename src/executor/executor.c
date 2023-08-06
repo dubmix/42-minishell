@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 10:45:11 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/06 09:44:07 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/06 11:26:49 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,9 +179,9 @@ int exec_command(t_shell *cmd)
     if (cmd->cmd_lst->command != NULL)
     {
         cmd->exit_code = single_command(cmd);
-        exit(0); //return (cmd->exit_code); // si exit l'env s'efface quand le loop recommence // normalement, l'env est free qu'apres la loop
+        exit(cmd->exit_code); //return (cmd->exit_code); // si exit l'env s'efface quand le loop recommence // normalement, l'env est free qu'apres la loop
     }
-    exit(0);
+    exit(cmd->exit_code);
     //return (cmd->exit_code);
 }
 
@@ -194,7 +194,7 @@ int check_redirections(t_shell *cmd)
     //     ft_putnbr_fd(cmd->cmd_lst->index, STDERR_FILENO);
     //     ft_putstr_fd(cmd->cmd_lst->redir_out_str, STDERR_FILENO);
     //     ft_putstr_fd("\n", STDERR_FILENO);
-        if (cmd->nb_of_heredocs != 0)
+        if (cmd->nb_of_heredocs != 0 && g_signals != 130)
             cmd->exit_code = exec_heredoc(cmd);
         else if (cmd->cmd_lst->redir_in == 1)
             cmd->exit_code = exec_infile(cmd->cmd_lst->redir_in_str);
@@ -293,7 +293,8 @@ int exec_outfile(t_shell *cmd)
 //     int status;
 //     // error code of ctrl C to be checked as condition
 //     i = cmd->nb_of_pipes + 1;
-//     waitpid(cmd->pid[i], &status, 0); // while loop checking for ctrl c   with flag WNOHANG
+//     // while ( && waitpid(cmd->pid[i], &status, WNOHANG))
+//     waitpid(cmd->pid[i], &status, WNOHANG); // while loop checking for ctrl c   with flag WNOHANG
 //     i--;
 //     while (i > 0)
 //     {
@@ -329,27 +330,18 @@ int pipe_wait(t_shell *cmd)
             }
             else if (result == 0)
             {
-                // Child process is still running, continue waiting
                 continue;
             }
             else
             {
-                // Child process has terminated, handle the exit status
                 if (WIFEXITED(status))
                 {
                     cmd->exit_code = WEXITSTATUS(status);
                 }
-                // Handle other exit statuses if needed (e.g., WIFSIGNALED)
             }
         }
-
-        // Add a short sleep to prevent busy-waiting (optional)
-        // You can remove this if you don't want to add a sleep
-        usleep(10000);
-
-        // Decrease the number of child processes we are waiting for
+        usleep(5000);
         child_count--;
     }
-
     return EXIT_SUCCESS;
 }
