@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 10:45:11 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/06 08:36:06 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/06 09:40:23 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,39 @@ void exec_single_command(t_shell *cmd)
     }
 }
 
+// int exec_piped_command(t_shell *cmd)
+// {
+//     int fd;
+//     int pipefd[2];
+//     int i;
+//     t_single_cmd *head;
+
+//     head = cmd->cmd_lst;
+//     i = 0;
+//     fd = STDIN_FILENO;
+//     while (cmd->cmd_lst)
+//     {
+//         if (cmd->cmd_lst->next)
+//             pipe(pipefd);
+//         i = ft_fork(cmd, pipefd, fd, i);
+//         if (cmd->cmd_lst->index != 0)
+//         {
+//             close(fd);
+//             close(pipefd[1]);
+//         }
+//         fd = pipefd[0];
+//         if (cmd->cmd_lst->next)
+//             cmd->cmd_lst = cmd->cmd_lst->next;
+//         else
+//             break;
+//     }
+/
+//     pipe_wait(cmd);
+//     cmd->cmd_lst = head;
+//     return (0);
+// }
+
+
 int exec_piped_command(t_shell *cmd)
 {
     int fd;
@@ -78,12 +111,22 @@ int exec_piped_command(t_shell *cmd)
     while (cmd->cmd_lst)
     {
         if (cmd->cmd_lst->next)
-            pipe(pipefd);
+        {
+            if (pipe(pipefd) == -1)
+            {
+                perror("pipe");
+                exit(EXIT_FAILURE);
+            }
+        }
         i = ft_fork(cmd, pipefd, fd, i);
+        if (i == -1)
+        {
+            perror("ft_fork");
+            exit(EXIT_FAILURE);
+        }
         if (cmd->cmd_lst->index != 0)
         {
             close(fd);
-            close(pipefd[0]);
             close(pipefd[1]);
         }
         fd = pipefd[0];
@@ -92,11 +135,10 @@ int exec_piped_command(t_shell *cmd)
         else
             break;
     }
-    //close(pipefd[0]);
-    //close(pipefd[1]);
+    // No need to close pipe file descriptors here, they are already closed in the child processes.
     pipe_wait(cmd);
     cmd->cmd_lst = head;
-    return (0);
+    return (EXIT_SUCCESS);
 }
 
 int ft_fork(t_shell *cmd, int pipefd[2], int fd, int i)
