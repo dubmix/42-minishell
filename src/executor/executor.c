@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 10:45:11 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/05 14:54:31 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/06 08:36:06 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int pre_executor(t_shell *cmd)
     {
         cmd->pid = ft_calloc(sizeof(int), cmd->nb_of_pipes + 2); // maia a +2
         if(!cmd->pid)
-            ft_error(cmd, "Pid error"); //error handling issue malloc 
+            ft_error(cmd, "Pid error", 4, 1);
         exec_piped_command(cmd);
     }
     return (cmd->exit_code);
@@ -53,7 +53,7 @@ void exec_single_command(t_shell *cmd)
     signal(SIGINT, sigint_process);
     pid = fork();
     if (pid < 0)
-        ft_error(cmd, "Fork failure");
+        ft_error(cmd, "Fork error", 4, 1);
     if (pid == 0)
     {
         cmd->exit_code = exec_command(cmd);
@@ -103,7 +103,7 @@ int ft_fork(t_shell *cmd, int pipefd[2], int fd, int i)
 {
     cmd->pid[i] = fork();
     if (cmd->pid[i] < 0)
-        ft_error(cmd, "Fork error\n");
+        ft_error(cmd, "Fork error", 4, 1);
     if (cmd->pid[i] == 0)
         dup_cmd(cmd, pipefd, fd);
     i++;
@@ -115,14 +115,14 @@ void dup_cmd(t_shell *cmd, int pipefd[2], int fd)
     if (cmd->cmd_lst->index != 0)
     {
         if (dup2(fd, STDIN_FILENO) < 0)
-            ft_error(cmd, "Dup failed\n");
+            ft_error(cmd, "Dup failed", 4, 1);
     }
     write(1, "l", 1);
     close(pipefd[0]);
     if (cmd->cmd_lst->next)
     {
         if (dup2(pipefd[1], STDOUT_FILENO) < 0)
-            ft_error(cmd, "Dup failed\n");
+            ft_error(cmd, "Dup failed", 4, 1);
     }
     close(pipefd[1]);
     if(cmd->cmd_lst->index != 0)
@@ -247,21 +247,69 @@ int exec_outfile(t_shell *cmd)
     return (EXIT_SUCCESS);
 }
 
+// int pipe_wait(t_shell *cmd)
+// {
+//     int i;
+//     int status;
+//     // error code of ctrl C to be checked as condition
+//     i = cmd->nb_of_pipes + 1;
+//     waitpid(cmd->pid[i], &status, 0); // while loop checking for ctrl c   with flag WNOHANG
+//     i--;
+//     while (i > 0)
+//     {
+//         kill(cmd->pid[i], SIGINT);
+//         waitpid(cmd->pid[i], &status, 0);
+//         i--;
+//     }
+//     if (WIFEXITED(status))
+// 		cmd->exit_code = WEXITSTATUS(status);
+//     return (EXIT_SUCCESS);
+// }
+
+
 int pipe_wait(t_shell *cmd)
 {
     int i;
     int status;
-    // error code of ctrl C to be checked as condition
-    i = cmd->nb_of_pipes + 1;
-    waitpid(cmd->pid[i], &status, 0); // while loop checking for ctrl c   with flag WNOHANG
-    i--;
-    while (i > 0)
+    int child_count = cmd->nb_of_pipes + 1;
+
+    // Wait for all child processes using WNOHANG
+    while (child_count > 0)
     {
-        kill(cmd->pid[i], SIGINT);
-        waitpid(cmd->pid[i], &status, 0);
-        i--;
+        // Check for terminated child processes
+        for (i = child_count; i > 0; i--)
+        {
+            pid_t result = waitpid(cmd->pid[i], &status, WNOHANG);
+
+            if (result == -1)
+            {
+                // Error occurred while waiting for the child process
+                // Handle the error here or just continue to the next iteration
+                continue;
+            }
+            else if (result == 0)
+            {
+                // Child process is still running, continue waiting
+                continue;
+            }
+            else
+            {
+                // Child process has terminated, handle the exit status
+                if (WIFEXITED(status))
+                {
+                    cmd->exit_code = WEXITSTATUS(status);
+                }
+                // Handle other exit statuses if needed (e.g., WIFSIGNALED)
+            }
+        }
+
+        // Add a short sleep to prevent busy-waiting (optional)
+        // You can remove this if you don't want to add a sleep
+        usleep(10000);
+
+        // Decrease the number of child processes we are waiting for
+        child_count--;
     }
-    if (WIFEXITED(status))
-		cmd->exit_code = WEXITSTATUS(status);
-    return (EXIT_SUCCESS);
+
+    return EXIT_SUCCESS;
 }

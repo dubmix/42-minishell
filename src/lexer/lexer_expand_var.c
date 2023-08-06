@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:45:38 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/05 15:00:47 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/05 16:54:23 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ char	**string_variables(t_shell *cmd, t_token *var)
 	cmd->size_arr_var = countsubstr(var->command, '$');
 	arr_string = (char **)malloc(sizeof(char *) * (cmd->size_arr_var + 1));
 	if (!arr_string)
-		return (NULL);
+		ft_error(cmd, "Memory allocation failed for expander", 5, 50);
 	arr_string = string_variables_bis(cmd, var->command, arr_string, i);
 	return (arr_string);
 }
@@ -102,7 +102,7 @@ void	double_quote_env(t_shell *cmd, t_token *var)
 	new_string = (char *)malloc(sizeof(char) * (length_arr_var(arr_var, cmd)
 				+ length_string_without_var(var->command)) + 1);
 	if (!new_string)
-		return ;
+		ft_error(cmd, "Memory allocation failed for expander", 5, 50);
 	new_string = double_quote_env_bis(var->command, new_string, arr_var, i);
 	free_arr(arr_var);
 	free(var->command);

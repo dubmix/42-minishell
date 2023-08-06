@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 16:04:33 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/05 09:00:41 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/06 08:11:58 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	init_node_cmd(t_single_cmd **new, t_shell *cmd, int index)
 	(*new)->command = (char **)malloc(sizeof(char *) * 
 			(cmd->words_per_pipe[index] + 1));
 	if (!(*new) || !(*new)->command)
-		ft_error(cmd, "New node creation failure");
+		ft_error(cmd, "New node creation failure", 6, 50);
 	(*new)->append_str = NULL;
 	(*new)->redir_in_str = NULL;
 	(*new)->redir_out_str = NULL;
@@ -63,7 +63,7 @@ t_token	*new_node_cmd(t_single_cmd **cmd_lst, int index,
 			new->command[i++] = ft_strdup(temp->command);
 		else if (temp->type == REDIRECT_INPUT 
 			|| temp->type == REDIRECT_OUTPUT || temp->type == APPEND)
-			handle_redir_in_out(cmd, new, temp);
+			i = handle_redir_in_out(cmd, new, temp, i) + 1;
 		else if (temp->type == HEREDOC)
 			temp = temp->next->next;
 		if (temp != NULL)

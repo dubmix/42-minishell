@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 11:16:23 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/05 15:09:25 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/06 08:34:08 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,16 +26,37 @@ void	init_shell(t_shell *cmd)
 	cmd->nb_of_pipes = 0;
 }
 
-int	minishell_start(char **envp, char **argv)
+void	clear_line_space(char *line, t_shell *cmd)
+{
+	int i;
+	char *temp;
+
+	temp = ft_strdup(line);
+	i = ft_strlen(line) - 1;
+	while (i > 0)
+	{
+		if (temp[i] != ' ')
+			break ;
+		i--;
+	}
+	i++;
+	free(cmd->line);
+	cmd->line = ft_substr(temp, 0, i);
+	free(temp);
+}
+
+int	minishell_start(char **envp)
 {
 	t_shell	*cmd;
 
 	cmd = malloc(sizeof(t_shell));
-	argv = NULL;
-	(void)envp;
 	if (!cmd)
-		return (0);
+	{
+		ft_putstr_fd("Malloc cmd allocation failed", STDERR_FILENO);
+		exit(1);
+	}
 	cmd->exit_code = 0;
+	init_signals();
 	cmd->env_lst = init_envp(envp, cmd);
 	while (1)
 	{
@@ -50,6 +71,7 @@ int	minishell_start(char **envp, char **argv)
 		if (ft_strncmp(cmd->line, "", ft_strlen(cmd->line)) != 0)
 		{
 			add_history(cmd->line);
+			clear_line_space(cmd->line, cmd);
 			cmd->tok_lst = tokenization(cmd);
 			expand_var(cmd);
 			parser(cmd);
@@ -60,18 +82,18 @@ int	minishell_start(char **envp, char **argv)
 		}
 	}
 	rl_clear_history();
-	free_all(cmd, 3);
+	free_all(cmd, 5);
 	free(cmd);
 	return (0);
 }
 
-
 /* launch minishell */
 int	main(int argc, char **argv, char **envp)
 {
+	argv = NULL;
 	if (argc != 1)
-		printf("Error, this program should not take any arguments");
+		printf("Error, this program should not take any arguments, %s", argv[0]);
 	else
-		minishell_start(envp, argv);
+		minishell_start(envp);
 	return (0);
 }

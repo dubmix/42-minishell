@@ -6,7 +6,7 @@
 #    By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/26 12:53:21 by edrouot           #+#    #+#              #
-#    Updated: 2023/08/03 09:42:18 by edrouot          ###   ########.fr        #
+#    Updated: 2023/08/06 08:04:40 by edrouot          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,7 +47,7 @@ all:	$(NAME)
 
 ${NAME}: $(OBJS)
 	@make -C ./libft
-	@$(CC) $(OBJS) $(CFLAGS) -o $(NAME) -lreadline $(LIBFT) 
+	@$(CC) $(OBJS) $(CFLAGS) -o $(NAME) -lreadline $(LIBFT)
 	@echo "Compiling complete"
 
 clean: 

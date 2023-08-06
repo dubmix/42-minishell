@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 09:01:11 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/05 14:30:07 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/06 08:11:33 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	number_heredocs(t_shell *cmd)
 	cmd->heredoc_arr = (char **)malloc(sizeof(char *) * 
 			(cmd->nb_of_heredocs + 1));
 	if (!cmd->heredoc_arr)
-		ft_error(cmd, "Heredoc memory allocation failure");
+		ft_error(cmd, "Heredoc memory allocation failure", 6, 50);
 	while (temp != NULL)
 	{
 		if (temp->type == HEREDOC)
@@ -63,7 +63,7 @@ void	number_words_per_pipe(t_shell *cmd)
 	temp = cmd->tok_lst;
 	cmd->words_per_pipe = (int *)malloc(sizeof(int) * (cmd->nb_of_pipes + 1));
 	if (!cmd->words_per_pipe)
-		ft_error(cmd, "Int array memory allocation failure");
+		ft_error(cmd, "Int array memory allocation failure", 6, 50);
 	i = 0;
 	while (temp != NULL)
 	{
@@ -75,7 +75,8 @@ void	number_words_per_pipe(t_shell *cmd)
 				temp = temp->next;
 			else if (temp->type == WORD)
 				j++;
-			temp = temp->next;
+			if (temp != NULL)
+				temp = temp->next;
 		}
 		cmd->words_per_pipe[i++] = j;
 		if (temp != NULL)

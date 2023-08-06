@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:45:56 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/05 15:17:05 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/06 08:24:29 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,10 @@ void	new_token(t_token **tokens, char *command, int nb, enum e_type type)
 
 	new = malloc(sizeof(t_token));
 	if (!new)
-		return ;
+	{
+		ft_putstr_fd("Memory allocation failed for new token", STDERR_FILENO);
+		exit (1);
+	}
 	new->command = ft_strdup(command);
 	new->index = nb;
 	new->type = type;
@@ -113,39 +116,36 @@ int	new_token_quote(t_token **tokens, char *string, int i, int nb_token)
 
 /* Order every type into a list of token (see enum e_type) */
 
-int	tokenization_bis(t_shell *cmd, int i, t_token *tok_lst, int nb_token)
+t_token	*tokenization_bis(t_shell *cmd, int *i, t_token *tok_lst, int nb_token)
 {
-	if (cmd->line[i] == '|')
+	if (cmd->line[*i] == '|')
 	{
 		new_token(&tok_lst, "|", nb_token, PIPE);
 		cmd->nb_of_pipes++;
 	}
-	else if (cmd->line[i] == '>' && cmd->line[i + 1] != '>' 
-		&& cmd->line[i + 1] != '\0')
+	else if (cmd->line[*i] == '>' && cmd->line[*i + 1] != '>')
 		new_token(&tok_lst, ">", nb_token, REDIRECT_OUTPUT);
-	else if (cmd->line[i] == '<' && cmd->line[i + 1] != '<')
+	else if (cmd->line[*i] == '<' && cmd->line[*i + 1] != '<')
 		new_token(&tok_lst, "<", nb_token, REDIRECT_INPUT);
-	else if (cmd->line[i] == '>' && cmd->line[i + 1] == '>')
+	else if (cmd->line[*i] == '>' && cmd->line[*i + 1] == '>')
 	{
 		new_token(&tok_lst, ">>", nb_token, APPEND);
-		i++;
+		*i = *i + 1;
 	}
-	else if (cmd->line[i] == '<' && cmd->line[i + 1] == '<')
+	else if (cmd->line[*i] == '<' && cmd->line[*i + 1] == '<')
 	{
 		new_token(&tok_lst, "<<", nb_token, HEREDOC);
 		cmd->nb_of_heredocs++;
-		i++;
+		*i = *i + 1;
 	}
-	else if (cmd->line[i] == ' ' || cmd->line[i] == 9)
+	else if (cmd->line[*i] == ' ' || cmd->line[*i] == 9)
 		new_token(&tok_lst, " ", nb_token, SPA);
-	return (i);
+	return (tok_lst);
 }
 
 t_token	*tokenization_simple_char(t_shell *cmd, int i, 
 	t_token *tok_lst, int nb_token)
 {
-	printf("OR '%c'\n", cmd->line[i]);
-
 	if (cmd->line[i + 1] == '\0')
 		new_token(&tok_lst, &cmd->line[i], nb_token, WORD);
 	else if (cmd->line[i + 2] == '\0')
@@ -153,17 +153,16 @@ t_token	*tokenization_simple_char(t_shell *cmd, int i,
 	return (tok_lst);
 }
 
-		/*else if (cmd->line[*i] == '~' && (cmd->line[*i + 1] == ' '
-				|| cmd->line[*i + 1] == '\0'))
-		{
-			new_token(&tok_lst, "$HOME", nb_token, VARIABLE);
-			i++;
-		}*/
+/*else if (cmd->line[*i] == '~' && (cmd->line[*i + 1] == ' '
+		|| cmd->line[*i + 1] == '\0'))
+{
+	new_token(&tok_lst, "$HOME", nb_token, VARIABLE);
+	i++;
+}*/
 
 t_token	*tokenization_special_char(t_shell *cmd, int *i, 
 	t_token *tok_lst, int nb_token)
 {
-	printf("HERE '%c'\n", cmd->line[*i]);
 	if (cmd->line[*i] == 39 || cmd->line[*i] == 34)
 		*i = new_token_quote(&tok_lst, cmd->line,
 				*i, nb_token) - 1;
@@ -189,15 +188,15 @@ t_token	*tokenization(t_shell *cmd)
 	tok_lst = NULL;
 	while (cmd->line[i] != '\0')
 	{
-		if (i == 0 && (cmd->line[i + 1] == '\0' || (cmd->line[i] == cmd->line[i + 1] 
-				&& cmd->line[i + 2] == '\0')))
+		if (i == 0 && (cmd->line[i + 1] == '\0' || ((cmd->line[i] == cmd->line[i + 1] 
+				&& cmd->line[i + 2] == '\0'))))
 			tok_lst = tokenization_simple_char(cmd, i, tok_lst, nb_token);
 		else if (cmd->line[i] == 39 || cmd->line[i] == 34 
 			|| cmd->line[i] == '$')
 			tok_lst = tokenization_special_char(cmd, &i, tok_lst, nb_token);
 		else if (cmd->line[i] == '>' || cmd->line[i] == '<' || 
 			cmd->line[i] == ' ' || cmd->line[i] == 9 || cmd->line[i] == '|')
-			i = tokenization_bis(cmd, i, tok_lst, nb_token);
+			tok_lst = tokenization_bis(cmd, &i, tok_lst, nb_token);
 		else
 			i = new_token_var_words(&tok_lst, cmd->line, i, nb_token);
 		i++;
