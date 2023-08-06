@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 10:45:11 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/06 16:49:18 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/06 16:53:15 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,21 +78,7 @@ int	exec_command(t_shell *cmd)
 	if (cmd->cmd_lst->command != NULL)
 	{
 		cmd->exit_code = single_command(cmd);
-		exit(cmd->exit_code); // return (cmd->exit_code);
-		exit(0);
+		exit(cmd->exit_code); 
 	}
 	exit(cmd->exit_code);
-	// return (cmd->exit_code);
-}
-
-int	check_redirections(t_shell *cmd)
-{
-	// t_single_cmd *head;
-	// head = cmd->cmd_lst;
-	// while (cmd->cmd_lst != NULL)
-	// {
-	//     ft_putnbr_fd(cmd->cmd_lst->index, STDERR_FILENO);
-	//     ft_putstr_fd(cmd->cmd_lst->redir_out_str, STDERR_FILENO);
-	//     ft_putstr_fd("\n", STDERR_FILENO);
-	exit(0);
 }
