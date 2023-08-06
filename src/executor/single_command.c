@@ -43,8 +43,10 @@ char	*check_access(char **envp, char **command, t_shell *cmd) //, int *fds)
 	int		i;
 	char	**path_arr;
 	char	*tmp;
+
 	if (access(command[0], F_OK) == 0)
-		return (command[0]); // here is the issue in the edge case ".." /// should check if the file is a correct file (using stat)
+		return (command[0]); // here is the issue in the edge case ".."
+			/// should check if the file is a correct file (using stat)
 	path_arr = get_path(envp);
 	i = 0;
 	while (path_arr[i] != (void *)'\0')
@@ -58,7 +60,7 @@ char	*check_access(char **envp, char **command, t_shell *cmd) //, int *fds)
 			break ;
 		i++;
 	}
-	if (path_arr[i] == (void *) '\0')
+	if (path_arr[i] == (void *)'\0')
 	{
 		cmd->exit_code = 127;
 		free_arr(path_arr);
@@ -70,8 +72,8 @@ char	*check_access(char **envp, char **command, t_shell *cmd) //, int *fds)
 
 int	single_command(t_shell *cmd)
 {
-	char	*path;
-	t_single_cmd *temp;
+	char			*path;
+	t_single_cmd	*temp;
 
 	temp = cmd->cmd_lst;
 	path = check_access(cmd->envp_copy, temp->command, cmd);
@@ -93,7 +95,7 @@ int	single_command(t_shell *cmd)
 	{
 		if (execve(path, cmd->cmd_lst->command, cmd->envp_copy) == -1)
 		{
-			return(127); // wrong one most likely
+			return (127); // wrong one most likely
 		}
 	}
 	free(path);

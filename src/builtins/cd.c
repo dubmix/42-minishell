@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 12:21:08 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/06 11:05:05 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/06 14:21:12 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ int	cd(t_shell *cmd)
 	{
 		if (ft_strncmp((*tmp)->env_lst->name, "PWD", 3))
 		{
-			free((*tmp)->oldpwd);			
-			(*tmp)->oldpwd = ft_strdup((*tmp)->env_lst->value);
+			free(cmd->oldpwd);			
+			cmd->oldpwd = ft_strdup((*tmp)->env_lst->value);
 			// printf("PWD IS %s",(*tmp)->env_lst->value );
 			break ;
 		}
@@ -36,12 +36,14 @@ int	cd(t_shell *cmd)
 	else
 	{
 		ret = chdir((*tmp)->cmd_lst->command[1]);
-		write(1, "MM", 2);
 		if (ret != 0)
-			printf("minishell: %s\n", (*tmp)->cmd_lst->command[0]); // what's this ?
+			printf("minishell: %s No such file or directory \n", (*tmp)->cmd_lst->command[0]); // what's this ?
 	}
 	if (ret != 0)
-		return (8); // exit_failure value = 8;
+	{
+		printf("minishell: %s No such file or directory \n", (*tmp)->cmd_lst->command[0]); // what's this ?
+
+	}	
 	cmd->env_lst = add_path_to_env(cmd);
 	printf("--------------\n");
 	print_list(cmd->env_lst);
@@ -75,7 +77,6 @@ t_env	*add_path_to_env(t_shell *cmd)
 	}
 	tmp = *head;
 	return (*head);
-
 }
 
 char	*get_path_cd(t_shell *cmd, char *str)
@@ -104,9 +105,5 @@ int	go_to_path(t_shell *cmd, char *str)
 	tmp = get_path_cd(cmd, str);
 	ret = chdir(tmp);
 	free(tmp);
-	if (ret != 0)
-	{
-		/* error handling */
-	}
 	return (ret);
 }
