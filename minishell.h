@@ -14,6 +14,7 @@
     # include <fcntl.h>
     # include <limits.h>
     # include <sys/ioctl.h>
+    #include <linux/limits.h>
 
 extern int g_signals;
 

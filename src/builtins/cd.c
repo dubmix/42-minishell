@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 12:21:08 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/06 14:21:12 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/06 16:44:00 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,13 @@ int	cd(t_shell *cmd)
 	t_shell	**tmp;
 
 	tmp = &cmd;
+	printf("OLD TRUC %s", cmd->oldpwd);
 	while ((*tmp)->env_lst)
 	{
 		if (ft_strncmp((*tmp)->env_lst->name, "PWD", 3))
 		{
 			free(cmd->oldpwd);			
 			cmd->oldpwd = ft_strdup((*tmp)->env_lst->value);
-			// printf("PWD IS %s",(*tmp)->env_lst->value );
 			break ;
 		}
 		(*tmp)->env_lst = (*tmp)->env_lst->next;
@@ -37,47 +37,77 @@ int	cd(t_shell *cmd)
 	{
 		ret = chdir((*tmp)->cmd_lst->command[1]);
 		if (ret != 0)
-			printf("minishell: %s No such file or directory \n", (*tmp)->cmd_lst->command[0]); // what's this ?
+		{
+			printf("minishell: %s No such file or directory \n", (*tmp)->cmd_lst->command[0]);
+			return (EXIT_FAILURE);
+		}			
 	}
 	if (ret != 0)
 	{
-		printf("minishell: %s No such file or directory \n", (*tmp)->cmd_lst->command[0]); // what's this ?
-
+		printf("minishell: %s No such file or directory \n", (*tmp)->cmd_lst->command[0]);
+		return (EXIT_FAILURE);
 	}	
-	cmd->env_lst = add_path_to_env(cmd);
-	printf("--------------\n");
-	print_list(cmd->env_lst);
-	printf("--------------\n");
+	add_path_to_env(cmd);
 	return (EXIT_SUCCESS);
+}
+
+void	copy_pwd(t_env *tmp, t_shell *cmd)
+{
+	char	cwd[PATH_MAX];
+	char **string;
+	char *full_string;
+	t_env *node_to_delete;
+
+	full_string = NULL;
+	string = (char **)malloc(sizeof(char *) * 3 );
+	string[0] = ft_strdup(tmp->name);
+	string[1] = getcwd(cwd, sizeof(cwd));
+	string[2] = 0;
+	if (!string[1])
+		perror("Error retrieving the pwd");
+	full_string = ft_strjoin(string[0], "=");
+	full_string = ft_strjoin(full_string, string[1]);
+	node_to_delete = tmp;
+	delete_node_env(&(cmd->env_lst), node_to_delete);
+	new_node_env(cmd, &cmd->env_lst, string, full_string);
+}
+
+void	copy_oldpwd(t_env *tmp, t_shell *cmd)
+{
+	char **string;
+	char *full_string;
+	t_env *node_to_delete;
+
+	full_string = NULL;
+	string = (char **)malloc(sizeof(char *) * 3 );
+	string[0] = ft_strdup(tmp->name);
+	string[1] = ft_strdup(cmd->oldpwd);
+	string[2] = 0;
+	if (!string[1])
+		perror("Error retrieving the pwd");
+	full_string = ft_strjoin(string[0], "=");
+	full_string = ft_strjoin(full_string, string[1]);
+	node_to_delete = tmp;
+	delete_node_env(&(cmd->env_lst), node_to_delete);
+	new_node_env(cmd, &cmd->env_lst, string, full_string);
 }
 
 t_env	*add_path_to_env(t_shell *cmd)
 {
 	t_env	*tmp;
-	t_env	**head;
-	char	cwd[PATH_MAX];
 
 	tmp = cmd->env_lst;
-	head = &tmp;
 	while (tmp)
 	{
 		if (ft_strncmp(tmp->name, "PWD", 3) == 0)
-		{
-			printf("OLD PWD IS %s", tmp->value);
-			free(tmp->value);
-			tmp->value = ft_strdup(getcwd(cwd, sizeof(cwd)));
-			printf("NEW PWD IS %s", tmp->value);
-		}
+			copy_pwd(tmp, cmd);
 		if (ft_strncmp(tmp->name, "OLDPWD", 6) == 0)
-		{
-			free(tmp->value);
-			tmp->value = ft_strdup(cmd->oldpwd);
-		}
+			copy_oldpwd(tmp, cmd);
 		tmp = tmp->next;
-	}
-	tmp = *head;
-	return (*head);
+		}
+	return (tmp);
 }
+
 
 char	*get_path_cd(t_shell *cmd, char *str)
 {

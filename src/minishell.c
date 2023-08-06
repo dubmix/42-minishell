@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 11:16:23 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/06 11:20:13 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/06 16:43:47 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,15 @@ void	init_shell(t_shell *cmd)
 {
 	cmd->nb_of_heredocs = 0;
 	cmd->nb_of_pipes = 0;
-	cmd->oldpwd = (char *)malloc(sizeof(char *));
-	cmd->oldpwd = ft_strdup("");
 }
 
 void	clear_line_space(char *line, t_shell *cmd)
 {
 	int i;
 	char *temp;
+	int j;
 
+	j = 0;
 	temp = ft_strdup(line);
 	i = ft_strlen(line) - 1;
 	while (i > 0)
@@ -41,9 +41,11 @@ void	clear_line_space(char *line, t_shell *cmd)
 			break ;
 		i--;
 	}
+	while (temp[j] != '\0' && temp[j] == ' ')
+		j++;
 	i++;
 	free(cmd->line);
-	cmd->line = ft_substr(temp, 0, i);
+	cmd->line = ft_substr(temp, j, i);
 	free(temp);
 }
 
@@ -59,6 +61,8 @@ int	minishell_start(char **envp)
 	}
 	cmd->exit_code = 0;
 	init_signals();
+	cmd->oldpwd = (char *)malloc(sizeof(char *));
+	cmd->oldpwd = ft_strdup("");
 	cmd->env_lst = init_envp(envp, cmd);
 	while (1)
 	{

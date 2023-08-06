@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:45:56 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/06 09:43:10 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/06 15:57:58 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,13 +152,6 @@ t_token	*tokenization_simple_char(t_shell *cmd, int i,
 		new_token(&tok_lst, ft_substr(cmd->line, 0, 2), nb_token, WORD);
 	return (tok_lst);
 }
-
-/*else if (cmd->line[*i] == '~' && (cmd->line[*i + 1] == ' '
-		|| cmd->line[*i + 1] == '\0'))
-{
-	new_token(&tok_lst, "$HOME", nb_token, VARIABLE);
-	i++;
-}*/
 
 t_token	*tokenization_special_char(t_shell *cmd, int *i, 
 	t_token *tok_lst, int nb_token)

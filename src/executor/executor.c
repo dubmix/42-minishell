@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 10:45:11 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/06 11:26:49 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/06 15:57:19 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,8 +134,6 @@ int	exec_piped_command(t_shell *cmd)
 		else
 			break ;
 	}
-	// No need to close pipe file descriptors here,
-		they are already closed in the child processes.
 	pipe_wait(cmd);
 	cmd->cmd_lst = head;
 	return (EXIT_SUCCESS);
@@ -181,8 +179,6 @@ int	exec_command(t_shell *cmd)
 	{
 		cmd->exit_code = single_command(cmd);
 		exit(cmd->exit_code); // return (cmd->exit_code);
-			// si exit l'env s'efface quand le loop recommence // normalement,
-			l'env est free qu'apres la loop
 	}
 	exit(cmd->exit_code);
 	// return (cmd->exit_code);
