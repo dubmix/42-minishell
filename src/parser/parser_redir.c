@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_redir.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emiliedrouot <emiliedrouot@student.42.f    +#+  +:+       +#+        */
+/*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 16:13:54 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/06 00:12:55 by emiliedrouo      ###   ########.fr       */
+/*   Updated: 2023/08/06 08:11:20 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ int	handle_redir_in_out(t_shell *cmd, t_single_cmd *new, t_token *temp, int i)
 	int	fd;
 	if (temp->next != NULL && temp->next->type == WORD)
 	{
-	write(1, "STOP", 4);
 		fd = 0;
 		if (temp->type == REDIRECT_OUTPUT)
 		{

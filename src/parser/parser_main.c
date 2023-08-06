@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_main.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emiliedrouot <emiliedrouot@student.42.f    +#+  +:+       +#+        */
+/*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 09:01:11 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/05 23:59:54 by emiliedrouo      ###   ########.fr       */
+/*   Updated: 2023/08/06 08:11:33 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ void	parser(t_shell *cmd)
 		grab_heredoc(cmd);
 	}
 	cmd->cmd_lst = triage_cmd_redir(cmd);
-	print_list_commands(cmd->cmd_lst, cmd);
 }
 
 void	number_heredocs(t_shell *cmd)

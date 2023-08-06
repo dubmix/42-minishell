@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:46:21 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/05 16:38:02 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/06 08:21:51 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int	single_command(t_shell *cmd)
 		ft_putstr_fd("Command '", STDERR_FILENO);
 		ft_putstr_fd(temp->command[0], STDERR_FILENO);
 		ft_putstr_fd("' not found\n", STDERR_FILENO);
-		exit (cmd->exit_code);
+		return(cmd->exit_code);
 	}
 	if (ft_strncmp(cmd->cmd_lst->command[0], "echo", 4) == 0)
 		echo(cmd->cmd_lst->command);
@@ -93,7 +93,7 @@ int	single_command(t_shell *cmd)
 	{
 		if (execve(path, cmd->cmd_lst->command, cmd->envp_copy) == -1)
 		{
-			exit(127); // wrong one most likely
+			return(127); // wrong one most likely
 		}
 	}
 	free(path);

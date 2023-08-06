@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emiliedrouot <emiliedrouot@student.42.f    +#+  +:+       +#+        */
+/*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 10:45:11 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/05 21:59:32 by emiliedrouo      ###   ########.fr       */
+/*   Updated: 2023/08/06 08:36:06 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -232,21 +232,69 @@ int exec_outfile(t_shell *cmd)
     return (EXIT_SUCCESS);
 }
 
+// int pipe_wait(t_shell *cmd)
+// {
+//     int i;
+//     int status;
+//     // error code of ctrl C to be checked as condition
+//     i = cmd->nb_of_pipes + 1;
+//     waitpid(cmd->pid[i], &status, 0); // while loop checking for ctrl c   with flag WNOHANG
+//     i--;
+//     while (i > 0)
+//     {
+//         kill(cmd->pid[i], SIGINT);
+//         waitpid(cmd->pid[i], &status, 0);
+//         i--;
+//     }
+//     if (WIFEXITED(status))
+// 		cmd->exit_code = WEXITSTATUS(status);
+//     return (EXIT_SUCCESS);
+// }
+
+
 int pipe_wait(t_shell *cmd)
 {
     int i;
     int status;
-    // error code of ctrl C to be checked as condition
-    i = cmd->nb_of_pipes + 1;
-    waitpid(cmd->pid[i], &status, 0); // while loop checking for ctrl c   with flag WNOHANG
-    i--;
-    while (i > 0)
+    int child_count = cmd->nb_of_pipes + 1;
+
+    // Wait for all child processes using WNOHANG
+    while (child_count > 0)
     {
-        kill(cmd->pid[i], SIGINT);
-        waitpid(cmd->pid[i], &status, 0);
-        i--;
+        // Check for terminated child processes
+        for (i = child_count; i > 0; i--)
+        {
+            pid_t result = waitpid(cmd->pid[i], &status, WNOHANG);
+
+            if (result == -1)
+            {
+                // Error occurred while waiting for the child process
+                // Handle the error here or just continue to the next iteration
+                continue;
+            }
+            else if (result == 0)
+            {
+                // Child process is still running, continue waiting
+                continue;
+            }
+            else
+            {
+                // Child process has terminated, handle the exit status
+                if (WIFEXITED(status))
+                {
+                    cmd->exit_code = WEXITSTATUS(status);
+                }
+                // Handle other exit statuses if needed (e.g., WIFSIGNALED)
+            }
+        }
+
+        // Add a short sleep to prevent busy-waiting (optional)
+        // You can remove this if you don't want to add a sleep
+        usleep(10000);
+
+        // Decrease the number of child processes we are waiting for
+        child_count--;
     }
-    if (WIFEXITED(status))
-		cmd->exit_code = WEXITSTATUS(status);
-    return (EXIT_SUCCESS);
+
+    return EXIT_SUCCESS;
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emiliedrouot <emiliedrouot@student.42.f    +#+  +:+       +#+        */
+/*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 11:16:23 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/05 23:59:36 by emiliedrouo      ###   ########.fr       */
+/*   Updated: 2023/08/06 08:34:08 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,25 @@ void	init_shell(t_shell *cmd)
 {
 	cmd->nb_of_heredocs = 0;
 	cmd->nb_of_pipes = 0;
+}
+
+void	clear_line_space(char *line, t_shell *cmd)
+{
+	int i;
+	char *temp;
+
+	temp = ft_strdup(line);
+	i = ft_strlen(line) - 1;
+	while (i > 0)
+	{
+		if (temp[i] != ' ')
+			break ;
+		i--;
+	}
+	i++;
+	free(cmd->line);
+	cmd->line = ft_substr(temp, 0, i);
+	free(temp);
 }
 
 int	minishell_start(char **envp)
@@ -46,17 +65,17 @@ int	minishell_start(char **envp)
 		if (ft_strncmp(cmd->line, "", ft_strlen(cmd->line)) != 0)
 		{
 			add_history(cmd->line);
+			clear_line_space(cmd->line, cmd);
 			cmd->tok_lst = tokenization(cmd);
 			expand_var(cmd);
 			parser(cmd);
-			// pre_executor(cmd);
-			// if (g_signals != 0)
-			// 	cmd->exit_code = g_signals;
-			// free_all(cmd, 4);
+			pre_executor(cmd);
+			if (g_signals != 0)
+				cmd->exit_code = g_signals;
+			free_all(cmd, 4);
 		}
 	}
-	// rl_clear_history(); // TO PUT AGAIN
-	clear_history;
+	rl_clear_history();
 	free_all(cmd, 5);
 	free(cmd);
 	return (0);

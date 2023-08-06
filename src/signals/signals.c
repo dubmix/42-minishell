@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emiliedrouot <emiliedrouot@student.42.f    +#+  +:+       +#+        */
+/*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 10:56:50 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/05 22:04:40 by emiliedrouo      ###   ########.fr       */
+/*   Updated: 2023/08/06 08:02:30 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void sigint_handler(int sig)
 {
 	printf("\n");
 	rl_on_new_line();
-	// rl_replace_line("", 0); // TO PUT AGAIN
+	rl_replace_line("", 0);
 	rl_redisplay();
 	(void) sig;
 }
@@ -40,7 +40,7 @@ void sigquit_handler(int sig)
 
 void init_signals()
 {
-	// rl_event_hook = event; // TO PUT AGAIN
+	rl_event_hook = event;
 	signal(SIGINT, sigint_handler);
 	signal(SIGQUIT, SIG_IGN);
 }

@@ -1,12 +1,12 @@
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
-#    makefile                                           :+:      :+:    :+:    #
+#    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: emiliedrouot <emiliedrouot@student.42.f    +#+  +:+       +#+         #
+#    By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/26 12:53:21 by edrouot           #+#    #+#              #
-#    Updated: 2023/08/05 22:05:53 by emiliedrouo      ###   ########.fr        #
+#    Updated: 2023/08/06 08:04:40 by edrouot          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,8 +35,7 @@ SRCS	= src/minishell.c \
 		src/parser/parser_cmd_lst.c \
 		src/parser/parser_redir.c \
 		src/errors/errors.c \
-		src/signals/signals.c \
-		utils_libft.c
+		src/signals/signals.c
 
 OBJS	= $(SRCS:.c=.o)
 
@@ -48,14 +47,12 @@ all:	$(NAME)
 
 ${NAME}: $(OBJS)
 	@make -C ./libft
-	@$(CC) $(OBJS) $(CFLAGS) -o $(NAME) -lreadline 
-#$(LIBFT) 
+	@$(CC) $(OBJS) $(CFLAGS) -o $(NAME) -lreadline $(LIBFT)
 	@echo "Compiling complete"
 
 clean: 
 	@rm -f $(OBJS)
-	@make clean -C 
-# libft
+	@make clean -C libft
 
 fclean: clean
 	@rm -f $(NAME)
