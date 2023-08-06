@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 10:45:11 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/06 09:40:23 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/06 09:44:07 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void exec_single_command(t_shell *cmd)
 //         else
 //             break;
 //     }
-/
+
 //     pipe_wait(cmd);
 //     cmd->cmd_lst = head;
 //     return (0);
@@ -159,7 +159,6 @@ void dup_cmd(t_shell *cmd, int pipefd[2], int fd)
         if (dup2(fd, STDIN_FILENO) < 0)
             ft_error(cmd, "Dup failed", 4, 1);
     }
-    write(1, "l", 1);
     close(pipefd[0]);
     if (cmd->cmd_lst->next)
     {
@@ -180,7 +179,6 @@ int exec_command(t_shell *cmd)
     if (cmd->cmd_lst->command != NULL)
     {
         cmd->exit_code = single_command(cmd);
-        write(1, "j", 1);
         exit(0); //return (cmd->exit_code); // si exit l'env s'efface quand le loop recommence // normalement, l'env est free qu'apres la loop
     }
     exit(0);

@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 13:14:26 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/03 20:52:51 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/06 09:44:10 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ int	g_exit_code; //need to be changed for the cmd->exit_code;
 		g_exit_code = 255;
 	}		
 	//free_all(command);
-	write(1, "k", 1);
 	exit(g_exit_code);
 }
 

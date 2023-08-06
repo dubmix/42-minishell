@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:45:56 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/06 08:24:29 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/06 09:43:10 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,6 +191,12 @@ t_token	*tokenization(t_shell *cmd)
 		if (i == 0 && (cmd->line[i + 1] == '\0' || ((cmd->line[i] == cmd->line[i + 1] 
 				&& cmd->line[i + 2] == '\0'))))
 			tok_lst = tokenization_simple_char(cmd, i, tok_lst, nb_token);
+		else if (cmd->line[i] == '~' && (cmd->line[i + 1] == ' '
+		|| cmd->line[i + 1] == '\0'))
+		{
+			new_token(&tok_lst, "$HOME", nb_token, VARIABLE);
+			i++;
+		}
 		else if (cmd->line[i] == 39 || cmd->line[i] == 34 
 			|| cmd->line[i] == '$')
 			tok_lst = tokenization_special_char(cmd, &i, tok_lst, nb_token);
