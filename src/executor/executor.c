@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 10:45:11 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/06 16:14:01 by pdelanno         ###   ########.fr       */
+/*   Updated: 2023/08/06 16:53:15 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int	exec_command(t_shell *cmd)
 	if (cmd->cmd_lst->command != NULL)
 	{
 		cmd->exit_code = single_command(cmd);
-		exit(0);
+		exit(cmd->exit_code); 
 	}
-	exit(0);
+	exit(cmd->exit_code);
 }

@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 11:16:23 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/06 08:34:08 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/06 16:43:47 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,9 @@ void	clear_line_space(char *line, t_shell *cmd)
 {
 	int i;
 	char *temp;
+	int j;
 
+	j = 0;
 	temp = ft_strdup(line);
 	i = ft_strlen(line) - 1;
 	while (i > 0)
@@ -39,9 +41,11 @@ void	clear_line_space(char *line, t_shell *cmd)
 			break ;
 		i--;
 	}
+	while (temp[j] != '\0' && temp[j] == ' ')
+		j++;
 	i++;
 	free(cmd->line);
-	cmd->line = ft_substr(temp, 0, i);
+	cmd->line = ft_substr(temp, j, i);
 	free(temp);
 }
 
@@ -57,6 +61,8 @@ int	minishell_start(char **envp)
 	}
 	cmd->exit_code = 0;
 	init_signals();
+	cmd->oldpwd = (char *)malloc(sizeof(char *));
+	cmd->oldpwd = ft_strdup("");
 	cmd->env_lst = init_envp(envp, cmd);
 	while (1)
 	{
@@ -75,9 +81,10 @@ int	minishell_start(char **envp)
 			cmd->tok_lst = tokenization(cmd);
 			expand_var(cmd);
 			parser(cmd);
-			pre_executor(cmd);
 			if (g_signals != 0)
 				cmd->exit_code = g_signals;
+			else
+				pre_executor(cmd);
 			free_all(cmd, 4);
 		}
 	}

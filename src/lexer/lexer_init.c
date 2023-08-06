@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_init.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emiliedrouot <emiliedrouot@student.42.f    +#+  +:+       +#+        */
+/*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:45:43 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/05 22:00:03 by emiliedrouo      ###   ########.fr       */
+/*   Updated: 2023/08/06 16:40:49 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ t_env	*init_envp(char **envp, t_shell *cmd)
 	i = 0;
 	while (envp[i] != NULL)
 	{
+		if (!ft_strncmp(envp[i], "OLDPWD", 6))
+			cmd->oldpwd = ft_strdup(envp[i]);
 		cmd->envp_copy[i] = ft_strdup(envp[i]);
 		string = ft_split(envp[i], '=');
 		new_node_env(cmd, &envir, string, envp[i]);
