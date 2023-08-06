@@ -126,8 +126,7 @@ void	add_path_to_env(t_shell *cmd)
 		if (ft_strncmp(tmp->name, "OLDPWD", 6) == 0)
 			copy_oldpwd(tmp, cmd);
 		tmp = tmp->next;
-		}
-	return (tmp);
+	}
 }
 
 char	*get_path_cd(t_shell *cmd, char *str)
