@@ -6,18 +6,12 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 11:16:23 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/06 16:43:47 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/06 17:34:02 by pdelanno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "../minishell.h"
 
-/* alloc shell struc
-initialize the environnement (envp)
- readline(real function) store in shell->line_command
- store in cmd->tok_lst all the tokens
- */
 int	g_signals = 0;
 
 void	init_shell(t_shell *cmd)
@@ -28,9 +22,9 @@ void	init_shell(t_shell *cmd)
 
 void	clear_line_space(char *line, t_shell *cmd)
 {
-	int i;
-	char *temp;
-	int j;
+	int		i;
+	char	*temp;
+	int		j;
 
 	j = 0;
 	temp = ft_strdup(line);
@@ -49,21 +43,8 @@ void	clear_line_space(char *line, t_shell *cmd)
 	free(temp);
 }
 
-int	minishell_start(char **envp)
+int	minishell_start(t_shell *cmd)
 {
-	t_shell	*cmd;
-
-	cmd = malloc(sizeof(t_shell));
-	if (!cmd)
-	{
-		ft_putstr_fd("Malloc cmd allocation failed", STDERR_FILENO);
-		exit(1);
-	}
-	cmd->exit_code = 0;
-	init_signals();
-	cmd->oldpwd = (char *)malloc(sizeof(char *));
-	cmd->oldpwd = ft_strdup("");
-	cmd->env_lst = init_envp(envp, cmd);
 	while (1)
 	{
 		init_shell(cmd);
@@ -88,19 +69,34 @@ int	minishell_start(char **envp)
 			free_all(cmd, 4);
 		}
 	}
-	rl_clear_history();
-	free_all(cmd, 5);
-	free(cmd);
 	return (0);
 }
 
-/* launch minishell */
+	// rl_clear_history();
+	// free_all(cmd, 5);
+	// free(cmd);
+
 int	main(int argc, char **argv, char **envp)
 {
+	t_shell	*cmd;
+
 	argv = NULL;
 	if (argc != 1)
-		printf("Error, this program should not take any arguments, %s", argv[0]);
+		printf("Error, program should not take any arguments\n");
 	else
-		minishell_start(envp);
+	{
+		cmd = malloc(sizeof(t_shell));
+		if (!cmd)
+		{
+			ft_putstr_fd("Malloc cmd allocation failed", STDERR_FILENO);
+			exit(1);
+		}
+		cmd->exit_code = 0;
+		init_signals();
+		cmd->oldpwd = (char *)malloc(sizeof(char *));
+		cmd->oldpwd = ft_strdup("");
+		cmd->env_lst = init_envp(envp, cmd);
+		minishell_start(cmd);
+	}
 	return (0);
 }

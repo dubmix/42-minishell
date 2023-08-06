@@ -6,13 +6,13 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 13:35:46 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/03 14:17:45 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/06 17:12:13 by pdelanno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-int env(t_shell *cmd)
+int	env(t_shell *cmd)
 {
 	t_env	*tmp;
 
@@ -22,5 +22,5 @@ int env(t_shell *cmd)
 		printf("%s\n", tmp->full_string);
 		tmp = tmp->next;
 	}
-    return (EXIT_SUCCESS);
+	return (EXIT_SUCCESS);
 }

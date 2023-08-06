@@ -87,7 +87,7 @@ typedef struct s_shell
 void print_chararr(char **envp);
 
 /* main.c */
-int     minishell_start(char **envp);
+int     minishell_start(t_shell *cmd);
 void	init_shell(t_shell *cmd);
 
 /////////////////////////////////// LEXER //////////////////////////////////
