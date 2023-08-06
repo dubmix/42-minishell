@@ -6,33 +6,35 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 12:21:08 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/07/19 11:13:09 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/06 10:24:10 by pdelanno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-int cd(t_shell *cmd)
+int	cd(t_shell *cmd)
 {
-	int ret;
-	char *oldpwd;
-	t_shell **tmp;
+	int		ret;
+	//char	*oldpwd;
+	t_shell	**tmp;
 
 	tmp = &cmd;
+	//cd_sub(cmd);
 	while ((*tmp)->env_lst)
 	{
-		if(ft_strncmp((*tmp)->env_lst->name, "PWD", 3))
+		if (ft_strncmp((*tmp)->env_lst->name, "PWD", 3))
 		{
-			oldpwd = malloc(sizeof(char *) * ft_strlen(((*tmp)->env_lst->value)));
-			oldpwd = (*tmp)->env_lst->value;
-			(*tmp)->oldpwd = oldpwd;
+			//oldpwd = malloc(sizeof(char *) * ft_strlen(((*tmp)->env_lst->value)));
+			//oldpwd = (*tmp)->env_lst->value;
+			free((*tmp)->oldpwd);
+			(*tmp)->oldpwd = ft_strdup((*tmp)->env_lst->value);
 			break ;
 		}
 		(*tmp)->env_lst = (*tmp)->env_lst->next;
 	}
 	if (!(*tmp)->cmd_lst->command)
 		ret = go_to_path(cmd, "HOME");
-	else if(ft_strncmp((*tmp)->cmd_lst->command[0], "-", 1) == 0)
+	else if (ft_strncmp((*tmp)->cmd_lst->command[0], "-", 1) == 0)
 		ret = go_to_path(cmd, "OLDPWD");
 	else
 	{
@@ -41,15 +43,36 @@ int cd(t_shell *cmd)
 			printf("minishell: %s\n", (*tmp)->cmd_lst->command[0]);
 	}
 	if (ret != 0)
-		return (EXIT_FAILURE); // exit_failure value = 8;
+		return (EXIT_FAILURE);
 	add_path_to_env(cmd);
 	return (EXIT_SUCCESS);
 }
 
-void add_path_to_env(t_shell *cmd)
+// void	cd_sub(t_shell *cmd)
+// {
+// 	t_shell	**tmp;
+// 	int		value;
+// 	char	*oldpwd;
+
+// 	tmp = &cmd;
+// 	while ((*tmp)->env_lst)
+// 	{
+// 		if (ft_strncmp((*tmp)->env_lst->name, "PWD", 3))
+// 		{
+// 			value = ft_strlen((*tmp)->env_lst->value);
+// 			oldpwd = malloc(sizeof(char *) * value);
+// 			oldpwd = (*tmp)->env_lst->value;
+// 			(*tmp)->oldpwd = oldpwd;
+// 			break ;
+// 		}
+// 		(*tmp)->env_lst = (*tmp)->env_lst->next;
+// 	}
+// }
+
+void	add_path_to_env(t_shell *cmd)
 {
-	t_env *tmp;
-	char cwd[PATH_MAX];
+	t_env	*tmp;
+	char	cwd[PATH_MAX];
 
 	tmp = cmd->env_lst;
 	while (tmp)
@@ -67,15 +90,15 @@ void add_path_to_env(t_shell *cmd)
 	}
 }
 
-char *get_path_cd(t_shell *cmd, char *str)
+char	*get_path_cd(t_shell *cmd, char *str)
 {
-	t_env *tmp;
-	char *path;
+	t_env	*tmp;
+	char	*path;
 
 	tmp = cmd->env_lst;
-	while(tmp)
+	while (tmp)
 	{
-		if(ft_strncmp(tmp->name, str, ft_strlen(str)) == 0)
+		if (ft_strncmp(tmp->name, str, ft_strlen(str)) == 0)
 		{
 			path = ft_strdup(tmp->value);
 			return (path);
@@ -87,8 +110,8 @@ char *get_path_cd(t_shell *cmd, char *str)
 
 int	go_to_path(t_shell *cmd, char *str)
 {
-	char *tmp;
-	int ret;
+	char	*tmp;
+	int		ret;
 
 	tmp = get_path_cd(cmd, str);
 	ret = chdir(tmp);

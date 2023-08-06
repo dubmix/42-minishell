@@ -1,26 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   init_signals.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
+/*   By: pdelanno <pdelanno@student.42berlin.d      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/08 15:06:21 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/06 11:38:57 by pdelanno         ###   ########.fr       */
+/*   Created: 2023/08/06 09:56:57 by pdelanno          #+#    #+#             */
+/*   Updated: 2023/08/06 09:58:33 by pdelanno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-int	pwd(void)
+void	init_signals(void)
 {
-	char	cwd[PATH_MAX];
-
-	if (getcwd(cwd, sizeof(cwd)) != NULL)
-	{
-		printf("%s\n", cwd);
-		return (EXIT_SUCCESS);
-	}
-	else
-		return (EXIT_FAILURE);
+	signal(SIGINT, sigint_handler);
+	signal(SIGQUIT, SIG_IGN);
+	signal(SIGTERM, sigterm_handler);
 }

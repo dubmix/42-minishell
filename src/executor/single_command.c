@@ -92,9 +92,7 @@ int	single_command(t_shell *cmd)
 	else
 	{
 		if (execve(path, cmd->cmd_lst->command, cmd->envp_copy) == -1)
-		{
 			return(127); // wrong one most likely
-		}
 	}
 	free(path);
 	return (EXIT_SUCCESS);

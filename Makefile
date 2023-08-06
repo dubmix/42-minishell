@@ -16,7 +16,9 @@ LIBFT = ./libft/libft.a
 
 SRCS	= src/minishell.c \
 		src/executor/executor.c \
+		src/executor/redirections.c \
 		src/executor/single_command.c \
+		src/executor/piped_command.c \
 		src/executor/heredoc.c \
 		src/lexer/lexer_utils.c \
 		src/lexer/lexer_token.c \
@@ -29,13 +31,17 @@ SRCS	= src/minishell.c \
 		src/builtins/cd.c \
 		src/builtins/exit.c \
 		src/builtins/export.c \
+		src/builtins/export_utils.c \
+		src/builtins/export_env.c \
 		src/builtins/unset.c \
 		src/parser/parser_utils.c \
 		src/parser/parser_triage.c \
 		src/parser/parser_cmd_lst.c \
 		src/parser/parser_redir.c \
 		src/errors/errors.c \
-		src/signals/signals.c
+		src/errors/errors_utils.c \
+		src/signals/signals.c \
+		src/signals/init_signals.c
 
 OBJS	= $(SRCS:.c=.o)
 
