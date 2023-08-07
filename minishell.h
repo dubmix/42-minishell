@@ -16,7 +16,7 @@
     # include <sys/ioctl.h>
     #include <linux/limits.h>
 
-extern int g_signals;
+extern int g_xcode;
 
 enum e_type
 {

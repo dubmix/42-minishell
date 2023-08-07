@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pdelanno <pdelanno@student.42berlin.d      +#+  +:+       +#+        */
+/*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 14:30:49 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/06 14:47:29 by pdelanno         ###   ########.fr       */
+/*   Updated: 2023/08/07 16:26:34 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,13 @@ int	redir_error(char *str)
 int	check_redirections(t_shell *cmd)
 {
 	if (cmd->nb_of_heredocs != 0)
-		cmd->exit_code = exec_heredoc(cmd);
+		g_xcode = exec_heredoc(cmd);
 	else if (cmd->cmd_lst->redir_in == 1)
-		cmd->exit_code = exec_infile(cmd->cmd_lst->redir_in_str);
+		g_xcode = exec_infile(cmd->cmd_lst->redir_in_str);
 	if (cmd->cmd_lst->append == 1)
-		cmd->exit_code = exec_outfile(cmd);
+		g_xcode = exec_outfile(cmd);
 	else if (cmd->cmd_lst->redir_out == 1)
-		cmd->exit_code = exec_outfile(cmd);
+		g_xcode = exec_outfile(cmd);
 	return (EXIT_SUCCESS);
 }
 

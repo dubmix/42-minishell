@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 10:56:50 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/06 09:55:43 by pdelanno         ###   ########.fr       */
+/*   Updated: 2023/08/07 16:25:39 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	sigint_heredoc(int sig)
 {
 	(void)sig;
 	ioctl(STDIN_FILENO, TIOCSTI, "\n");
-	g_signals = 130;
+	g_xcode = 130;
 }
 
 void	sigint_child(int sig)
@@ -38,7 +38,7 @@ void	sigquit_handler(int sig)
 {
 	(void)sig;
 	ft_putstr_fd("Quit (core dumped)\n", STDERR_FILENO);
-	g_signals = 131;
+	g_xcode = 131;
 }
 
 void	sigterm_handler(int sig)

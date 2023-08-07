@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 11:32:47 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/06 14:08:31 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/07 16:26:44 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	grab_heredoc(t_shell *cmd)
 				final_line = ft_strjoin(final_line, first_line);
 			free(first_line);
 		}
-		if (g_signals == 130)
+		if (g_xcode == 130)
 			break ;
 	}
 	if (ft_strncmp(final_line, "", ft_strlen(final_line)))

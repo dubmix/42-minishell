@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 16:21:47 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/07 16:01:06 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/07 16:24:04 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,8 @@ void	ft_error(t_shell *cmd, char *string, int type, int exit_code)
 		free_all(cmd, 2);
 		free_all(cmd, 3);
 	}
-	g_signals = exit_code;
-	exit(g_signals);
+	g_xcode = exit_code;
+	exit(g_xcode);
 }
 
 void	free_shell(t_shell *cmd)

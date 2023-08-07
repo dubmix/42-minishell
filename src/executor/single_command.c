@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:46:21 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/07 15:51:29 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/07 16:24:04 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,11 +78,11 @@ int	single_command(t_shell *cmd)
 	path = check_access(cmd->envp_copy, temp->command);
 	if (!path)
 	{
-		g_signals = 127;
+		g_xcode = 127;
 		ft_putstr_fd("Command '", STDERR_FILENO);
 		ft_putstr_fd(temp->command[0], STDERR_FILENO);
 		ft_putstr_fd("' not found\n", STDERR_FILENO);
-		exit(g_signals);
+		exit(g_xcode);
 	}
 	if (ft_strncmp(cmd->cmd_lst->command[0], "echo", 4) == 0)
 		echo(cmd->cmd_lst->command, cmd);
@@ -94,8 +94,8 @@ int	single_command(t_shell *cmd)
 	{
 		if (execve(path, cmd->cmd_lst->command, cmd->envp_copy) == -1)
 		{
-			g_signals = 127;
-			exit(g_signals);
+			g_xcode = 127;
+			exit(g_xcode);
 		}
 	}
 	free(path);

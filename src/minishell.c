@@ -6,13 +6,13 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 11:16:23 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/07 16:11:35 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/07 16:24:04 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	g_signals = 0;
+int	g_xcode = 0;
 
 void	init_shell(t_shell *cmd)
 {
@@ -57,9 +57,9 @@ int	minishell_start(t_shell *cmd)
 		}
 		if (!ft_strncmp(cmd->line, "echo $?", 7))
 		{
-			// printf("G IS '%d'\n", g_signals);
-			ft_putnbr_fd(g_signals, STDERR_FILENO);
-			g_signals = 0;
+			// printf("G IS '%d'\n", g_xcode);
+			ft_putnbr_fd(g_xcode, STDERR_FILENO);
+			g_xcode = 0;
 		}
 		else if (ft_strncmp(cmd->line, "", ft_strlen(cmd->line)))
 		{
@@ -68,7 +68,7 @@ int	minishell_start(t_shell *cmd)
 			cmd->tok_lst = tokenization(cmd);
 			expand_var(cmd);
 			parser(cmd);
-			g_signals = pre_executor(cmd);
+			g_xcode = pre_executor(cmd);
 			free_all(cmd, 4);
 		}
 	}
