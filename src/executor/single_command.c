@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:46:21 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/07 16:24:04 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/07 16:41:55 by pdelanno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	**get_path(char **envp)
 
 	length = 0;
 	i = 0;
-	while (*envp != (void *)'\0')
+	while (*envp != (void *) '\0')
 	{
 		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
 			break ;
@@ -37,7 +37,7 @@ char	**get_path(char **envp)
 	return (path_arr);
 }
 
-char	*check_access(char **envp, char **command) //, int *fds)
+char	*check_access(char **envp, char **command)
 {
 	char	*path_cmd;
 	int		i;
@@ -45,11 +45,10 @@ char	*check_access(char **envp, char **command) //, int *fds)
 	char	*tmp;
 
 	if (access(command[0], F_OK) == 0)
-		return (command[0]); // here is the issue in the edge case ".."
-			/// should check if the file is a correct file (using stat)
+		return (command[0]);
 	path_arr = get_path(envp);
 	i = 0;
-	while (path_arr[i] != (void *)'\0')
+	while (path_arr[i] != (void *) '\0')
 	{
 		tmp = ft_strjoin(path_arr[i], "/");
 		path_cmd = ft_strjoin(tmp, command[0]);
@@ -60,7 +59,7 @@ char	*check_access(char **envp, char **command) //, int *fds)
 			break ;
 		i++;
 	}
-	if (path_arr[i] == (void *)'\0')
+	if (path_arr[i] == (void *) '\0')
 	{
 		free_arr(path_arr);
 		return (NULL);

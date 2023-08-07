@@ -168,6 +168,11 @@ int    exec_single_command_sub(t_shell *cmd);
 void	grab_heredoc(t_shell *cmd);
 char	**string_variables_heredoc(t_shell *cmd, char *string);
 char *double_quote_env_heredoc(t_shell *cmd, char *string);
+char *grab_hd_sub(char *l_ipt, char *fir_l, char *fin_l, t_shell *c);
+char    *double_quote_env_hd_sub(char *string, char *n_str, char **arr_var);
+char **string_var_hd_sub(t_shell *c, char *str, char **arr_str, int start);
+
+
 
 /////////////////////////////////// BUILTINS //////////////////////////////////
 

@@ -6,7 +6,11 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 10:45:11 by pdelanno          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2023/08/07 16:36:01 by edrouot          ###   ########.fr       */
+=======
+/*   Updated: 2023/08/07 16:37:41 by pdelanno         ###   ########.fr       */
+>>>>>>> 93c81e02e1067e31112cd98376ed9e1ef6719567
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +45,13 @@ int	exec_single_command(t_shell *cmd)
 	if (pid == 0)
 	{
 		g_xcode = exec_command(cmd);
-		return(g_xcode);
+		return (g_xcode);
 	}
 	else
 		waitpid(pid, &status, 0);
 	if (WIFEXITED(status))
 		g_xcode = WEXITSTATUS(status);
 	return (g_xcode);
-
 }
 
 int	exec_single_command_sub(t_shell *cmd)
@@ -82,7 +85,7 @@ int	exec_command(t_shell *cmd)
 	{
 		g_xcode = single_command(cmd);
 		ft_putnbr_fd(g_xcode, STDERR_FILENO);
-		return(g_xcode); 
+		return (g_xcode); 
 	}
-	return(g_xcode);
+	return (g_xcode);
 }
