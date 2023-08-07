@@ -241,10 +241,4 @@ char	*checksub(void);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strjoin(char *s1, char *s2);
 
-/* TO DO 
-error handling, usually I put error in the printf statement 
-free all the struct for each new prompt
-handle ?* in the expander
-*/
-
 #endif

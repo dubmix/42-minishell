@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 11:16:23 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/07 16:24:04 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/07 16:33:27 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ int	minishell_start(t_shell *cmd)
 		init_shell(cmd);
 		init_signals();
 		cmd->line = readline("Minishell >");
+		add_history(cmd->line);
 		if (cmd->line == NULL)
 		{
 			printf("exit\n");
@@ -57,13 +58,12 @@ int	minishell_start(t_shell *cmd)
 		}
 		if (!ft_strncmp(cmd->line, "echo $?", 7))
 		{
-			// printf("G IS '%d'\n", g_xcode);
 			ft_putnbr_fd(g_xcode, STDERR_FILENO);
+			write(2, "\n", 1);
 			g_xcode = 0;
 		}
 		else if (ft_strncmp(cmd->line, "", ft_strlen(cmd->line)))
 		{
-			add_history(cmd->line);
 			clear_line_space(cmd->line, cmd);
 			cmd->tok_lst = tokenization(cmd);
 			expand_var(cmd);

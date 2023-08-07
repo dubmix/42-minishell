@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 13:14:26 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/06 12:16:51 by pdelanno         ###   ########.fr       */
+/*   Updated: 2023/08/07 16:31:14 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,19 +26,17 @@ int	exxit(t_shell *cmd)
 
 void	get_exit_code(char **command)
 {
-	int	g_exit_code;
-
-	g_exit_code = 0;
+	g_xcode = 0;
 	if (!command[1])
-		g_exit_code = 0;
+		g_xcode = 0;
 	else if (is_only_digits(command[1]) == 0)
-		g_exit_code = ft_atoi(command[1]);
+		g_xcode = ft_atoi(command[1]);
 	else
 	{
 		printf("minishell: exit: %s: numeric argument required\n", command[1]);
-		g_exit_code = 255;
+		g_xcode = 255;
 	}
-	exit(g_exit_code);
+	exit(g_xcode);
 }
 
 int	is_only_digits(char *str)
