@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 10:45:11 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/07 16:24:04 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/07 16:36:01 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ int	exec_single_command(t_shell *cmd)
 		waitpid(pid, &status, 0);
 	if (WIFEXITED(status))
 		g_xcode = WEXITSTATUS(status);
-	printf("HERE IS '%d'\n", g_xcode);
 	return (g_xcode);
 
 }

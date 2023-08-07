@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:45:38 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/07 16:28:47 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/07 17:36:58 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,10 +76,14 @@ char	**string_variables_bis(t_shell *cmd, char *command,
 			while (command[i] != '\0' && !check_valid_id(command[i])
 				&& command[i] != '$')
 				i++;
+			printf("1 i is %d, c is %c, c -1 is %c\n", i, command[i], command[i-1]);
+			if (command[i] == '?' && command[i+1] == '\0')
+				arr_string[j] = look_into_envir_quote(cmd, "?");
 			if (command[i] == '$')
+			{
 				i = i - 1;
-			arr_string[j] = look_into_envir_quote(cmd, ft_substr(command, start,
-						i - start));
+				arr_string[j] = look_into_envir_quote(cmd, ft_substr(command, start, i - start));
+			}	
 			j++;
 		}
 		i++;
@@ -176,7 +180,6 @@ void	look_into_envir(t_shell *cmd, t_token *var)
 char	*look_into_envir_quote(t_shell *cmd, char *string)
 {
 	t_env	*tmp;
-
 	tmp = cmd->env_lst;
 	while (tmp != NULL)
 	{
