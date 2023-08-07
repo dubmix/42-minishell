@@ -6,13 +6,13 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 11:55:39 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/06 12:31:08 by pdelanno         ###   ########.fr       */
+/*   Updated: 2023/08/07 13:38:06 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-void	echo(char **cmd)
+void	echo(char **commands, t_shell *cmd)
 {
 	int	newline;
 	int	i;
@@ -22,20 +22,20 @@ void	echo(char **cmd)
 	k = 0;
 	newline = 1;
 	i = 1;
-	if (cmd != NULL)
+	if (commands != NULL)
 	{
-		if (ft_strncmp(cmd[i], " ", ft_strlen(cmd[i])) == 0)
+		if (ft_strncmp(commands[i], " ", ft_strlen(commands[i])) == 0)
 			i++;
-		else if (cmd[i][0] == '-')
+		else if (commands[i][0] == '-')
 		{
 			k = i;
-			i = find_new_line(cmd, i);
+			i = find_new_line(commands, i);
 			if (k != i)
 				newline = 0;
 		}
-		check = echo_sub(cmd, i);
+		check = echo_sub(commands, i);
 	}
-	if (newline == 1 && check == 1)
+	if ((newline == 1 && check == 1) || cmd->nb_of_heredocs != 0)
 		printf("\n");
 }
 

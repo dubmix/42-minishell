@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:46:21 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/06 08:21:51 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/07 15:51:29 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ char	**get_path(char **envp)
 	return (path_arr);
 }
 
-char	*check_access(char **envp, char **command, t_shell *cmd) //, int *fds)
+char	*check_access(char **envp, char **command) //, int *fds)
 {
 	char	*path_cmd;
 	int		i;
@@ -62,7 +62,6 @@ char	*check_access(char **envp, char **command, t_shell *cmd) //, int *fds)
 	}
 	if (path_arr[i] == (void *)'\0')
 	{
-		cmd->exit_code = 127;
 		free_arr(path_arr);
 		return (NULL);
 	}
@@ -76,17 +75,17 @@ int	single_command(t_shell *cmd)
 	t_single_cmd	*temp;
 
 	temp = cmd->cmd_lst;
-	path = check_access(cmd->envp_copy, temp->command, cmd);
+	path = check_access(cmd->envp_copy, temp->command);
 	if (!path)
 	{
-		cmd->exit_code = 127;
+		g_signals = 127;
 		ft_putstr_fd("Command '", STDERR_FILENO);
 		ft_putstr_fd(temp->command[0], STDERR_FILENO);
 		ft_putstr_fd("' not found\n", STDERR_FILENO);
-		exit(cmd->exit_code);
+		exit(g_signals);
 	}
 	if (ft_strncmp(cmd->cmd_lst->command[0], "echo", 4) == 0)
-		echo(cmd->cmd_lst->command);
+		echo(cmd->cmd_lst->command, cmd);
 	else if (ft_strncmp(cmd->cmd_lst->command[0], "env", 3) == 0)
 		env(cmd);
 	else if (ft_strncmp(cmd->cmd_lst->command[0], "pwd", 3) == 0)
@@ -94,8 +93,11 @@ int	single_command(t_shell *cmd)
 	else
 	{
 		if (execve(path, cmd->cmd_lst->command, cmd->envp_copy) == -1)
-			return(127); // wrong one most likely
+		{
+			g_signals = 127;
+			exit(g_signals);
+		}
 	}
 	free(path);
-	return (EXIT_SUCCESS);
+	exit(EXIT_SUCCESS);
 }

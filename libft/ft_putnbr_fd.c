@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edrouot <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 12:25:13 by edrouot           #+#    #+#             */
-/*   Updated: 2022/12/11 12:25:15 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/07 15:59:00 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,3 @@ void	ft_putnbr_fd(int nb, int fd)
 			break ;
 	}
 }
-
-/*int	main(void)
-{
-	int nb;
-	nb = 10;
-	ft_putnbr_fd(nb, 6);
-}*/

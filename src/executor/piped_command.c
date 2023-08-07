@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   piped_command.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pdelanno <pdelanno@student.42berlin.d      +#+  +:+       +#+        */
+/*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 14:54:27 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/06 16:15:26 by pdelanno         ###   ########.fr       */
+/*   Updated: 2023/08/07 16:01:36 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ int	pipe_wait(t_shell *cmd)
 				continue ;
 			}
 			else if (WIFEXITED(status))
-				cmd->exit_code = WEXITSTATUS(status);
+				g_signals = WEXITSTATUS(status);
 			i--;
 		}
 		usleep(10000);

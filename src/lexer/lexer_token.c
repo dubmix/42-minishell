@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:45:56 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/06 15:57:58 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/07 08:43:56 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	new_token(t_token **tokens, char *command, int nb, enum e_type type)
 {
 	t_token	*new;
 
-	new = malloc(sizeof(t_token));
+	new = (t_token *)malloc(sizeof(t_token));
 	if (!new)
 	{
 		ft_putstr_fd("Memory allocation failed for new token", STDERR_FILENO);

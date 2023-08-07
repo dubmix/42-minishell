@@ -79,7 +79,6 @@ typedef struct s_shell
     int *words_per_pipe;
     int	*pid;
     char *oldpwd;
-    int exit_code;
 } t_shell;
 
 
@@ -149,9 +148,9 @@ void	print_list_commands(t_single_cmd *cmd, t_shell *shell);
 /*single_command.c*/
 int   single_command(t_shell *cmd);
 char	**get_path(char **envp);
-char	*check_access(char **envp, char **command, t_shell *cmd);
+char	*check_access(char **envp, char **command);
 int	check_redirections(t_shell *cmd);
-void exec_single_command(t_shell *cmd);
+int exec_single_command(t_shell *cmd);
 int pre_executor(t_shell *cmd);
 int exec_piped_command(t_shell *cmd);
 int ft_fork(t_shell *cmd, int pipefd[2], int fd, int i);
@@ -183,7 +182,7 @@ int	    exxit(t_shell *cmd);
 void    get_exit_code(char **command);
 int     is_only_digits(char *str);
 /*echo*/
-void    echo(char **args);
+void    echo(char **args, t_shell *cmd);
 int find_new_line(char **cmd, int i);
 int	echo_sub(char **cmd, int i);
 /*env*/

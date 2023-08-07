@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   errors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pdelanno <pdelanno@student.42berlin.d      +#+  +:+       +#+        */
+/*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 16:21:47 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/06 16:27:52 by pdelanno         ###   ########.fr       */
+/*   Updated: 2023/08/07 16:01:06 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	free_all(t_shell *cmd, int type)
 
 void	ft_error(t_shell *cmd, char *string, int type, int exit_code)
 {
-	write(2, &string, ft_strlen(string));
+	ft_putstr_fd(string, STDERR_FILENO);
 	if (type == 0)
 		free_all(cmd, 0);
 	else if (type == 1)
@@ -72,8 +72,8 @@ void	ft_error(t_shell *cmd, char *string, int type, int exit_code)
 		free_all(cmd, 2);
 		free_all(cmd, 3);
 	}
-	cmd->exit_code = exit_code;
-	exit(1);
+	g_signals = exit_code;
+	exit(g_signals);
 }
 
 void	free_shell(t_shell *cmd)
