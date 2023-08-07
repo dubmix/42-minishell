@@ -67,6 +67,8 @@ int	ft_fork(t_shell *cmd, int pipefd[2], int fd, int i)
 		ft_error(cmd, "Fork error", 4, 1);
 	if (cmd->pid[i] == 0)
 		dup_cmd(cmd, pipefd, fd);
+	else
+		close(pipefd[1]);
 	i++;
 	return (i);
 }
@@ -85,8 +87,6 @@ void	dup_cmd(t_shell *cmd, int pipefd[2], int fd)
 			ft_error(cmd, "Dup failed", 4, 1);
 	}
 	close(pipefd[1]);
-	if (cmd->cmd_lst->index != 0)
-		close(fd);
 	exec_command(cmd);
 }
 
