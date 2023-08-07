@@ -20,6 +20,7 @@ SRCS	= src/minishell.c \
 		src/executor/single_command.c \
 		src/executor/piped_command.c \
 		src/executor/heredoc.c \
+		src/executor/heredoc_utils.c \
 		src/lexer/lexer_utils.c \
 		src/lexer/lexer_token.c \
 		src/lexer/lexer_init.c \
