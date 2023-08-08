@@ -6,14 +6,14 @@
 /*   By: edrouot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 16:09:42 by edrouot           #+#    #+#             */
-/*   Updated: 2022/12/02 16:09:43 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/08 17:59:46 by pdelanno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
 char	*ft_strnstr(const char *big, const char *little, size_t len)
-{	
+{
 	size_t	ilittle;
 	size_t	ibig;
 

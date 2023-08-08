@@ -69,7 +69,7 @@ void	update_envp_copy(t_shell *cmd)
 	int		i;
 
 	free_arr(cmd->envp_copy);
-	env = ft_lstsize_test(cmd->env_lst);
+	env = ft_lstsize_env(cmd->env_lst);
 	cmd->envp_copy = (char **)malloc(sizeof(char *) * (env + 1));
 	temp = cmd->env_lst;
 	i = 0;

@@ -21,13 +21,14 @@ void	grab_heredoc(t_shell *cmd)
 	final_line = ft_strdup("");
 	first_line = NULL;
 	line_input = NULL;
-	signal(SIGTERM, sigterm_handler);
-	signal(SIGINT, sigint_handler);
+	signal(SIGINT, sigint_heredoc);
 	final_line = grab_hd_sub(line_input, first_line, final_line, cmd);
 	if (ft_strncmp(final_line, "", ft_strlen(final_line)))
 		cmd->heredoc_string = ft_strdup(final_line);
+	else
+
 	free(final_line);
-	free_arr(cmd->heredoc_arr);
+	//free_arr(cmd->heredoc_arr);
 	return ;
 }
 
@@ -38,7 +39,7 @@ char	*grab_hd_sub(char *l_ipt, char *fir_l, char *fin_l, t_shell *c)
 	i = 0;
 	while (i < c->nb_of_heredocs)
 	{
-		l_ipt = readline("heredoc >");
+		l_ipt = readline(HEREDOC_MSG);
 		if (!l_ipt)
 			break ;
 		else if (ft_strncmp(l_ipt, c->heredoc_arr[i],

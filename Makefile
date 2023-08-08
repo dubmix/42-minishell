@@ -10,11 +10,11 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME	= minishell
+NAME = minishell
 
 LIBFT = ./libft/libft.a
 
-SRCS	= src/minishell.c \
+SRCS = src/minishell.c \
 		src/executor/executor.c \
 		src/executor/redirections.c \
 		src/executor/single_command.c \
@@ -30,6 +30,7 @@ SRCS	= src/minishell.c \
 		src/builtins/env.c \
 		src/builtins/pwd.c \
 		src/builtins/cd.c \
+		src/builtins/cd_utils.c \
 		src/builtins/exit.c \
 		src/builtins/export.c \
 		src/builtins/export_utils.c \
@@ -41,29 +42,32 @@ SRCS	= src/minishell.c \
 		src/parser/parser_redir.c \
 		src/errors/errors.c \
 		src/errors/errors_utils.c \
-		src/signals/signals.c \
-		src/signals/init_signals.c
+		src/signals/signals.c
 
-OBJS	= $(SRCS:.c=.o)
+OBJS = $(SRCS:.c=.o)
 
-CC 	= cc 
+HEADERS = minishell.h
 
 CFLAGS = -Wall -Wextra -Werror -g
 
-all:	$(NAME)
+.c.o:
+				@cc ${CFLAGS} -c $^ -o $@
 
-${NAME}: $(OBJS)
-	@make -C ./libft
-	@$(CC) $(OBJS) $(CFLAGS) -o $(NAME) -lreadline $(LIBFT)
-	@echo "Compiling complete"
+all:		$(NAME)
+
+${NAME}: 	$(OBJS)
+						@make -sC ./libft
+						@cc $(OBJS) $(CFLAGS) -o $(NAME) -lreadline $(LIBFT)
+						@echo "\033[1;5mProgram is ready!\033[0m"
 
 clean: 
-	@rm -f $(OBJS)
-	@make clean -C libft
+						@rm -f $(OBJS)
+						@make clean -C libft
 
 fclean: clean
-	@rm -f $(NAME)
-	@rm -f $(LIBFT)
+						@rm -f $(NAME)
+						@make -C libft fclean -s
+						@echo "\033[1mAll clean!\033[0m"
 
 re:	fclean all
 

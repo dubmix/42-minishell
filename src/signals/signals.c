@@ -12,6 +12,12 @@
 
 #include "../../minishell.h"
 
+void	init_signals(void)
+{
+	signal(SIGINT, sigint_handler);
+	signal(SIGQUIT, SIG_IGN);
+}
+
 void	sigint_heredoc(int sig)
 {
 	(void)sig;
@@ -40,14 +46,4 @@ void	sigquit_handler(int sig)
 	(void)sig;
 	ft_putstr_fd("Quit (core dumped)\n", STDERR_FILENO);
 	g_xcode = 131;
-}
-
-void	sigterm_handler(int sig)
-{
-	(void)sig;
-	ft_putstr_fd("Exit\n", STDERR_FILENO);
-	rl_replace_line("", 0);
-	rl_on_new_line();
-	rl_redisplay();
-	exit(0);
 }

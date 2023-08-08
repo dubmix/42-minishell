@@ -49,25 +49,15 @@ int	minishell_start(t_shell *cmd)
 	{
 		init_shell(cmd);
 		init_signals();
-		cmd->line = readline("Minishell >");
+		cmd->line = readline(READLINE_MSG);
 		add_history(cmd->line);
-		if (cmd->line == NULL)
-		{
-			printf("exit\n");
-			exit(0);
-		}
-		if (!ft_strncmp(cmd->line, "echo $?", 7))
-		{
-			ft_putnbr_fd(g_xcode, STDERR_FILENO);
-			write(2, "\n", 1);
-			g_xcode = 0;
-		}
+		if (cmd->line == NULL || !ft_strncmp(cmd->line, "echo $?", 7))
+			minishell_start_sub(cmd->line);
 		else if (ft_strncmp(cmd->line, "", ft_strlen(cmd->line)))
 		{
 			g_xcode = 0;
 			clear_line_space(cmd->line, cmd);
 			cmd->tok_lst = tokenization(cmd);
-			print_list_tok(cmd->tok_lst);
 			expand_var(cmd);
 			parser(cmd);
 			if (g_xcode == 0)
@@ -78,9 +68,24 @@ int	minishell_start(t_shell *cmd)
 	return (0);
 }
 
-	// rl_clear_history();
-	// free_all(cmd, 5);
-	// free(cmd);
+void minishell_start_sub(char *str)
+{
+	if (str == NULL)
+	{
+		ft_putstr_fd(EXIT_MSG, STDERR_FILENO);
+		exit(0);
+	}
+	if (!ft_strncmp(str, "echo $?", 7))
+	{
+		ft_putnbr_fd(g_xcode, STDERR_FILENO);
+		write(2, "\n", 1);
+		g_xcode = 0;
+	}
+}
+
+// rl_clear_history();
+// free_all(cmd, 5);
+// free(cmd);
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -88,7 +93,8 @@ int	main(int argc, char **argv, char **envp)
 
 	argv = NULL;
 	if (argc != 1)
-		printf("Error, program should not take any arguments\n");
+		ft_putstr_fd("Error, program should not take any arguments\n",
+						STDERR_FILENO);
 	else
 	{
 		cmd = malloc(sizeof(t_shell));

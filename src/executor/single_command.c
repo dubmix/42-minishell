@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:46:21 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/07 16:41:55 by pdelanno         ###   ########.fr       */
+/*   Updated: 2023/08/08 17:43:21 by pdelanno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,7 @@ char	*check_access(char **envp, char **command)
 		i++;
 	}
 	if (path_arr[i] == (void *) '\0')
-	{
-		free_arr(path_arr);
-		return (NULL);
-	}
+		return (free_arr(path_arr), NULL);
 	free_arr(path_arr);
 	return (path_cmd);
 }
@@ -78,9 +75,8 @@ int	single_command(t_shell *cmd)
 	if (!path)
 	{
 		g_xcode = 127;
-		ft_putstr_fd("Command '", STDERR_FILENO);
 		ft_putstr_fd(temp->command[0], STDERR_FILENO);
-		ft_putstr_fd("' not found\n", STDERR_FILENO);
+		ft_putstr_fd(": command not found\n", STDERR_FILENO);
 		exit(g_xcode);
 	}
 	if (ft_strncmp(cmd->cmd_lst->command[0], "echo", 4) == 0)
@@ -89,13 +85,10 @@ int	single_command(t_shell *cmd)
 		env(cmd);
 	else if (ft_strncmp(cmd->cmd_lst->command[0], "pwd", 3) == 0)
 		pwd();
-	else
+	else if (execve(path, cmd->cmd_lst->command, cmd->envp_copy) == -1)
 	{
-		if (execve(path, cmd->cmd_lst->command, cmd->envp_copy) == -1)
-		{
-			g_xcode = 127;
-			exit(g_xcode);
-		}
+		g_xcode = 127;
+		exit(g_xcode);
 	}
 	free(path);
 	exit(EXIT_SUCCESS);
