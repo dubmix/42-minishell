@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
+/*   By: emiliedrouot <emiliedrouot@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 13:35:10 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/06 11:35:03 by pdelanno         ###   ########.fr       */
+/*   Updated: 2023/08/08 22:14:11 by emiliedrouo      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	unset_error(char **command)
 	j = 0;
 	if (!command[i])
 	{
-		printf("minishell: unset: not enough arguments\n");
+		ft_putstr_fd("minishell: unset: not enough arguments\n", STDERR_FILENO);
 		return (1);
 	}
 	while (command[i])
@@ -39,8 +39,9 @@ int	unset_error(char **command)
 		{
 			if (command[i][j] == '/' || command[i][j] == '=')
 			{
-				printf("minishell: unset:");
-				printf(" %s: invalid parameter name\n", command[i]);
+				ft_putstr_fd("minishell: unset: ", STDERR_FILENO);
+				ft_putstr_fd(command[i], STDERR_FILENO);
+				ft_putstr_fd(": invalid parameter name\n", STDERR_FILENO);
 				return (1);
 			}
 			j++;

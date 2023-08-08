@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
+/*   By: emiliedrouot <emiliedrouot@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 11:16:23 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/08 17:08:16 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/08 22:12:40 by emiliedrouo      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,13 +53,13 @@ int	minishell_start(t_shell *cmd)
 		add_history(cmd->line);
 		if (cmd->line == NULL)
 		{
-			printf("exit\n");
+			ft_putstr_fd("exit\n", STDERR_FILENO);
 			exit(0);
 		}
 		if (!ft_strncmp(cmd->line, "echo $?", 7))
 		{
 			ft_putnbr_fd(g_xcode, STDERR_FILENO);
-			write(2, "\n", 1);
+			ft_putstr_fd("\n", STDERR_FILENO);
 			g_xcode = 0;
 		}
 		else if (ft_strncmp(cmd->line, "", ft_strlen(cmd->line)))
@@ -67,7 +67,6 @@ int	minishell_start(t_shell *cmd)
 			g_xcode = 0;
 			clear_line_space(cmd->line, cmd);
 			cmd->tok_lst = tokenization(cmd);
-			// print_list_tok(cmd->tok_lst);
 			expand_var(cmd);
 			parser(cmd);
 			if (g_xcode == 0)
@@ -86,9 +85,9 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_shell	*cmd;
 
-	argv = NULL;
+(void)argv; // to put again argv = NULL;
 	if (argc != 1)
-		printf("Error, program should not take any arguments\n");
+		ft_putendl_fd("Error, program should not take any arguments\n", STDERR_FILENO);
 	else
 	{
 		cmd = malloc(sizeof(t_shell));

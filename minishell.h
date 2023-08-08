@@ -14,7 +14,7 @@
     # include <fcntl.h>
     # include <limits.h>
     # include <sys/ioctl.h>
-    #include <linux/limits.h>
+   // # include <linux/limits.h> // to put again 
 
 extern int g_xcode;
 

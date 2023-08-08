@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   single_command.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
+/*   By: emiliedrouot <emiliedrouot@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:46:21 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/08 17:45:47 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/08 21:56:11 by emiliedrouo      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,14 +74,17 @@ int	single_command(t_shell *cmd)
 	t_single_cmd	*temp;
 
 	temp = cmd->cmd_lst;
-	path = check_access(cmd->envp_copy, temp->command);
-	if (!path)
+	if (!ft_strncmp(temp->command[0], "cd", ft_strlen(temp->command[0])) || !ft_strncmp(temp->command[0], "exit", ft_strlen(temp->command[0])) || !ft_strncmp(temp->command[0], "export", ft_strlen(temp->command[0])) || !ft_strncmp(temp->command[0], "unset", ft_strlen(temp->command[0])))
 	{
-		g_xcode = 127;
-		ft_putstr_fd("Command '", STDERR_FILENO);
-		ft_putstr_fd(temp->command[0], STDERR_FILENO);
-		ft_putstr_fd("' not found\n", STDERR_FILENO); // rajouter l'exception pour les builtins
-		exit(g_xcode);
+		path = check_access(cmd->envp_copy, temp->command);
+		if (!path)
+		{
+			g_xcode = 127;
+			ft_putstr_fd("Command '", STDERR_FILENO);
+			ft_putstr_fd(temp->command[0], STDERR_FILENO);
+			ft_putstr_fd("' not found\n", STDERR_FILENO); // rajouter l'exception pour les builtins
+			exit(g_xcode);
+		}
 	}
 	if (ft_strncmp(cmd->cmd_lst->command[0], "echo", 4) == 0)
 		echo(cmd->cmd_lst->command, cmd);
