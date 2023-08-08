@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 09:01:11 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/06 08:11:33 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/08 11:51:22 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,37 @@ void	parser(t_shell *cmd)
 	triage_quotes(cmd);
 	adjust_number(cmd);
 	triage_space(cmd);
-	triage_space_redir(cmd);
+	triage_space_redir_pipe(cmd);
 	adjust_number(cmd);
+	if (!error_syntax(cmd))
+		return ;
 	number_words_per_pipe(cmd);
-	if (cmd->nb_of_heredocs != 0)
+	if (cmd->nb_of_heredocs)
 	{
 		number_heredocs(cmd);
-		grab_heredoc(cmd);
+		if (cmd->nb_of_heredocs)
+			grab_heredoc(cmd);
 	}
 	cmd->cmd_lst = triage_cmd_redir(cmd);
 }
 
+int	error_syntax(t_shell *cmd)
+{
+	t_token *temp;
+
+	temp = cmd->tok_lst;
+	while (temp != NULL)
+	{
+		if ((temp->next == NULL || temp->next->type == PIPE) && (temp->type == HEREDOC || temp->type == REDIRECT_INPUT || temp->type == REDIRECT_OUTPUT || temp->type == APPEND))
+		{
+			ft_putstr_fd("minishell : syntax error near unexpected token\n", STDERR_FILENO);
+			g_xcode = 2;
+			return (0);
+		}
+		temp = temp->next;
+	}
+	return (1);
+}
 void	number_heredocs(t_shell *cmd)
 {
 	t_token	*temp;
@@ -43,14 +63,19 @@ void	number_heredocs(t_shell *cmd)
 		ft_error(cmd, "Heredoc memory allocation failure", 6, 50);
 	while (temp != NULL)
 	{
-		if (temp->type == HEREDOC)
+		if (temp->type == HEREDOC && temp->next != NULL)
 		{
 			cmd->heredoc_arr[k] = ft_strdup(temp->next->command);
 			k++;
 		}
 		temp = temp->next;
 	}
-	if (cmd->nb_of_heredocs != 0)
+	if (k == 0)
+	{
+		cmd->nb_of_heredocs = 0;
+		free_arr(cmd->heredoc_arr);
+	}
+	else if (cmd->nb_of_heredocs != 0)
 		cmd->heredoc_arr[k] = 0;
 }
 

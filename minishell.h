@@ -122,10 +122,11 @@ t_token *tokenization(t_shell *shell);
 /*parser_main.c*/
 void    parser(t_shell *cmd);
 void	number_words_per_pipe(t_shell *cmd);
+int	error_syntax(t_shell *cmd);
 
 /*parser_triage.c*/
 void    triage_space(t_shell *cmd);
-void	triage_space_redir(t_shell *cmd);
+void	triage_space_redir_pipe(t_shell *cmd);
 void	triage_quotes(t_shell *cmd);
 
 /*parser_cmd_lst.c*/
@@ -189,7 +190,7 @@ int     is_only_digits(char *str);
 /*echo*/
 void    echo(char **args, t_shell *cmd);
 int find_new_line(char **cmd, int i);
-int	echo_sub(char **cmd, int i);
+int	echo_sub(char **cmd, int i, int check);
 /*env*/
 int     env(t_shell *cmd);
 /*pwd*/
