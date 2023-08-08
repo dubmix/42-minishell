@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:45:38 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/07 17:36:58 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/08 13:11:32 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ char	**string_variables_bis(t_shell *cmd, char *command,
 	int	j;
 	int	start;
 
+	// char *string;
 	j = 0;
 	start = 0;
 	while (command[i] != '\0')
@@ -76,18 +77,13 @@ char	**string_variables_bis(t_shell *cmd, char *command,
 			while (command[i] != '\0' && !check_valid_id(command[i])
 				&& command[i] != '$')
 				i++;
-			printf("1 i is %d, c is %c, c -1 is %c\n", i, command[i], command[i-1]);
-			if (command[i] == '?' && command[i+1] == '\0')
-				arr_string[j] = look_into_envir_quote(cmd, "?");
 			if (command[i] == '$')
-			{
 				i = i - 1;
-				arr_string[j] = look_into_envir_quote(cmd, ft_substr(command, start, i - start));
-			}	
+			arr_string[j] = look_into_envir_quote(cmd, ft_substr(command, start, i - start));
 			j++;
 		}
 		i++;
-	}
+		}
 	arr_string[j] = 0;
 	return (arr_string);
 }
@@ -133,6 +129,8 @@ char	*double_quote_env_bis(char *command, char *new_string,
 				&& !check_valid_id(command[i])
 				&& command[i] != '$')
 				i++;
+			if (command[i] == '?' && (command[i + 1] == ' ' || command[i + 1] == '\0'))
+				i++;
 			while (arr_var[k][n] != '\0')
 				new_string[j++] = arr_var[k][n++];
 			k++;
@@ -164,7 +162,7 @@ void	look_into_envir(t_shell *cmd, t_token *var)
 			var->command = ft_strdup(ft_itoa(g_xcode));
 			break ;
 		}
-		else if (ft_strncmp(string[0], tmp->name, ft_strlen(var->command)) == 0)
+		else if (ft_strncmp(string[0], tmp->name, ft_strlen(string[0])) == 0)
 		{
 			var->command = ft_strdup(tmp->value);
 			break ;
@@ -183,7 +181,7 @@ char	*look_into_envir_quote(t_shell *cmd, char *string)
 	tmp = cmd->env_lst;
 	while (tmp != NULL)
 	{
-		if (ft_strncmp(string, "?", 1) == 0)
+		if (ft_strncmp(string, "?", ft_strlen(string)) == 0)
 		{
 			free(string);
 			string = ft_strdup(ft_itoa(g_xcode));

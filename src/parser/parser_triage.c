@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_triage.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emiliedrouot <emiliedrouot@student.42.f    +#+  +:+       +#+        */
+/*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 11:56:11 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/05 23:50:29 by emiliedrouo      ###   ########.fr       */
+/*   Updated: 2023/08/08 11:16:27 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,8 @@ void	triage_space(t_shell *cmd)
 	triage_space_bis(cmd, temp, node_to_delete, state);
 }
 
-void	triage_space_redir(t_shell *cmd)
+
+void	triage_space_redir_pipe(t_shell *cmd)
 {
 	t_token	**temp;
 	t_token	*node_to_delete;
@@ -63,7 +64,7 @@ void	triage_space_redir(t_shell *cmd)
 	{
 		if (((*temp)->next != NULL) && (ft_strncmp((*temp)->command, " ", ft_strlen((*temp)->command)) == 0) && ((*temp)->next->type == REDIRECT_INPUT
 				|| (*temp)->next->type == REDIRECT_OUTPUT
-				|| (*temp)->next->type == APPEND))
+				|| (*temp)->next->type == APPEND || (*temp)->next->type == PIPE))
 		{
 			node_to_delete = *temp;
 			delete_node_tok(&(cmd->tok_lst), node_to_delete);

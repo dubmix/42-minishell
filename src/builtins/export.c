@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emiliedrouot <emiliedrouot@student.42.f    +#+  +:+       +#+        */
+/*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 13:29:20 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/06 17:12:49 by pdelanno         ###   ########.fr       */
+/*   Updated: 2023/08/08 13:08:23 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+
+char **var_arr(t_shell *cmd, char *command);
 
 int	export(t_shell *cmd, char **command)
 {
@@ -20,7 +22,8 @@ int	export(t_shell *cmd, char **command)
 
 	i = 0;
 	tmp = &cmd;
-	if (!command[i])
+	print_list_commands(cmd->cmd_lst, cmd);
+	if (!command[i+1])
 	{
 		sort_env(&cmd->env_lst);
 		print_sorted_env(&cmd->env_lst);
@@ -30,7 +33,8 @@ int	export(t_shell *cmd, char **command)
 	{
 		if (ft_strncmp(command[i], " ", 1) != 0)
 		{
-			str = ft_split((command[i]), '=');
+			str = var_arr(cmd, command[i]);
+			// str = ft_split(command[i], '=');
 			if (check_param(command[i]) == 0
 				&& var_exists((*tmp)->env_lst, str[0]) == 0)
 				new_node_env(cmd, &(*tmp)->env_lst, str, command[i]);
@@ -39,6 +43,23 @@ int	export(t_shell *cmd, char **command)
 	}
 	update_envp_copy(cmd);
 	return (EXIT_SUCCESS);
+}
+
+char **var_arr(t_shell *cmd, char *command)
+{
+	char **str_arr;
+	int i;
+	int j;
+
+	i = 0;
+	j = 0;
+	str_arr = ft_split(command, '=');
+	while (str_arr[i] != 0)
+	{
+		str_arr[i] = double_quote_env_heredoc(cmd, str_arr[i]);
+		i++;
+	}
+	return (str_arr);
 }
 
 void	update_envp_copy(t_shell *cmd)
@@ -80,11 +101,11 @@ int	check_param(char *str)
 	int	i;
 
 	i = 0;
-	if (str[i] == '=')
-		return (EXIT_FAILURE);
-	if (ft_isdigit(str[i]))
-		return (export_error(str));
 	if (ft_findchar(str, '=') == 0)
+		return (EXIT_FAILURE);
+	if (str[i] == '=')
+		return (export_error(str));
+	if (ft_isdigit(str[i]))
 		return (export_error(str));
 	while (str[i] != '=')
 	{

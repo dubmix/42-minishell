@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 11:55:39 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/07 13:38:06 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/08 13:38:55 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,13 @@ void	echo(char **commands, t_shell *cmd)
 	int	k;
 	int	check;
 
-	k = 0;
+	check = 0;
 	newline = 1;
 	i = 1;
-	if (commands != NULL)
+	if (commands[i] != NULL)
 	{
+		if (ft_strncmp(commands[i], "", ft_strlen(commands[i])) == 0)
+			check = 1;
 		if (ft_strncmp(commands[i], " ", ft_strlen(commands[i])) == 0)
 			i++;
 		else if (commands[i][0] == '-')
@@ -33,17 +35,16 @@ void	echo(char **commands, t_shell *cmd)
 			if (k != i)
 				newline = 0;
 		}
-		check = echo_sub(commands, i);
+		check = echo_sub(commands, i, check);
 	}
+	else
+		ft_putstr_fd("\n", STDERR_FILENO);
 	if ((newline == 1 && check == 1) || cmd->nb_of_heredocs != 0)
-		printf("\n");
+		ft_putstr_fd("\n", STDERR_FILENO);
 }
 
-int	echo_sub(char **cmd, int i)
+int	echo_sub(char **cmd, int i, int check)
 {
-	int	check;
-
-	check = 0;
 	while (cmd[i] != NULL)
 	{
 		ft_putstr_fd(cmd[i], STDOUT_FILENO);

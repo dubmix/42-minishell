@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 16:04:33 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/06 08:11:58 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/08 11:31:52 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ t_token	*new_node_cmd(t_single_cmd **cmd_lst, int index,
 		else if (temp->type == REDIRECT_INPUT 
 			|| temp->type == REDIRECT_OUTPUT || temp->type == APPEND)
 			i = handle_redir_in_out(cmd, new, temp, i) + 1;
-		else if (temp->type == HEREDOC)
+		else if (temp->type == HEREDOC && temp->next != NULL)
 			temp = temp->next->next;
 		if (temp != NULL)
 			temp = temp->next;

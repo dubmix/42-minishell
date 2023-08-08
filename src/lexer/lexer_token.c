@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:45:56 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/07 08:43:56 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/08 14:45:29 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,6 +159,11 @@ t_token	*tokenization_special_char(t_shell *cmd, int *i,
 	if (cmd->line[*i] == 39 || cmd->line[*i] == 34)
 		*i = new_token_quote(&tok_lst, cmd->line,
 				*i, nb_token) - 1;
+	else if (cmd->line[*i] == '$' && cmd->line[*i + 1] == '$')
+	{
+		new_token(&tok_lst, "$$", nb_token, VARIABLE);
+		*i = *i + 1;
+	}
 	else if (cmd->line[*i] == '$' && cmd->line[*i + 1] == '0')
 	{
 		new_token(&tok_lst, "minishell", nb_token, WORD);

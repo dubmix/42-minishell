@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 12:21:08 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/07 12:14:33 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/08 11:54:17 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	find_old_pwd(t_shell *cmd)
 		if (!ft_strncmp(tmp->name, "PWD", 3))
 		{
 			free(cmd->oldpwd);			
-			cmd->oldpwd = ft_strdup(tmp->full_string);
+			cmd->oldpwd = ft_strdup(tmp->value);
 			break ;
 		}
 		tmp = tmp->next;

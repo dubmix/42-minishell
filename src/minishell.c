@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 11:16:23 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/07 16:33:27 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/08 14:31:54 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,11 +64,14 @@ int	minishell_start(t_shell *cmd)
 		}
 		else if (ft_strncmp(cmd->line, "", ft_strlen(cmd->line)))
 		{
+			g_xcode = 0;
 			clear_line_space(cmd->line, cmd);
 			cmd->tok_lst = tokenization(cmd);
+			print_list_tok(cmd->tok_lst);
 			expand_var(cmd);
 			parser(cmd);
-			g_xcode = pre_executor(cmd);
+			if (g_xcode == 0)
+				g_xcode = pre_executor(cmd);
 			free_all(cmd, 4);
 		}
 	}
