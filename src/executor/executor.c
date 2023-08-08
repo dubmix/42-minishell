@@ -47,7 +47,6 @@ int	exec_single_command(t_shell *cmd)
 		waitpid(pid, &status, 0);
 	if (WIFEXITED(status))
 		g_xcode = WEXITSTATUS(status);
-	printf("HERE IS '%d'\n", g_xcode);
 	return (g_xcode);
 }
 

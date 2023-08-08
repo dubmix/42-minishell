@@ -21,6 +21,7 @@ void	grab_heredoc(t_shell *cmd)
 	final_line = ft_strdup("");
 	first_line = NULL;
 	line_input = NULL;
+	signal(SIGTERM, sigterm_handler);
 	signal(SIGINT, sigint_handler);
 	final_line = grab_hd_sub(line_input, first_line, final_line, cmd);
 	if (ft_strncmp(final_line, "", ft_strlen(final_line)))
