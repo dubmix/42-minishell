@@ -6,7 +6,7 @@
 /*   By: emiliedrouot <emiliedrouot@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 11:16:23 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/08 22:12:40 by emiliedrouo      ###   ########.fr       */
+/*   Updated: 2023/08/08 23:17:39 by emiliedrouo      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,14 @@ int	minishell_start(t_shell *cmd)
 		init_shell(cmd);
 		init_signals();
 		cmd->line = readline("Minishell >");
-		add_history(cmd->line);
 		if (cmd->line == NULL)
 		{
+			free(cmd->line);
 			ft_putstr_fd("exit\n", STDERR_FILENO);
-			exit(0);
+			g_xcode = 130;
+			return (-1);
 		}
+		add_history(cmd->line);
 		if (!ft_strncmp(cmd->line, "echo $?", 7))
 		{
 			ft_putnbr_fd(g_xcode, STDERR_FILENO);
@@ -77,15 +79,14 @@ int	minishell_start(t_shell *cmd)
 	return (0);
 }
 
-	// rl_clear_history();
-	// free_all(cmd, 5);
-	// free(cmd);
 
 int	main(int argc, char **argv, char **envp)
 {
 	t_shell	*cmd;
+	int check;
 
-(void)argv; // to put again argv = NULL;
+	check = 42;
+	(void)argv; // to put again argv = NULL;
 	if (argc != 1)
 		ft_putendl_fd("Error, program should not take any arguments\n", STDERR_FILENO);
 	else
@@ -97,7 +98,13 @@ int	main(int argc, char **argv, char **envp)
 			exit(1);
 		}
 		cmd->env_lst = init_envp(envp, cmd);
-		minishell_start(cmd);
+		while (check > 0)
+		{
+			check = minishell_start(cmd);
+		}
+		clear_history();
+		free_all(cmd, 5);
+		free(cmd);
 	}
 	return (0);
 }

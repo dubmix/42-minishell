@@ -6,7 +6,7 @@
 /*   By: emiliedrouot <emiliedrouot@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:46:21 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/08 21:56:11 by emiliedrouo      ###   ########.fr       */
+/*   Updated: 2023/08/08 22:31:21 by emiliedrouo      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,38 +68,60 @@ char	*check_access(char **envp, char **command)
 	return (path_cmd);
 }
 
+int	is_builtins(char *string)
+{
+	if (!ft_strncmp(string, "echo", ft_strlen(string)))
+		return (1);
+	else if (!ft_strncmp(string, "cd", ft_strlen(string)))
+		return (1);
+	else if (!ft_strncmp(string, "pwd", ft_strlen(string)))
+		return (1);
+	else if (!ft_strncmp(string, "export", ft_strlen(string)))
+		return (1);
+	else if (!ft_strncmp(string, "unset", ft_strlen(string)))
+		return (1);
+	else if (!ft_strncmp(string, "env", ft_strlen(string)))
+		return (1);
+	else if (!ft_strncmp(string, "exit", ft_strlen(string)))
+		return (1);
+	else
+		return (0);
+}
+
 int	single_command(t_shell *cmd)
 {
 	char			*path;
 	t_single_cmd	*temp;
 
 	temp = cmd->cmd_lst;
-	if (!ft_strncmp(temp->command[0], "cd", ft_strlen(temp->command[0])) || !ft_strncmp(temp->command[0], "exit", ft_strlen(temp->command[0])) || !ft_strncmp(temp->command[0], "export", ft_strlen(temp->command[0])) || !ft_strncmp(temp->command[0], "unset", ft_strlen(temp->command[0])))
+	if(!is_builtins(temp->command[0]))	
 	{
+		write(2, "TRUC", 4);
 		path = check_access(cmd->envp_copy, temp->command);
 		if (!path)
 		{
 			g_xcode = 127;
 			ft_putstr_fd("Command '", STDERR_FILENO);
 			ft_putstr_fd(temp->command[0], STDERR_FILENO);
-			ft_putstr_fd("' not found\n", STDERR_FILENO); // rajouter l'exception pour les builtins
+			ft_putstr_fd("' not found\n", STDERR_FILENO);
+			exit(g_xcode);
+		}
+		if (execve(path, cmd->cmd_lst->command, cmd->envp_copy) == -1)
+		{
+			g_xcode = 127;
+			free(path);
 			exit(g_xcode);
 		}
 	}
-	if (ft_strncmp(cmd->cmd_lst->command[0], "echo", 4) == 0)
+	else if (ft_strncmp(cmd->cmd_lst->command[0], "echo", 4) == 0)
 		echo(cmd->cmd_lst->command, cmd);
 	else if (ft_strncmp(cmd->cmd_lst->command[0], "env", 3) == 0)
 		env(cmd);
 	else if (ft_strncmp(cmd->cmd_lst->command[0], "pwd", 3) == 0)
 		pwd();
-	else
-	{
-		if (execve(path, cmd->cmd_lst->command, cmd->envp_copy) == -1)
-		{
-			g_xcode = 127;
-			exit(g_xcode);
-		}
-	}
-	free(path);
+	// else
+	// {
+	// }
+	// free(path);
 	exit(EXIT_SUCCESS);
 }

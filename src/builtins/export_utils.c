@@ -6,7 +6,7 @@
 /*   By: emiliedrouot <emiliedrouot@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 11:44:34 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/08 22:13:58 by emiliedrouo      ###   ########.fr       */
+/*   Updated: 2023/08/08 22:18:29 by emiliedrouo      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 int	export_error(char *str)
 {
-	ft_putstr_fd("minishell: export: ", STDERR_FILENO)
-	ft_putnbr_fd(str, STDERR_FILENO);
+	ft_putstr_fd("minishell: export: ", STDERR_FILENO);
+	ft_putstr_fd(str, STDERR_FILENO);
 	ft_putstr_fd(": not a valid identifier\n", STDERR_FILENO);
 	return (EXIT_FAILURE);
 }

@@ -3,36 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
+/*   By: emiliedrouot <emiliedrouot@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 13:24:27 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/06 08:11:03 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/08 22:40:52 by emiliedrouo      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-void	delete_node_tok(t_token **head, t_token *nodeToDelete)
+void	delete_node_tok(t_token **head, t_token *node_to_delete)
 {
 	t_token	*prev_node;
 
 	prev_node = NULL;
-	if (*head == NULL || nodeToDelete == NULL)
+	if (*head == NULL || node_to_delete == NULL)
 		return ;
-	if (*head == nodeToDelete)
-		*head = nodeToDelete->next;
+	if (*head == node_to_delete)
+		*head = node_to_delete->next;
 	else
 	{
 		prev_node = *head;
-		while (prev_node->next != NULL && prev_node->next != nodeToDelete)
+		while (prev_node->next != NULL && prev_node->next != node_to_delete)
 			prev_node = prev_node->next;
-		if (prev_node->next == nodeToDelete)
-			prev_node->next = nodeToDelete->next;
+		if (prev_node->next == node_to_delete)
+			prev_node->next = node_to_delete->next;
 		else
 			return ;
 	}
-	free(nodeToDelete->command);
-	free(nodeToDelete);
+	free(node_to_delete->command);
+	free(node_to_delete);
 	return ;
 }
 
@@ -72,8 +72,6 @@ void	print_list_commands(t_single_cmd *cmd, t_shell *shell)
 		printf("redir_in is %d : %s\n", tmp->redir_in, tmp->redir_in_str);
 		printf("redir_out is %d : %s\n", tmp->redir_out, tmp->redir_out_str);
 		printf("append is %d : %s,\n", tmp->append, tmp->append_str);
-		// printf("Command are %s \n", tmp->command[i]);
-
 		while (tmp->command[i] != NULL)
 		{
 			printf("Command are %s \n", tmp->command[i]);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_token.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
+/*   By: emiliedrouot <emiliedrouot@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:45:56 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/08 16:13:57 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/08 22:37:35 by emiliedrouo      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	new_token(t_token **tokens, char *command, int nb, enum e_type type)
 {
 	t_token	*new;
 
-	new = (t_token *)malloc(sizeof(t_token));
+	new = malloc(sizeof(t_token));
 	if (!new)
 	{
 		ft_putstr_fd("Memory allocation failed for new token", STDERR_FILENO);
