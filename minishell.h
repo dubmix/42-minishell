@@ -72,7 +72,7 @@ typedef struct s_shell
     char **envp_copy; // export function recre2er la char ** // do we really need something else than the path
     int size_arr_var;
     char **heredoc_arr;
-    char *heredoc_string; // is not in the single_cmd struc because it is not depending on the pipes
+    char *heredoc_string;
     int nb_of_heredocs;
     int nb_of_pipes;
     int nb_of_tokens;

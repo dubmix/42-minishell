@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:46:21 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/07 16:41:55 by pdelanno         ###   ########.fr       */
+/*   Updated: 2023/08/08 17:45:47 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int	single_command(t_shell *cmd)
 		g_xcode = 127;
 		ft_putstr_fd("Command '", STDERR_FILENO);
 		ft_putstr_fd(temp->command[0], STDERR_FILENO);
-		ft_putstr_fd("' not found\n", STDERR_FILENO);
+		ft_putstr_fd("' not found\n", STDERR_FILENO); // rajouter l'exception pour les builtins
 		exit(g_xcode);
 	}
 	if (ft_strncmp(cmd->cmd_lst->command[0], "echo", 4) == 0)

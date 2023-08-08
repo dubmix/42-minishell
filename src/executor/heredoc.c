@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 11:32:47 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/07 17:33:28 by pdelanno         ###   ########.fr       */
+/*   Updated: 2023/08/08 17:12:49 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,19 @@ void	grab_heredoc(t_shell *cmd)
 	char	*first_line;
 	char	*final_line;
 
-	final_line = ft_strdup("");
+	final_line = NULL;
 	first_line = NULL;
 	line_input = NULL;
 	signal(SIGTERM, sigterm_handler);
 	signal(SIGINT, sigint_handler);
 	final_line = grab_hd_sub(line_input, first_line, final_line, cmd);
-	if (ft_strncmp(final_line, "", ft_strlen(final_line)))
+	if (final_line != NULL)
+	{
 		cmd->heredoc_string = ft_strdup(final_line);
-	free(final_line);
-	free_arr(cmd->heredoc_arr);
+		free(final_line);
+	}
+	else
+		cmd->heredoc_string = ft_strdup("");
 	return ;
 }
 
@@ -43,7 +46,10 @@ char	*grab_hd_sub(char *l_ipt, char *fir_l, char *fin_l, t_shell *c)
 			break ;
 		else if (ft_strncmp(l_ipt, c->heredoc_arr[i],
 				ft_strlen(l_ipt)) == 0 && l_ipt[0] != 0)
+		{
 			i++;
+			free(l_ipt);
+		}
 		else if (i == (c->nb_of_heredocs - 1))
 		{
 			fir_l = double_quote_env_heredoc(c, l_ipt);

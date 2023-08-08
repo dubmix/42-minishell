@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 11:16:23 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/08 14:31:54 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/08 17:08:16 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int	minishell_start(t_shell *cmd)
 			g_xcode = 0;
 			clear_line_space(cmd->line, cmd);
 			cmd->tok_lst = tokenization(cmd);
-			print_list_tok(cmd->tok_lst);
+			// print_list_tok(cmd->tok_lst);
 			expand_var(cmd);
 			parser(cmd);
 			if (g_xcode == 0)

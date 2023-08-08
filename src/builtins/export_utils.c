@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 11:44:34 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/07 16:55:57 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/08 18:41:41 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,16 @@ int	check_valid_id(char c)
 		return (1);
 }
 
-void	print_chararr(char **envp)
+void	print_chararr(char **arr)
 {
 	int	i;
 
 	i = 0;
-	while (envp[i])
+	if (arr == 0)
+		return ;
+	while (arr[i] != 0)
 	{
-		printf("%s\n", envp[i]);
+		printf("%s\n", arr[i]);
 		i++;
 	}
 }

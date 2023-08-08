@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 16:21:47 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/07 16:24:04 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/08 16:52:56 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,9 @@ void	free_shell(t_shell *cmd)
 	cmd->size_arr_var = 0;
 	if (cmd->nb_of_heredocs != 0)
 	{
-		free(cmd->heredoc_string);
+		free_arr(cmd->heredoc_arr);
+		if (cmd->heredoc_string != NULL)
+			free(cmd->heredoc_string);
 	}
 	cmd->nb_of_heredocs = 0;
 	cmd->nb_of_pipes = 0;
