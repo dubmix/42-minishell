@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   errors_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pdelanno <pdelanno@student.42berlin.d      +#+  +:+       +#+        */
+/*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 16:22:42 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/06 16:35:56 by pdelanno         ###   ########.fr       */
+/*   Updated: 2023/08/09 10:58:23 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,20 +27,34 @@ void	free_cmd_lst(t_single_cmd **cmd_lst)
 	*cmd_lst = NULL;
 }
 
-void	free_env_lst(t_env **env_lst)
+void free_env_lst(t_env **env_lst)
 {
-	t_env	*current;
-	t_env	*next;
-
-	current = *env_lst;
-	while (current != NULL)
+    t_env *temp;
+    while (*env_lst != NULL) 
 	{
-		next = current->next;
-		delete_node_env(env_lst, current);
-		current = next;
-	}
-	*env_lst = NULL;
+        temp = *env_lst;
+        *env_lst = (*env_lst)->next;
+        free(temp->full_string);
+        free(temp->name);
+        free(temp->value);
+        free(temp);
+    }
 }
+
+// void	free_env_lst(t_env **env_lst)
+// {
+// 	t_env	*current;
+// 	t_env	*next;
+
+// 	current = *env_lst;
+// 	while (current != NULL)
+// 	{
+// 		next = current->next;
+// 		delete_node_env(env_lst, current);
+// 		current = next;
+// 	}
+// 	*env_lst = NULL;
+// }
 
 void	delete_node_cmd(t_single_cmd **head, t_single_cmd *node_to_delete)
 {

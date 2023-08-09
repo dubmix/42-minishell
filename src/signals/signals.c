@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emiliedrouot <emiliedrouot@student.42.f    +#+  +:+       +#+        */
+/*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 10:56:50 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/08 20:25:54 by emiliedrouo      ###   ########.fr       */
+/*   Updated: 2023/08/09 09:29:30 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	sigint_handler(int sig)
 {
 	ft_putstr_fd("\n", STDERR_FILENO);
 	rl_on_new_line();
-	// rl_replace_line("", 0); // to put again
+	rl_replace_line("", 0);
 	rl_redisplay();
 	g_xcode = 130;
 	(void)sig;
@@ -46,8 +46,11 @@ void	sigterm_handler(int sig)
 {
 	(void)sig;
 	ft_putstr_fd("Exit\n", STDERR_FILENO);
-	//rl_replace_line("", 0); // to be put again
+	rl_replace_line("", 0);
 	rl_on_new_line();
 	rl_redisplay();
+	rl_clear_history(); // here or not /
+	// free_all(cmd, 5);
+	// free(cmd);
 	exit(0);
 }

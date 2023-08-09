@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_token.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emiliedrouot <emiliedrouot@student.42.f    +#+  +:+       +#+        */
+/*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:45:56 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/08 22:37:35 by emiliedrouo      ###   ########.fr       */
+/*   Updated: 2023/08/09 11:22:10 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,12 @@ void	new_token(t_token **tokens, char *command, int nb, enum e_type type)
 {
 	t_token	*new;
 
-	new = malloc(sizeof(t_token));
+	new = NULL;
+	new = (t_token *)malloc(sizeof(t_token));
 	if (!new)
 	{
 		ft_putstr_fd("Memory allocation failed for new token", STDERR_FILENO);
-		exit (1);
+		return ;
 	}
 	new->command = ft_strdup(command);
 	new->index = nb;
@@ -206,5 +207,6 @@ t_token	*tokenization(t_shell *cmd)
 		i++;
 		nb_token++;
 	}
+	free(cmd->line);
 	return (tok_lst);
 }

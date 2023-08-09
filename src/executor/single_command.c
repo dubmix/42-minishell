@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   single_command.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emiliedrouot <emiliedrouot@student.42.f    +#+  +:+       +#+        */
+/*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:46:21 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/08 22:31:21 by emiliedrouo      ###   ########.fr       */
+/*   Updated: 2023/08/09 10:42:54 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,6 @@ int	single_command(t_shell *cmd)
 	temp = cmd->cmd_lst;
 	if(!is_builtins(temp->command[0]))	
 	{
-		write(2, "TRUC", 4);
 		path = check_access(cmd->envp_copy, temp->command);
 		if (!path)
 		{

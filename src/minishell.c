@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emiliedrouot <emiliedrouot@student.42.f    +#+  +:+       +#+        */
+/*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 11:16:23 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/08 23:17:39 by emiliedrouo      ###   ########.fr       */
+/*   Updated: 2023/08/09 09:08:40 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ int	main(int argc, char **argv, char **envp)
 	int check;
 
 	check = 42;
-	(void)argv; // to put again argv = NULL;
+	argv = NULL;
 	if (argc != 1)
 		ft_putendl_fd("Error, program should not take any arguments\n", STDERR_FILENO);
 	else
@@ -102,7 +102,7 @@ int	main(int argc, char **argv, char **envp)
 		{
 			check = minishell_start(cmd);
 		}
-		clear_history();
+		rl_clear_history();
 		free_all(cmd, 5);
 		free(cmd);
 	}
