@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emiliedrouot <emiliedrouot@student.42.f    +#+  +:+       +#+        */
+/*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 11:44:34 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/08 22:18:29 by emiliedrouo      ###   ########.fr       */
+/*   Updated: 2023/08/09 15:25:39 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	print_chararr(char **arr)
 		return ;
 	while (arr[i] != 0)
 	{
-		printf("%s\n", arr[i]);
+		printf("'%s'\n", arr[i]);
 		i++;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 10:45:11 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/09 14:56:18 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/09 16:36:13 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ int	exec_single_command_sub(t_shell *cmd)
 	if (ft_strncmp(cmd->cmd_lst->command[0], "exit", ft_strlen(cmd->cmd_lst->command[0])) == 0)
 	{
 		exxit(cmd);
-		printf("CODE IS %d\n", g_xcode);
 		return (1);
 	}
 	else if (ft_strncmp(cmd->cmd_lst->command[0], "export", ft_strlen(cmd->cmd_lst->command[0])) == 0)
@@ -84,7 +83,6 @@ int	exec_command(t_shell *cmd)
 	if (cmd->cmd_lst->command != NULL)
 	{
 		g_xcode = single_command(cmd);
-		ft_putnbr_fd(g_xcode, STDERR_FILENO);
 		return (g_xcode); 
 	}
 	return (g_xcode);

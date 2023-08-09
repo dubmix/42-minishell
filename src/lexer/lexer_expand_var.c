@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:45:38 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/08 15:52:25 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/09 16:35:46 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ char	**string_variables_bis(t_shell *cmd, char *command,
 	int	j;
 	int	start;
 
-	// char *string;
 	j = 0;
 	start = 0;
 	while (command[i] != '\0')
@@ -87,6 +86,7 @@ char	**string_variables_bis(t_shell *cmd, char *command,
 	arr_string[j] = 0;
 	return (arr_string);
 }
+
 /*  create via string_variables an array with the correct values of the variable
 then rewrite the command line with str_join,
 	replacing each var $XXX with the correct value*/
@@ -201,7 +201,6 @@ char	*look_into_envir_quote(t_shell *cmd, char *string)
 		}
 		else if (ft_strncmp(string, tmp->name, ft_strlen(string)) == 0)
 		{
-		// write(1, "HERE", 4);
 			free(string);
 			string = ft_strdup(tmp->value);
 			return (string);

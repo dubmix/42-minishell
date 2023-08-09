@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 16:04:33 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/09 10:37:40 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/09 16:30:01 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ t_single_cmd	*triage_cmd_redir(t_shell *cmd)
 			temp = temp->next;
 		index_node++;
 	}
-	free(cmd->words_per_pipe);
 	return (cmd_lst);
 }
 
@@ -63,7 +62,10 @@ t_token	*new_node_cmd(t_single_cmd **cmd_lst, int index,
 	while (temp != NULL && temp->type != PIPE)
 	{
 		if ((temp->type == WORD) && i < cmd->words_per_pipe[index])
-			new->command[i++] = ft_strdup(temp->command);
+		{
+			new->command[i] = ft_strdup(temp->command);
+			i++;
+		}
 		else if (temp->type == REDIRECT_INPUT 
 			|| temp->type == REDIRECT_OUTPUT || temp->type == APPEND)
 			i = handle_redir_in_out(cmd, new, temp, i) + 1;
@@ -73,7 +75,7 @@ t_token	*new_node_cmd(t_single_cmd **cmd_lst, int index,
 			temp = temp->next;
 	}
 	new->next = NULL;
-	new->command[i] = NULL;
+	new->command[i] = 0;
 	new->index = index;
 	add_stack_back_cmd(cmd_lst, new);
 	return (temp);
