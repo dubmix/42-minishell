@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 11:16:23 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/09 16:31:51 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/09 16:53:52 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,34 +45,35 @@ void	clear_line_space(char *line, t_shell *cmd)
 
 int	minishell_start(t_shell *cmd)
 {
-		init_shell(cmd);
-		cmd->line = readline(READLINE_MSG);
-		add_history(cmd->line);
-		clear_line_space(cmd->line, cmd);
-		if (cmd->line == NULL)
-		{
-			free(cmd->line);
-			ft_putstr_fd("exit\n", STDERR_FILENO);
-			g_xcode = 130;
-			return (-1);
-		}
-		if (!ft_strncmp(cmd->line, "echo $?", 7))
-		{
-			ft_putnbr_fd(g_xcode, STDERR_FILENO);
-			ft_putstr_fd("\n", STDERR_FILENO);
-			g_xcode = 0;
-		}
-		else if (ft_strncmp(cmd->line, "", ft_strlen(cmd->line)))
-		{
-			g_xcode = 0;
-			cmd->tok_lst = tokenization(cmd);
-			expand_var(cmd);
-			parser(cmd);
-			if (g_xcode == 0)
-				g_xcode = pre_executor(cmd);
-			free_all(cmd, 4);
-		}
-
+	init_signals();
+	init_shell(cmd);
+	cmd->line = readline(READLINE_MSG);
+	add_history(cmd->line);
+	if (cmd->line == NULL)
+	{
+		free(cmd->line);
+		ft_putstr_fd(EXIT_MSG, STDERR_FILENO);
+		free_all(cmd, 4);
+		g_xcode = 130;
+		return (-1);
+	}
+	clear_line_space(cmd->line, cmd);
+	if (!ft_strncmp(cmd->line, "echo $?", 7))
+	{
+		ft_putnbr_fd(g_xcode, STDERR_FILENO);
+		ft_putstr_fd("\n", STDERR_FILENO);
+		g_xcode = 0;
+	}
+	else if (ft_strncmp(cmd->line, "", ft_strlen(cmd->line)))
+	{
+		g_xcode = 0;
+		cmd->tok_lst = tokenization(cmd);
+		expand_var(cmd);
+		parser(cmd);
+		if (g_xcode == 0)
+			g_xcode = pre_executor(cmd);
+		free_all(cmd, 4);
+	}
 	return (0);
 }
 
@@ -97,7 +98,6 @@ int	main(int argc, char **argv, char **envp)
 		cmd->env_lst = init_envp(envp, cmd);
 		while (42)
 		{
-			init_signals();
 			check = minishell_start(cmd);
 			if (check < 0)
 				break ;

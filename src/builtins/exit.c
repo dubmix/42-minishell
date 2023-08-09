@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 13:14:26 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/09 13:05:34 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/09 16:47:54 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	exxit(t_shell *cmd)
 {
-	printf(EXIT_MSG);
+	ft_putstr_fd(EXIT_MSG, STDERR_FILENO);
 	if (cmd->cmd_lst->command[1] && cmd->cmd_lst->command[2])
 	{
 		ft_putstr_fd("minishell: exit: too many arguments\n", STDERR_FILENO);
