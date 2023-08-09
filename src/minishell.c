@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 11:16:23 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/09 09:08:40 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/09 13:10:05 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ int	minishell_start(t_shell *cmd)
 	while (1)
 	{
 		init_shell(cmd);
-		init_signals();
 		cmd->line = readline("Minishell >");
 		if (cmd->line == NULL)
 		{
@@ -88,7 +87,7 @@ int	main(int argc, char **argv, char **envp)
 	check = 42;
 	argv = NULL;
 	if (argc != 1)
-		ft_putendl_fd("Error, program should not take any arguments\n", STDERR_FILENO);
+		ft_putstr_fd("Error, program should not take any arguments\n", STDERR_FILENO);
 	else
 	{
 		cmd = malloc(sizeof(t_shell));
@@ -98,13 +97,17 @@ int	main(int argc, char **argv, char **envp)
 			exit(1);
 		}
 		cmd->env_lst = init_envp(envp, cmd);
-		while (check > 0)
+		while (42)
 		{
+			init_signals();
 			check = minishell_start(cmd);
+			if (check < 0)
+				break ;
+			signal(SIGTERM, sigterm_handler);
 		}
 		rl_clear_history();
 		free_all(cmd, 5);
 		free(cmd);
 	}
-	return (0);
+	return (g_xcode);
 }

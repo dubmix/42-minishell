@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 16:21:47 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/09 10:49:26 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/09 13:08:48 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ void	free_shell(t_shell *cmd)
 	cmd->nb_of_pipes = 0;
 	cmd->nb_of_tokens = 0;
 	cmd->nb_of_heredocs = 0;
+	free(cmd->line);
 	// free(cmd->tok_lst);
 	free(cmd->cmd_lst);
 }

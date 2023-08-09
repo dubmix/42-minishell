@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:46:21 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/09 10:42:54 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/09 14:55:37 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,13 @@ char	*check_access(char **envp, char **command)
 	char	**path_arr;
 	char	*tmp;
 
-	if (access(command[0], F_OK) == 0)
+	if (access(command[0], F_OK) == 0 && access(command[0], X_OK) == 0)
 		return (command[0]);
+	else if (access(command[0], F_OK) == 0 && access(command[0], X_OK) != 0)
+	{
+		g_xcode = 126;
+		return (NULL);
+	}
 	path_arr = get_path(envp);
 	i = 0;
 	while (path_arr[i] != (void *) '\0')
@@ -97,15 +102,21 @@ int	single_command(t_shell *cmd)
 	if(!is_builtins(temp->command[0]))	
 	{
 		path = check_access(cmd->envp_copy, temp->command);
-		if (!path)
+		if (!path && g_xcode != 126)
 		{
 			g_xcode = 127;
-			ft_putstr_fd("Command '", STDERR_FILENO);
 			ft_putstr_fd(temp->command[0], STDERR_FILENO);
-			ft_putstr_fd("' not found\n", STDERR_FILENO);
+			ft_putstr_fd(": command not found\n", STDERR_FILENO);
 			exit(g_xcode);
 		}
-		if (execve(path, cmd->cmd_lst->command, cmd->envp_copy) == -1)
+		else if (!path && g_xcode == 126)
+		{
+			ft_putstr_fd("minishell: ", STDERR_FILENO);
+			ft_putstr_fd(temp->command[0], STDERR_FILENO);
+			ft_putstr_fd(": Permission denied\n", STDERR_FILENO);
+			exit(g_xcode);
+		}
+		else if (execve(path, cmd->cmd_lst->command, cmd->envp_copy) == -1)
 		{
 			g_xcode = 127;
 			free(path);
@@ -118,9 +129,5 @@ int	single_command(t_shell *cmd)
 		env(cmd);
 	else if (ft_strncmp(cmd->cmd_lst->command[0], "pwd", 3) == 0)
 		pwd();
-	// else
-	// {
-	// }
-	// free(path);
 	exit(EXIT_SUCCESS);
 }

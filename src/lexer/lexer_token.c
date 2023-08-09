@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:45:56 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/09 11:22:10 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/09 13:08:38 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,6 +207,5 @@ t_token	*tokenization(t_shell *cmd)
 		i++;
 		nb_token++;
 	}
-	free(cmd->line);
 	return (tok_lst);
 }

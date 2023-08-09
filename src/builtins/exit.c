@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emiliedrouot <emiliedrouot@student.42.f    +#+  +:+       +#+        */
+/*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 13:14:26 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/08 22:01:31 by emiliedrouo      ###   ########.fr       */
+/*   Updated: 2023/08/09 13:05:34 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,12 @@ int	exxit(t_shell *cmd)
 		return (EXIT_FAILURE);
 	}
 	get_exit_code(cmd->cmd_lst->command);
-	return (EXIT_SUCCESS);
+
+	rl_clear_history();
+	free_all(cmd, 5);
+	free_all(cmd, 4);
+	free(cmd);
+	exit(g_xcode);
 }
 
 void	get_exit_code(char **command)
@@ -38,7 +43,7 @@ void	get_exit_code(char **command)
 		ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
 		g_xcode = 255;
 	}
-	exit(g_xcode);
+	return ;
 }
 
 int	is_only_digits(char *str)

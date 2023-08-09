@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emiliedrouot <emiliedrouot@student.42.f    +#+  +:+       +#+        */
+/*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 13:35:46 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/08 22:00:12 by emiliedrouo      ###   ########.fr       */
+/*   Updated: 2023/08/09 13:48:36 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,23 @@ int	env(t_shell *cmd)
 {
 	t_env	*tmp;
 
-	tmp = cmd->env_lst;
-	while (tmp != NULL)
+	if (cmd->cmd_lst->command[1] != NULL)
 	{
-		printf("%s\n", tmp->full_string); // printf or stderr ?
-		tmp = tmp->next;
+		ft_putstr_fd("env: ", STDERR_FILENO);
+		ft_putstr_fd(cmd->cmd_lst->command[1], STDERR_FILENO);
+		ft_error(cmd, " No such file or directory\n", 2, 127);
+		return (EXIT_FAILURE);
+	}
+	else
+	{
+		tmp = cmd->env_lst;
+		while (tmp != NULL)
+		{
+			printf("%s\n", tmp->full_string); // printf or stderr ?
+			tmp = tmp->next;
+		}
+		
+		
 	}
 	return (EXIT_SUCCESS);
 }

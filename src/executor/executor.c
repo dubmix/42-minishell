@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 10:45:11 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/08 10:28:46 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/09 14:56:18 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ int	exec_single_command(t_shell *cmd)
 	int	pid;
 	int	status;
 
-	if (exec_single_command_sub(cmd) == 1)
-		return (g_xcode);
+	if (exec_single_command_sub(cmd) != 0)
+			return (g_xcode);
 	signal(SIGINT, sigint_child);
 	pid = fork();
 	if (pid < 0)
@@ -52,19 +52,23 @@ int	exec_single_command(t_shell *cmd)
 
 int	exec_single_command_sub(t_shell *cmd)
 {
-	if (ft_strncmp(cmd->cmd_lst->command[0], "exit", 4) == 0)
+	if (ft_strncmp(cmd->cmd_lst->command[0], "exit", ft_strlen(cmd->cmd_lst->command[0])) == 0)
+	{
 		exxit(cmd);
-	else if (ft_strncmp(cmd->cmd_lst->command[0], "export", 6) == 0)
+		printf("CODE IS %d\n", g_xcode);
+		return (1);
+	}
+	else if (ft_strncmp(cmd->cmd_lst->command[0], "export", ft_strlen(cmd->cmd_lst->command[0])) == 0)
 	{
 		export(cmd, cmd->cmd_lst->command);
 		return (1);
 	}
-	else if (ft_strncmp(cmd->cmd_lst->command[0], "unset", 5) == 0)
+	else if (ft_strncmp(cmd->cmd_lst->command[0], "unset", ft_strlen(cmd->cmd_lst->command[0])) == 0)
 	{
 		unset(cmd, cmd->cmd_lst->command);
 		return (1);
 	}
-	else if (ft_strncmp(cmd->cmd_lst->command[0], "cd", 2) == 0)
+	else if (ft_strncmp(cmd->cmd_lst->command[0], "cd", ft_strlen(cmd->cmd_lst->command[0])) == 0)
 	{
 		cd(cmd);
 		return (1);

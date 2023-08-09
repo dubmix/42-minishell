@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emiliedrouot <emiliedrouot@student.42.f    +#+  +:+       +#+        */
+/*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 13:29:20 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/08 22:12:47 by emiliedrouo      ###   ########.fr       */
+/*   Updated: 2023/08/09 14:51:43 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,32 +30,31 @@ char **new_line(char *line)
 	return (new_line);
 }
 
-int	export(t_shell *cmd, char **command)
+int	export_variable(t_shell *cmd)
 {
 	char	**str;
 	t_shell	**tmp;
 	int		i;
+	char **command;
 
 	i = 0;
 	tmp = &cmd;
-	if (ft_strchr(cmd->line, '$'))
-	{
-		free_arr(command);
-		command = new_line(cmd->line);
-	}
+	command = new_line(cmd->line);
 	if (!command[i+1])
 	{
 		sort_env(&cmd->env_lst);
 		print_sorted_env(&cmd->env_lst);
 		return (EXIT_SUCCESS);
 	}
-	while (command[i++] != NULL)
+	i++;
+	while (command[i] != NULL)
 	{
 		if (ft_strncmp(command[i], " ", 1) != 0)
 		{
 			str = var_arr(cmd, command[i]);
 			free(command[i]);
 			command[i] = ft_strjoin(ft_strjoin(str[0], "="), str[1]);
+			ft_putstr_fd(command[i], 2);
 			if (check_param(command[i]) == 0 && var_exists((*tmp)->env_lst, str[0]) == 0)
 				new_node_env(cmd, &(*tmp)->env_lst, str, command[i]);
 			else if (var_exists((*tmp)->env_lst, str[0]) == 1)
@@ -65,8 +64,52 @@ int	export(t_shell *cmd, char **command)
 			}
 			free_arr(str);
 		}
+		i++;
 	}
 	update_envp_copy(cmd);
+	return (EXIT_SUCCESS);
+}
+
+int	export(t_shell *cmd, char **command)
+{
+	char	**str;
+	t_shell	**tmp;
+	int		i;
+
+	i = 0;
+	tmp = &cmd;
+	if (ft_strchr(cmd->line, '$'))
+		return(export_variable(cmd));
+	else
+	{
+		if (!command[i+1])
+		{
+			sort_env(&cmd->env_lst);
+			print_sorted_env(&cmd->env_lst);
+			return (EXIT_SUCCESS);
+		}
+		i++;
+		while (command[i] != NULL)
+		{
+			if (ft_strncmp(command[i], " ", 1) != 0)
+			{
+				str = var_arr(cmd, command[i]);
+				free(command[i]);
+				command[i] = ft_strjoin(ft_strjoin(str[0], "="), str[1]);
+				ft_putstr_fd(command[i], 2);
+				if (check_param(command[i]) == 0 && var_exists((*tmp)->env_lst, str[0]) == 0)
+					new_node_env(cmd, &(*tmp)->env_lst, str, command[i]);
+				else if (var_exists((*tmp)->env_lst, str[0]) == 1)
+				{
+					unset_if_export(cmd, str[0]);
+					new_node_env(cmd, &(*tmp)->env_lst, str, command[i]);
+				}
+				free_arr(str);
+			}
+			i++;
+		}
+		update_envp_copy(cmd);
+	}
 	return (EXIT_SUCCESS);
 }
 
@@ -158,7 +201,7 @@ int	var_exists(t_env *env, char *str)
 	head = env;
 	while (head)
 	{
-		if (ft_strncmp(head->name, str, ft_strlen(str)) == 0)
+		if (ft_strncmp(head->name, str, ft_strlen(head->name)) == 0)
 			return (1);
 		head = head->next;
 	}
