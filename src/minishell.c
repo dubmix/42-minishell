@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 11:16:23 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/09 16:53:52 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/09 17:00:48 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,11 +101,11 @@ int	main(int argc, char **argv, char **envp)
 			check = minishell_start(cmd);
 			if (check < 0)
 				break ;
-			// signal(SIGTERM, sigterm_handler);
 		}
 		rl_clear_history();
 		free_all(cmd, 5);
 		free(cmd);
+		write(1, "STOP", 4);
 	}
 	return (g_xcode);
 }

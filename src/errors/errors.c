@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 16:21:47 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/09 16:54:51 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/09 16:59:00 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	ft_error(t_shell *cmd, char *string, int type, int exit_code)
 
 void	free_shell(t_shell *cmd)
 {
-	// free_tok_lst(cmd->tok_lst);
+	free_tok_lst(cmd->tok_lst);
 	free_cmd_lst(&cmd->cmd_lst);
 	cmd->size_arr_var = 0;
 	if (cmd->nb_of_heredocs != 0)
@@ -91,6 +91,7 @@ void	free_shell(t_shell *cmd)
 	cmd->nb_of_pipes = 0;
 	cmd->nb_of_tokens = 0;
 	cmd->nb_of_heredocs = 0;
+	free(cmd->words_per_pipe);
 	free(cmd->line);
 	free(cmd->cmd_lst);
 }
