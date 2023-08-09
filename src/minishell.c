@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 11:16:23 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/08 17:08:16 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/09 09:08:40 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,9 @@ void minishell_start_sub(char *str)
 int	main(int argc, char **argv, char **envp)
 {
 	t_shell	*cmd;
+	int check;
 
+	check = 42;
 	argv = NULL;
 	if (argc != 1)
 		ft_putstr_fd("Error, program should not take any arguments\n",
@@ -104,7 +106,13 @@ int	main(int argc, char **argv, char **envp)
 			exit(1);
 		}
 		cmd->env_lst = init_envp(envp, cmd);
-		minishell_start(cmd);
+		while (check > 0)
+		{
+			check = minishell_start(cmd);
+		}
+		rl_clear_history();
+		free_all(cmd, 5);
+		free(cmd);
 	}
 	return (0);
 }

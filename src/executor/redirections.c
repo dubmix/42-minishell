@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
+/*   By: emiliedrouot <emiliedrouot@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 14:30:49 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/08 17:11:24 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/08 22:15:13 by emiliedrouo      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,14 +65,14 @@ int	exec_outfile(t_shell *cmd)
 				O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (fd < 0)
 	{
-		printf("minishell: outfile: Error\n");
+		ft_putstr_fd("minishell: outfile: Error\n", STDERR_FILENO);
 		return (EXIT_FAILURE);
 	}
 	dup = dup2(fd, STDOUT_FILENO);
 	if (fd > 0 && dup < 0)
 	{
-		printf("minishell: pipe error\n");
-		return (EXIT_FAILURE);
+		ft_putstr_fd("minishell: pipe error\n", STDERR_FILENO);
+		return (EXIT_FAILURE); // should we change it
 	}
 	if (fd > 0)
 		close(fd);
@@ -87,13 +87,13 @@ int	exec_infile(char *file)
 	fd = open(file, O_RDONLY);
 	if (fd < 0)
 	{
-		printf("minishell: infile: No such file or directory\n");
+		ft_putstr_fd("minishell: infile: No such file or directory\n", STDERR_FILENO);
 		return (EXIT_FAILURE);
 	}
 	dup = dup2(fd, STDIN_FILENO);
 	if (fd > 0 && dup < 0)
 	{
-		printf("minishell: pipe error\n");
+		ft_putstr_fd("minishell: pipe error\n", STDERR_FILENO);
 		return (EXIT_FAILURE);
 	}
 	if (fd > 0)

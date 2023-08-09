@@ -6,11 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:46:21 by edrouot           #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2023/08/08 17:43:21 by pdelanno         ###   ########.fr       */
-=======
-/*   Updated: 2023/08/08 17:45:47 by edrouot          ###   ########.fr       */
->>>>>>> 50174614a43b385039f0f9486f9c00eafdab1b84
+/*   Updated: 2023/08/09 10:42:54 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,22 +65,57 @@ char	*check_access(char **envp, char **command)
 	return (path_cmd);
 }
 
+int	is_builtins(char *string)
+{
+	if (!ft_strncmp(string, "echo", ft_strlen(string)))
+		return (1);
+	else if (!ft_strncmp(string, "cd", ft_strlen(string)))
+		return (1);
+	else if (!ft_strncmp(string, "pwd", ft_strlen(string)))
+		return (1);
+	else if (!ft_strncmp(string, "export", ft_strlen(string)))
+		return (1);
+	else if (!ft_strncmp(string, "unset", ft_strlen(string)))
+		return (1);
+	else if (!ft_strncmp(string, "env", ft_strlen(string)))
+		return (1);
+	else if (!ft_strncmp(string, "exit", ft_strlen(string)))
+		return (1);
+	else
+		return (0);
+}
+
 int	single_command(t_shell *cmd)
 {
 	char			*path;
 	t_single_cmd	*temp;
 
 	temp = cmd->cmd_lst;
+	if(!is_builtins(temp->command[0]))	
+	{
+		path = check_access(cmd->envp_copy, temp->command);
+		if (!path)
+		{
+			g_xcode = 127;
+			ft_putstr_fd("Command '", STDERR_FILENO);
+			ft_putstr_fd(temp->command[0], STDERR_FILENO);
+			ft_putstr_fd("' not found\n", STDERR_FILENO);
+			exit(g_xcode);
+		}
+		if (execve(path, cmd->cmd_lst->command, cmd->envp_copy) == -1)
+		{
+			g_xcode = 127;
+			free(path);
+			exit(g_xcode);
+		}
+	}
+	else if (ft_strncmp(cmd->cmd_lst->command[0], "echo", 4) == 0)
 	path = check_access(cmd->envp_copy, temp->command);
 	if (!path)
 	{
 		g_xcode = 127;
 		ft_putstr_fd(temp->command[0], STDERR_FILENO);
-<<<<<<< HEAD
 		ft_putstr_fd(": command not found\n", STDERR_FILENO);
-=======
-		ft_putstr_fd("' not found\n", STDERR_FILENO); // rajouter l'exception pour les builtins
->>>>>>> 50174614a43b385039f0f9486f9c00eafdab1b84
 		exit(g_xcode);
 	}
 	if (ft_strncmp(cmd->cmd_lst->command[0], "echo", 4) == 0)

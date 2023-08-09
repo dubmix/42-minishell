@@ -234,7 +234,7 @@ void	sigterm_handler(int sig);
 /*errors.c*/
 void    free_arr(char **arr); // free any arrays
 void	free_all(t_shell *cmd, int type);
-void	free_tok_lst(t_token **tok_lst);
+void	free_tok_lst(t_token *tok_lst);
 void	delete_node_cmd(t_single_cmd **head, t_single_cmd *node_to_delete);
 void	free_cmd_lst(t_single_cmd **cmd_lst);
 void	free_env_lst(t_env **env_lst);

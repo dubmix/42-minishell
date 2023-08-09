@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 16:04:33 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/08 11:31:52 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/09 10:37:40 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,22 @@
 
 t_single_cmd	*triage_cmd_redir(t_shell *cmd)
 {
-	t_token			**temp;
+	t_token			*temp;
 	t_single_cmd	*cmd_lst;
 	int				index_node;
+	t_token			*next_start;
 
 	index_node = 0;
 	cmd_lst = NULL;
-	temp = &(cmd->tok_lst);
-	while ((*temp) != NULL && index_node != cmd->nb_of_pipes + 1)
+	temp = (cmd->tok_lst);
+	while (temp != NULL && index_node != cmd->nb_of_pipes + 1)
 	{
-		(*temp) = new_node_cmd(&cmd_lst, index_node, *temp, cmd);
+		next_start = new_node_cmd(&cmd_lst, index_node, temp, cmd);
+		while (temp != next_start && temp != NULL)
+			temp = temp->next;
+		if (temp != NULL)
+			temp = temp->next;
 		index_node++;
-		if ((*temp) != NULL)
-			(*temp) = (*temp)->next;
 	}
 	free(cmd->words_per_pipe);
 	return (cmd_lst);
