@@ -97,9 +97,8 @@ int	single_command(t_shell *cmd)
 		if (!path)
 		{
 			g_xcode = 127;
-			ft_putstr_fd("Command '", STDERR_FILENO);
 			ft_putstr_fd(temp->command[0], STDERR_FILENO);
-			ft_putstr_fd("' not found\n", STDERR_FILENO);
+			ft_putstr_fd(": command not found\n", STDERR_FILENO);
 			exit(g_xcode);
 		}
 		if (execve(path, cmd->cmd_lst->command, cmd->envp_copy) == -1)
@@ -108,15 +107,6 @@ int	single_command(t_shell *cmd)
 			free(path);
 			exit(g_xcode);
 		}
-	}
-	else if (ft_strncmp(cmd->cmd_lst->command[0], "echo", 4) == 0)
-	path = check_access(cmd->envp_copy, temp->command);
-	if (!path)
-	{
-		g_xcode = 127;
-		ft_putstr_fd(temp->command[0], STDERR_FILENO);
-		ft_putstr_fd(": command not found\n", STDERR_FILENO);
-		exit(g_xcode);
 	}
 	if (ft_strncmp(cmd->cmd_lst->command[0], "echo", 4) == 0)
 		echo(cmd->cmd_lst->command, cmd);
