@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 09:01:11 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/09 11:07:11 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/09 16:40:26 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,9 @@ int	error_syntax(t_shell *cmd)
 	temp = cmd->tok_lst;
 	while (temp != NULL)
 	{
-		if ((temp->next == NULL || temp->next->type == PIPE) && (temp->type == HEREDOC || temp->type == REDIRECT_INPUT || temp->type == REDIRECT_OUTPUT || temp->type == APPEND))
+		if ((temp->next == NULL || temp->next->type == PIPE) && 
+			(temp->type == HEREDOC || temp->type == REDIRECT_INPUT || 
+			temp->type == REDIRECT_OUTPUT || temp->type == APPEND))
 		{
 			ft_putstr_fd("minishell : syntax error near unexpected token\n", STDERR_FILENO);
 			g_xcode = 2;
