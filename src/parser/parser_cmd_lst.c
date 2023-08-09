@@ -75,7 +75,7 @@ t_token	*new_node_cmd(t_single_cmd **cmd_lst, int index,
 			temp = temp->next;
 	}
 	new->next = NULL;
-	new->command[i] = 0;
+	new->command[i] = 0; //problem ici avec echo test > file1
 	new->index = index;
 	add_stack_back_cmd(cmd_lst, new);
 	return (temp);

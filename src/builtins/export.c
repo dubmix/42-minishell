@@ -81,7 +81,7 @@ int	export(t_shell *cmd, char **command)
 		return(export_variable(cmd));
 	else
 	{
-		if (!command[i+1])
+		if (!command[i + 1])
 		{
 			sort_env(&cmd->env_lst);
 			print_sorted_env(&cmd->env_lst);
@@ -90,11 +90,11 @@ int	export(t_shell *cmd, char **command)
 		i++;
 		while (command[i] != NULL)
 		{
-			 if (ft_strncmp(command[i], " ", 1) != 0 && ft_strncmp(command[i], "", ft_strlen(command[i]) != 0)	)
+			 if (ft_strncmp(command[i], " ", 1) != 0 && ft_strncmp(command[i], "", ft_strlen(command[i]) != 0))
 			{
 				str = var_arr(cmd, command[i]);
 				free(command[i]);
-				command[i] = ft_strjoin(ft_strjoin(str[0], "="), str[1]);
+				command[i] = ft_strjoin(ft_strjoin(str[0], "="), str[1]); //ici segfault avec lol = lol
 				if (check_param(command[i]) == 0 && var_exists((*tmp)->env_lst, str[0]) == 0)
 					new_node_env(cmd, &(*tmp)->env_lst, str, command[i]);
 				else if (var_exists((*tmp)->env_lst, str[0]) == 1)

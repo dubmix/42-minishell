@@ -105,7 +105,6 @@ int	main(int argc, char **argv, char **envp)
 		rl_clear_history();
 		free_all(cmd, 5);
 		free(cmd);
-		write(1, "STOP", 4);
 	}
 	return (g_xcode);
 }
