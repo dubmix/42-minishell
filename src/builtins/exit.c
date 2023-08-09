@@ -14,7 +14,7 @@
 
 int	exxit(t_shell *cmd)
 {
-	ft_putstr_fd("exit\n", STDERR_FILENO);
+	printf(EXIT_MSG);
 	if (cmd->cmd_lst->command[1] && cmd->cmd_lst->command[2])
 	{
 		ft_putstr_fd("minishell: exit: too many arguments\n", STDERR_FILENO);

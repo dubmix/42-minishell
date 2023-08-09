@@ -1,20 +1,24 @@
 #ifndef MINISHELL_H
     #define MINISHELL_H
 
-    # include <stdlib.h>
-    # include <signal.h>
-    # include <stdio.h>
-    # include <readline/readline.h>
-    # include <readline/history.h>
-    # include "libft/libft.h"
-    # include <string.h>
-    # include <unistd.h>
-    # include <sys/types.h>
-    # include <sys/wait.h>
-    # include <fcntl.h>
-    # include <limits.h>
-    # include <sys/ioctl.h>
-    # include <linux/limits.h>
+# include <stdlib.h>
+# include <signal.h>
+# include <stdio.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+# include "libft/libft.h"
+# include <string.h>
+# include <unistd.h>
+# include <sys/types.h>
+# include <sys/wait.h>
+# include <fcntl.h>
+# include <limits.h>
+# include <sys/ioctl.h>
+# include <linux/limits.h>
+
+# define READLINE_MSG "\033[1;32m\U0001F308 minishell >\033[0m"
+# define EXIT_MSG "\033[1;35mexit \U0001F496\033[0m\n"
+# define HEREDOC_MSG "\033[1;36m\U0001F984 heredoc >\033[0m"
 
 extern int g_xcode;
 
@@ -88,6 +92,7 @@ void print_chararr(char **envp);
 /* main.c */
 int     minishell_start(t_shell *cmd);
 void	init_shell(t_shell *cmd);
+void minishell_start_sub(char *str);
 
 /////////////////////////////////// LEXER //////////////////////////////////
 
@@ -183,6 +188,7 @@ void	cd_sub(t_shell *cmd);
 int	    go_to_path(t_shell *cmd, char *str);
 char    *get_path_cd(t_shell *cmd, char *str);
 void   add_path_to_env(t_shell *cmd);
+int add_path_to_env_sub(t_shell *cmd, t_env *tmp, char *full_str, int check);
 /*exit*/
 int	    exxit(t_shell *cmd);
 void    get_exit_code(char **command);
@@ -202,7 +208,7 @@ int check_valid_id(char c);
 int	check_param(char *str);
 int	ft_findchar(char *str, char c);
 int var_exists(t_env *env, char *str);
-int	ft_lstsize_test(t_env *lst);
+int	ft_lstsize_env(t_env *lst);
 void	update_envp_copy(t_shell *cmd);
 void print_sorted_env(t_env **env_lst);
 void	assign_index(t_env **env_lst, char *string, int i);
@@ -234,6 +240,7 @@ void	free_cmd_lst(t_single_cmd **cmd_lst);
 void	free_env_lst(t_env **env_lst);
 void    free_shell(t_shell *cmd);
 void	ft_error(t_shell *cmd, char *string, int type, int exit_code);
+int cd_error(char *str);
 
 //void	free_arr_int(int *arr);
 

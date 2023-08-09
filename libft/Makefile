@@ -26,21 +26,20 @@ CFLAGS	= -Wall -Wextra -Werror
 all:	$(NAME)
 
 ${NAME}: $(OBJS)
-	@ar rc $(NAME) $(OBJS)
-	@echo Compilation Libft complete
+				@ar rc $(NAME) $(OBJS)
 
 %.o: %.c
-	@$(CC) $(CFLAGS) -c $< -o $@
+				@$(CC) $(CFLAGS) -c $< -o $@
 
 clean: 
-	@rm -rf $(OBJS) $(OBJS_BONUS)
+				@rm -rf $(OBJS) $(OBJS_BONUS)
 
 fclean: clean
-	@rm -f $(NAME)
+				@rm -f $(NAME)
 
 re:	fclean all
 
 bonus : $(OBJS) $(OBJS_BONUS)
-	@ar rc $(NAME) $(OBJS) $(OBJS_BONUS)
+				@ar rc $(NAME) $(OBJS) $(OBJS_BONUS)
 
 .PHONY:	all clean fclean re

@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 11:16:23 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/09 13:10:05 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/09 15:01:19 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,21 +48,10 @@ int	minishell_start(t_shell *cmd)
 	while (1)
 	{
 		init_shell(cmd);
-		cmd->line = readline("Minishell >");
-		if (cmd->line == NULL)
-		{
-			free(cmd->line);
-			ft_putstr_fd("exit\n", STDERR_FILENO);
-			g_xcode = 130;
-			return (-1);
-		}
+		cmd->line = readline(READLINE_MSG);
 		add_history(cmd->line);
-		if (!ft_strncmp(cmd->line, "echo $?", 7))
-		{
-			ft_putnbr_fd(g_xcode, STDERR_FILENO);
-			ft_putstr_fd("\n", STDERR_FILENO);
-			g_xcode = 0;
-		}
+		if (cmd->line == NULL || !ft_strncmp(cmd->line, "echo $?", 7))
+			minishell_start_sub(cmd->line);
 		else if (ft_strncmp(cmd->line, "", ft_strlen(cmd->line)))
 		{
 			g_xcode = 0;
@@ -78,6 +67,24 @@ int	minishell_start(t_shell *cmd)
 	return (0);
 }
 
+void minishell_start_sub(char *str)
+{
+	if (str == NULL)
+	{
+		ft_putstr_fd(EXIT_MSG, STDERR_FILENO);
+		exit(0);
+	}
+	if (!ft_strncmp(str, "echo $?", 7))
+	{
+		ft_putnbr_fd(g_xcode, STDERR_FILENO);
+		write(2, "\n", 1);
+		g_xcode = 0;
+	}
+}
+
+// rl_clear_history();
+// free_all(cmd, 5);
+// free(cmd);
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -87,7 +94,8 @@ int	main(int argc, char **argv, char **envp)
 	check = 42;
 	argv = NULL;
 	if (argc != 1)
-		ft_putstr_fd("Error, program should not take any arguments\n", STDERR_FILENO);
+		ft_putstr_fd("Error, program should not take any arguments\n",
+						STDERR_FILENO);
 	else
 	{
 		cmd = malloc(sizeof(t_shell));
@@ -103,7 +111,7 @@ int	main(int argc, char **argv, char **envp)
 			check = minishell_start(cmd);
 			if (check < 0)
 				break ;
-			signal(SIGTERM, sigterm_handler);
+			//signal(SIGTERM, sigterm_handler);
 		}
 		rl_clear_history();
 		free_all(cmd, 5);

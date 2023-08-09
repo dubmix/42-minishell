@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 19:36:46 by edrouot           #+#    #+#             */
-/*   Updated: 2023/07/31 13:20:55 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/08 18:02:38 by pdelanno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,3 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	substr[i] = '\0';
 	return (substr);
 }
-
-
-/*int	main(void)
-{
-	char	const* str = "jeveuxreduirecettephrase";
-	printf("%s\n", ft_substr(str,5,2));
-}*/

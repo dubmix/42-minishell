@@ -18,7 +18,7 @@ void	print_sorted_env(t_env **env_lst)
 	int		i;
 
 	tmp = *env_lst;
-	i = ft_lstsize_test(*env_lst);
+	i = ft_lstsize_env(*env_lst);
 	while (i > 0)
 	{
 		while (tmp != NULL)
@@ -41,7 +41,7 @@ void	sort_env(t_env **env_lst)
 	int		i;
 
 	i = 1;
-	while (i < ft_lstsize_test(*env_lst))
+	while (i < ft_lstsize_env(*env_lst))
 	{
 		string = find_biggest(env_lst);
 		assign_index(env_lst, string, i);

@@ -65,10 +65,7 @@ char	*check_access(char **envp, char **command)
 		i++;
 	}
 	if (path_arr[i] == (void *) '\0')
-	{
-		free_arr(path_arr);
-		return (NULL);
-	}
+		return (free_arr(path_arr), NULL);
 	free_arr(path_arr);
 	return (path_cmd);
 }
@@ -123,11 +120,20 @@ int	single_command(t_shell *cmd)
 			exit(g_xcode);
 		}
 	}
-	else if (ft_strncmp(cmd->cmd_lst->command[0], "echo", 4) == 0)
+	if (ft_strncmp(cmd->cmd_lst->command[0], "echo", 4) == 0)
 		echo(cmd->cmd_lst->command, cmd);
 	else if (ft_strncmp(cmd->cmd_lst->command[0], "env", 3) == 0)
 		env(cmd);
 	else if (ft_strncmp(cmd->cmd_lst->command[0], "pwd", 3) == 0)
 		pwd();
+<<<<<<< HEAD
+=======
+	else if (execve(path, cmd->cmd_lst->command, cmd->envp_copy) == -1)
+	{
+		g_xcode = 127;
+		exit(g_xcode);
+	}
+	free(path);
+>>>>>>> 9950a82c57033292ac9fe10cc02d53315dfe6ab5
 	exit(EXIT_SUCCESS);
 }

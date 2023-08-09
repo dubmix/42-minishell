@@ -20,7 +20,7 @@ int	export_error(char *str)
 	return (EXIT_FAILURE);
 }
 
-int	ft_lstsize_test(t_env *lst)
+int	ft_lstsize_env(t_env *lst)
 {
 	int	i;
 

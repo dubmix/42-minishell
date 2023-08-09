@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 13:32:19 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/06 09:44:14 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/08 18:00:16 by pdelanno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,4 +47,3 @@ char	*ft_strtrim(char const *s1, char const *set)
 	ft_strlcpy(strim, (s1 + i), (lengthtrim + 1));
 	return (strim);
 }
-

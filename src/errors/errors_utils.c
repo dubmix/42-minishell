@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 16:22:42 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/09 10:58:23 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/08 17:45:44 by pdelanno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,4 +83,12 @@ void	delete_node_cmd(t_single_cmd **head, t_single_cmd *node_to_delete)
 	if (node_to_delete->append != 0)
 		free(node_to_delete->append_str);
 	free(node_to_delete);
+}
+
+int	cd_error(char *str)
+{
+	ft_putstr_fd("minishell: cd: ", STDERR_FILENO);
+	ft_putstr_fd(str, STDERR_FILENO);
+	ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
+	return (EXIT_FAILURE);
 }
