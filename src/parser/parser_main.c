@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 09:01:11 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/09 16:40:26 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/10 08:56:25 by pdelanno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,16 +35,17 @@ void	parser(t_shell *cmd)
 
 int	error_syntax(t_shell *cmd)
 {
-	t_token *temp;
+	t_token	*temp;
 
 	temp = cmd->tok_lst;
 	while (temp != NULL)
 	{
 		if ((temp->next == NULL || temp->next->type == PIPE) && 
 			(temp->type == HEREDOC || temp->type == REDIRECT_INPUT || 
-			temp->type == REDIRECT_OUTPUT || temp->type == APPEND))
+				temp->type == REDIRECT_OUTPUT || temp->type == APPEND))
 		{
-			ft_putstr_fd("minishell : syntax error near unexpected token\n", STDERR_FILENO);
+			ft_putstr_fd("minishell : syntax error", STDERR_FILENO);
+			ft_putstr_fd(" near unexpected token\n", STDERR_FILENO);
 			g_xcode = 2;
 			return (0);
 		}
@@ -52,6 +53,7 @@ int	error_syntax(t_shell *cmd)
 	}
 	return (1);
 }
+
 void	number_heredocs(t_shell *cmd)
 {
 	t_token	*temp;
@@ -95,18 +97,34 @@ void	number_words_per_pipe(t_shell *cmd)
 	while (temp != NULL)
 	{
 		j = 0;
-		while (temp != NULL && temp->type != PIPE)
-		{
-			if (temp->type == APPEND || temp->type == REDIRECT_OUTPUT
-				|| temp->type == REDIRECT_INPUT || temp->type == HEREDOC)
-				temp = temp->next;
-			else if (temp->type == WORD)
-				j++;
-			if (temp != NULL)
-				temp = temp->next;
-		}
+		j = number_words_per_pipe_sub(temp, j);
+		// while (temp != NULL && temp->type != PIPE)
+		// {
+		// 	if (temp->type == APPEND || temp->type == REDIRECT_OUTPUT
+		// 		|| temp->type == REDIRECT_INPUT || temp->type == HEREDOC)
+		// 		temp = temp->next;
+		// 	else if (temp->type == WORD)
+		// 		j++;
+		// 	if (temp != NULL)
+		// 		temp = temp->next;
+		// }
 		cmd->words_per_pipe[i++] = j;
 		if (temp != NULL)
 			temp = temp->next;
 	}
+}
+
+int	number_words_per_pipe_sub(t_token *temp, int j)
+{
+	while (temp != NULL && temp->type != PIPE)
+	{
+		if (temp->type == APPEND || temp->type == REDIRECT_OUTPUT
+			|| temp->type == REDIRECT_INPUT || temp->type == HEREDOC)
+			temp = temp->next;
+		else if (temp->type == WORD)
+			j++;
+		if (temp != NULL)
+			temp = temp->next;
+	}
+	return (j);
 }

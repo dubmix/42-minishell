@@ -55,3 +55,17 @@ void	print_chararr(char **arr)
 		i++;
 	}
 }
+
+char	**new_line(char *line)
+{
+	char	**new_line;
+	char	*new;
+	int		i;
+
+	i = ft_strlen(line);
+	while (line[i] != '|' && i > 0)
+		i--;
+	new = ft_substr(line, 0, ft_strlen(line) - i);
+	new_line = ft_split(new, ' ');
+	return (new_line);
+}

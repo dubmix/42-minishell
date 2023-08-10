@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 13:14:26 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/09 16:47:54 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/10 10:10:46 by pdelanno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ int	exxit(t_shell *cmd)
 		return (EXIT_FAILURE);
 	}
 	get_exit_code(cmd->cmd_lst->command);
-
 	rl_clear_history();
 	free_all(cmd, 5);
 	free_all(cmd, 4);

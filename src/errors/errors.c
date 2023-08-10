@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 16:21:47 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/09 16:59:00 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/10 10:08:35 by pdelanno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,15 +96,17 @@ void	free_shell(t_shell *cmd)
 	free(cmd->cmd_lst);
 }
 
-void free_tok_lst(t_token *tok_lst)
+void	free_tok_lst(t_token *tok_lst)
 {
-    while (tok_lst != NULL) 
+	t_token	*temp;
+
+	temp = tok_lst;
+	while (tok_lst != NULL)
 	{
-        t_token *temp = tok_lst;
-        tok_lst = tok_lst->next;
-        free(temp->command); // Free the command string
-        free(temp);
-    }
+		tok_lst = tok_lst->next;
+		free(temp->command); // Free the command string
+		free(temp);
+	}
 }
 
 // void	free_tok_lst(t_token **tok_lst)

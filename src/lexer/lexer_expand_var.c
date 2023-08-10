@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:45:38 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/09 16:35:46 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/10 09:49:44 by pdelanno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,30 +20,6 @@ char	**string_variables_bis(t_shell *cmd, char *command,
 			char **arr_string, int i);
 char	*double_quote_env_bis(char *command, char *new_string, 
 			char **arr_var, int i);
-
-/*first function : look for two things :
-either a type variable ($) or double quote (state)*/
-
-void	expand_var(t_shell *cmd)
-{
-	t_token	*tmp;
-
-	tmp = cmd->tok_lst;
-	while (tmp != NULL)
-	{
-		if (tmp->type == 4)
-		{
-			look_into_envir(cmd, tmp);
-			tmp->type = 0;
-		}
-		else if (tmp->state == 1)
-		{
-			double_quote_env(cmd, tmp);
-			tmp->type = 0;
-		}
-		tmp = tmp->next;
-	}
-}
 
 char	**string_variables(t_shell *cmd, t_token *var)
 {
@@ -78,7 +54,8 @@ char	**string_variables_bis(t_shell *cmd, char *command,
 				i++;
 			if (command[i] == '$' && command[i - 1] != '$')
 				i = i - 1;
-			arr_string[j] = look_into_envir_quote(cmd, ft_substr(command, start, i - start));
+			arr_string[j] = look_into_envir_quote(cmd, 
+					ft_substr(command, start, i - start));
 			j++;
 		}
 		i++;
@@ -86,10 +63,6 @@ char	**string_variables_bis(t_shell *cmd, char *command,
 	arr_string[j] = 0;
 	return (arr_string);
 }
-
-/*  create via string_variables an array with the correct values of the variable
-then rewrite the command line with str_join,
-	replacing each var $XXX with the correct value*/
 
 void	double_quote_env(t_shell *cmd, t_token *var)
 {
@@ -125,12 +98,13 @@ char	*double_quote_env_bis(char *command, char *new_string,
 		{
 			i++;
 			n = 0;
-			while (command[i] != '\0'
-				&& !check_valid_id(command[i])
+			while (command[i] != '\0' && !check_valid_id(command[i])
 				&& command[i] != '$')
 				i++;
-			if ((command[i] == '?' && (command[i + 1] == ' ' || command[i + 1] == '\0')) || (command[i] == '$'))
-				i++;
+			i = double_quote_env_bis_sub(command, i);
+			// if ((command[i] == '?' && (command[i + 1] == ' ' 
+			// 		|| command[i + 1] == '\0')) || (command[i] == '$'))
+			// 	i++;
 			while (arr_var[k][n] != '\0')
 				new_string[j++] = arr_var[k][n++];
 			k++;
@@ -142,70 +116,10 @@ char	*double_quote_env_bis(char *command, char *new_string,
 	return (new_string);
 }
 
-
-/*  we need only what is after the $ ($USER
-	-> USER) and compare with USER with env_lst
-and replace the correct value in the tok_lst*/
-
-void	look_into_envir(t_shell *cmd, t_token *var)
+int	double_quote_env_bis_sub(char *command, int i)
 {
-	t_env	*tmp;
-	char	**string;
-
-	tmp = cmd->env_lst;
-	string = ft_split(var->command, '$');
-	free(var->command);
-	while (tmp != NULL)
-	{
-		if (ft_strncmp(string[0], "$", ft_strlen(string[0])) == 0)
-		{
-			var->command = ft_strdup("Process ID ");
-			break ;
-		}
-		else if (ft_strncmp(string[0], "?", 1) == 0)
-		{
-			var->command = ft_strdup(ft_itoa(g_xcode));
-			break ;
-		}
-		else if (ft_strncmp(string[0], tmp->name, ft_strlen(string[0])) == 0)
-		{
-			var->command = ft_strdup(tmp->value);
-			break ;
-		}
-		tmp = tmp->next;
-	}
-	free_arr(string);
-	if (tmp == NULL)
-		var->command = ft_strdup("");
-	return ;
-}
-
-char	*look_into_envir_quote(t_shell *cmd, char *string)
-{
-	t_env	*tmp;
-	tmp = cmd->env_lst;
-	while (tmp != NULL)
-	{	
-		if (ft_strncmp(string, "$", ft_strlen(string)) == 0)
-		{
-			free(string);
-			string = ft_strdup("Process ID ");
-			return (string);
-		}
-		else if (ft_strncmp(string, "?", ft_strlen(string)) == 0)
-		{
-
-			free(string);
-			string = ft_strdup(ft_itoa(g_xcode));
-			return (string);
-		}
-		else if (ft_strncmp(string, tmp->name, ft_strlen(string)) == 0)
-		{
-			free(string);
-			string = ft_strdup(tmp->value);
-			return (string);
-		}
-		tmp = tmp->next;
-	}
-	return ("");
+	if ((command[i] == '?' && (command[i + 1] == ' ' 
+				|| command[i + 1] == '\0')) || (command[i] == '$'))
+		i++;
+	return (i);
 }

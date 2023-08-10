@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 16:13:54 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/06 08:11:20 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/10 08:47:24 by pdelanno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,16 +27,18 @@ int	handle_redir_in(int fd, t_single_cmd *new, t_token *temp)
 int	handle_redir_in_out(t_shell *cmd, t_single_cmd *new, t_token *temp, int i)
 {
 	int	fd;
+
 	if (temp->next != NULL && temp->next->type == WORD)
 	{
 		fd = 0;
 		if (temp->type == REDIRECT_OUTPUT)
-		{
-			free(new->redir_out_str);
-			new->redir_out_str = ft_strdup(temp->next->command);
-			fd = open(new->redir_out_str, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-			new->redir_out = 1;
-		}
+			fd = handle_redir_in_out_sub(new, temp, fd);
+		// {
+		// 	free(new->redir_out_str);
+		// 	new->redir_out_str = ft_strdup(temp->next->command);
+		// 	fd = open(new->redir_out_str, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		// 	new->redir_out = 1;
+		// }
 		else if (temp->type == APPEND)
 		{
 			free(new->append_str);
@@ -46,11 +48,20 @@ int	handle_redir_in_out(t_shell *cmd, t_single_cmd *new, t_token *temp, int i)
 		}
 		else if (temp->type == REDIRECT_INPUT)
 			fd = handle_redir_in(fd, new, temp);
-	if (fd < 0)
-		ft_error(cmd, "File descriptor error", 6, 1);
-	close(fd);
+		if (fd < 0)
+			ft_error(cmd, "File descriptor error", 6, 1);
+		close(fd);
 	}
 	else
 		new->command[i] = ft_strdup(temp->command);
-	return(i);
+	return (i);
+}
+
+int	handle_redir_in_out_sub(t_single_cmd *new, t_token *temp, int fd)
+{
+	free(new->redir_out_str);
+	new->redir_out_str = ft_strdup(temp->next->command);
+	fd = open(new->redir_out_str, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	new->redir_out = 1;
+	return (fd);
 }

@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 11:56:11 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/08 11:16:27 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/10 08:37:53 by pdelanno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ void	triage_space(t_shell *cmd)
 	triage_space_bis(cmd, temp, node_to_delete, state);
 }
 
-
 void	triage_space_redir_pipe(t_shell *cmd)
 {
 	t_token	**temp;
@@ -62,9 +61,12 @@ void	triage_space_redir_pipe(t_shell *cmd)
 	node_to_delete = NULL;
 	while (*temp != NULL)
 	{
-		if (((*temp)->next != NULL) && (ft_strncmp((*temp)->command, " ", ft_strlen((*temp)->command)) == 0) && ((*temp)->next->type == REDIRECT_INPUT
+		if (((*temp)->next != NULL) && (ft_strncmp((*temp)->command, " ",
+					ft_strlen((*temp)->command)) == 0) 
+			&& ((*temp)->next->type == REDIRECT_INPUT
 				|| (*temp)->next->type == REDIRECT_OUTPUT
-				|| (*temp)->next->type == APPEND || (*temp)->next->type == PIPE))
+				|| (*temp)->next->type == APPEND 
+				|| (*temp)->next->type == PIPE))
 		{
 			node_to_delete = *temp;
 			delete_node_tok(&(cmd->tok_lst), node_to_delete);

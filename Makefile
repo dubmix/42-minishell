@@ -18,13 +18,16 @@ SRCS = src/minishell.c \
 		src/executor/executor.c \
 		src/executor/redirections.c \
 		src/executor/single_command.c \
+		src/executor/single_command_utils.c \
 		src/executor/piped_command.c \
 		src/executor/heredoc.c \
 		src/executor/heredoc_utils.c \
 		src/lexer/lexer_utils.c \
 		src/lexer/lexer_token.c \
+		src/lexer/lexer_token_utils.c \
 		src/lexer/lexer_init.c \
 		src/lexer/lexer_expand_var.c \
+		src/lexer/lexer_expand_var_utils.c \
 		src/parser/parser_main.c \
 		src/builtins/echo.c \
 		src/builtins/env.c \
@@ -35,6 +38,7 @@ SRCS = src/minishell.c \
 		src/builtins/export.c \
 		src/builtins/export_utils.c \
 		src/builtins/export_env.c \
+		src/builtins/export_utils_ext.c \
 		src/builtins/unset.c \
 		src/parser/parser_utils.c \
 		src/parser/parser_triage.c \

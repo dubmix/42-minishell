@@ -74,11 +74,19 @@ t_token	*new_node_cmd(t_single_cmd **cmd_lst, int index,
 		if (temp != NULL)
 			temp = temp->next;
 	}
+	new_node_cmd_sub(new, i, index);
+	// new->next = NULL;
+	// new->command[i] = 0; //problem ici avec echo test > file1
+	// new->index = index;
+	add_stack_back_cmd(cmd_lst, new);
+	return (temp);
+}
+
+void	new_node_cmd_sub(t_single_cmd *new, int i, int index)
+{
 	new->next = NULL;
 	new->command[i] = 0; //problem ici avec echo test > file1
 	new->index = index;
-	add_stack_back_cmd(cmd_lst, new);
-	return (temp);
 }
 
 void	add_stack_back_cmd(t_single_cmd **cmd_lst, t_single_cmd *new)

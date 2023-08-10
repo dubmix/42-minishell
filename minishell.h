@@ -107,6 +107,11 @@ void	look_into_envir(t_shell *cmd, t_token *var);
 char	**string_variables(t_shell *cmd, t_token *var);
 void	double_quote_env(t_shell *cmd, t_token *var);
 char	*look_into_envir_quote(t_shell *cmd, char *string);
+char *look_into_envir_quote_sub(char *string);
+void	look_into_envir_sub(char **string, t_token *var, t_env *tmp);
+char	*double_quote_env_bis(char *command, char *new_string, 
+			char **arr_var, int i);
+int	double_quote_env_bis_sub(char *command, int i);
 
 /* lexer_utils.c */
 void    print_list(t_env *env); // print the envp
@@ -121,12 +126,20 @@ void new_token(t_token **tokens, char *command, int nb, enum e_type type);
 int new_token_var_words(t_token **tokens, char *string, int i, int nb_token);
 int new_token_quote(t_token **tokens, char *string, int i, int nb_token);
 t_token *tokenization(t_shell *shell);
+int	tokenization_sub(t_shell *cmd, int i, t_token *tok_lst, int nb_token);
+t_token	*tokenization_special_char(t_shell *cmd, int *i, 
+	t_token *tok_lst, int nb_token);
+t_token	*tokenization_simple_char(t_shell *cmd, int i, 
+	t_token *tok_lst, int nb_token);
+t_token	*tokenization_bis(t_shell *cmd, int *i, t_token *tok_lst, int nb_token);
+
 
 /////////////////////////////////// PARSER //////////////////////////////////
 
 /*parser_main.c*/
 void    parser(t_shell *cmd);
 void	number_words_per_pipe(t_shell *cmd);
+int	number_words_per_pipe_sub(t_token *temp, int j);
 int	error_syntax(t_shell *cmd);
 
 /*parser_triage.c*/
@@ -138,11 +151,13 @@ void	triage_quotes(t_shell *cmd);
 t_single_cmd    *triage_cmd_redir(t_shell *cmd);
 void init_node_cmd(t_single_cmd **new, t_shell *cmd, int index);
 t_token	*new_node_cmd(t_single_cmd **cmd_lst, int index, t_token *temp, t_shell *cmd);
+void	new_node_cmd_sub(t_single_cmd *new, int i, int index);
 void	add_stack_back_cmd(t_single_cmd **cmd_lst, t_single_cmd *new);
 
 /*parser_redir.c*/
 int     handle_redir_in(int fd, t_single_cmd *new, t_token *temp);
 int	handle_redir_in_out(t_shell *cmd, t_single_cmd *new, t_token *temp, int i);
+int	handle_redir_in_out_sub(t_single_cmd *new, t_token *temp, int fd);
 
 /*parser_utils.c*/
 void    delete_node_tok(t_token **head, t_token *nodeToDelete);
@@ -169,6 +184,7 @@ int pipe_wait(t_shell *cmd);
 int exec_heredoc(t_shell *cmd);
 int   exec_piped_command_sub(t_shell *cmd, int pipefd[], int fd, int i);
 int    exec_single_command_sub(t_shell *cmd);
+void	single_command_sub(t_shell *cmd, char *path, t_single_cmd *temp);
 
 /*heredoc.c*/
 void	grab_heredoc(t_shell *cmd);
