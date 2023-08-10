@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_expand_var_utils.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pdelanno <pdelanno@student.42berlin.d      +#+  +:+       +#+        */
+/*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 09:25:02 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/10 09:40:02 by pdelanno         ###   ########.fr       */
+/*   Updated: 2023/08/10 16:21:56 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,30 +37,31 @@ void	look_into_envir(t_shell *cmd, t_token *var)
 {
 	t_env	*tmp;
 	char	**string;
-
+	char	*str;
 	tmp = cmd->env_lst;
 	string = ft_split(var->command, '$');
 	free(var->command);
-	look_into_envir_sub(string, var, tmp);
-	// while (tmp != NULL)
-	// {
-	// 	if (ft_strncmp(string[0], "$", ft_strlen(string[0])) == 0)
-	// 	{
-	// 		var->command = ft_strdup("Process ID ");
-	// 		break ;
-	// 	}
-	// 	else if (ft_strncmp(string[0], "?", 1) == 0)
-	// 	{
-	// 		var->command = ft_strdup(ft_itoa(g_xcode));
-	// 		break ;
-	// 	}
-	// 	else if (ft_strncmp(string[0], tmp->name, ft_strlen(string[0])) == 0)
-	// 	{
-	// 		var->command = ft_strdup(tmp->value);
-	// 		break ;
-	// 	}
-	// 	tmp = tmp->next;
-	// }
+	// look_into_envir_sub(string, var, tmp);
+	while (tmp != NULL)
+	{
+		if (ft_strncmp(string[0], "$", ft_strlen(string[0])) == 0)
+		{
+			var->command = ft_strdup("Process ID ");
+			break ;
+		}
+		else if (ft_strncmp(string[0], "?", 1) == 0)
+		{
+			str = ft_itoa(g_xcode);
+			var->command = ft_strdup(str);
+			break ;
+		}
+		else if (ft_strncmp(string[0], tmp->name, ft_strlen(string[0])) == 0)
+		{
+			var->command = ft_strdup(tmp->value);
+			break ;
+		}
+		tmp = tmp->next;
+	}
 	free_arr(string);
 	if (tmp == NULL)
 		var->command = ft_strdup("");

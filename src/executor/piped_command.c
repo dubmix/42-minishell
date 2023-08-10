@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 14:54:27 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/08 15:43:43 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/10 12:32:45 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	ft_fork(t_shell *cmd, int pipefd[2], int fd, int i)
 {
 	cmd->pid[i] = fork();
 	if (cmd->pid[i] < 0)
-		ft_error(cmd, "Fork error", 4, 1);
+		ft_error(cmd, "Fork error", 1);
 	if (cmd->pid[i] == 0)
 		dup_cmd(cmd, pipefd, fd);
 	else
@@ -78,13 +78,13 @@ void	dup_cmd(t_shell *cmd, int pipefd[2], int fd)
 	if (cmd->cmd_lst->index != 0)
 	{
 		if (dup2(fd, STDIN_FILENO) < 0)
-			ft_error(cmd, "Dup failed", 4, 1);
+			ft_error(cmd, "Dup failed", 1);
 	}
 	close(pipefd[0]);
 	if (cmd->cmd_lst->next)
 	{
 		if (dup2(pipefd[1], STDOUT_FILENO) < 0)
-			ft_error(cmd, "Dup failed", 4, 1);
+			ft_error(cmd, "Dup failed", 1);
 	}
 	close(pipefd[1]);
 	exec_command(cmd);

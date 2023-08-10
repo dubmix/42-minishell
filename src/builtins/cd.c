@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 12:21:08 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/09 14:58:36 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/10 16:09:57 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,27 +33,27 @@ int	cd(t_shell *cmd)
 {
 	int		ret;
 	t_shell	**tmp;
-
-	// print_list_commands(cmd->cmd_lst, cmd);
-	find_old_pwd(cmd);
+	char *path;
+	
+	path = NULL;
+	ret = 42;
 	tmp = &cmd;
+	if (ft_strncmp((*tmp)->cmd_lst->command[1], "-", ft_strlen((*tmp)->cmd_lst->command[1])) == 0)
+		ret = chdir(cmd->oldpwd);
+	find_old_pwd(cmd);
 	if (!(*tmp)->cmd_lst->command[1])
 		ret = go_to_path(cmd, "HOME");
-	else if (ft_strncmp((*tmp)->cmd_lst->command[1], "-", ft_strlen((*tmp)->cmd_lst->command[1])) == 0)
-		ret = go_to_path(cmd, "OLDPWD");
 	else if ((*tmp)->cmd_lst->command[1][0] == '~' && (*tmp)->cmd_lst->command[1][1] == '/')
 	{
 		go_to_path(cmd, "HOME");
-		ret = chdir(ft_substr((*tmp)->cmd_lst->command[1], 2, ft_strlen((*tmp)->cmd_lst->command[1])));
+		path = ft_substr((*tmp)->cmd_lst->command[1], 2, ft_strlen((*tmp)->cmd_lst->command[1]) - 2);
+		ret = chdir(path);
+		free(path);
 	}
-	else
+	else if (ret == 42)
 		ret = chdir((*tmp)->cmd_lst->command[1]);
 	if (ret != 0)
-	{
-		printf("minishell: %s No such file or directory \n", (*tmp)->cmd_lst->command[0]);
-		g_xcode = 1;
-		return (EXIT_FAILURE);
-	}
+		return(cd_error((*tmp)->cmd_lst->command[1]));
 	add_path_to_env(cmd);
 	return (EXIT_SUCCESS);
 }
@@ -73,6 +73,8 @@ char	*get_path_cd(t_shell *cmd, char *str)
 		}
 		tmp = tmp->next;
 	}
+	if (ft_strncmp(str, "OLDPWD", ft_strlen(str)) != 0)
+		return (cmd->oldpwd);
 	return (NULL);
 }
 

@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 11:16:23 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/09 17:00:48 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/10 16:35:39 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,11 @@ void	init_shell(t_shell *cmd)
 {
 	cmd->nb_of_heredocs = 0;
 	cmd->nb_of_pipes = 0;
+	cmd->cmd_alloc = 0;
+	cmd->tok_alloc = 0;
+	cmd->words_per_pipe_alloc = 0;
+	cmd->heredoc_arr = NULL;
+	cmd->heredoc_string = NULL;
 }
 
 void	clear_line_space(char *line, t_shell *cmd)
@@ -32,14 +37,19 @@ void	clear_line_space(char *line, t_shell *cmd)
 	while (i > 0)
 	{
 		if (temp[i] != ' ')
+		{
+			i++;
 			break ;
+		}
 		i--;
 	}
 	while (temp[j] != '\0' && temp[j] == ' ')
 		j++;
-	i++;
 	free(cmd->line);
-	cmd->line = ft_substr(temp, j, i);
+	if (j > i)
+		cmd->line = ft_strdup("");
+	else
+		cmd->line = ft_substr(temp, j, i - j + 1);
 	free(temp);
 }
 
@@ -53,26 +63,27 @@ int	minishell_start(t_shell *cmd)
 	{
 		free(cmd->line);
 		ft_putstr_fd(EXIT_MSG, STDERR_FILENO);
-		free_all(cmd, 4);
+		free_all_inside_loop(cmd);
 		g_xcode = 130;
 		return (-1);
 	}
 	clear_line_space(cmd->line, cmd);
-	if (!ft_strncmp(cmd->line, "echo $?", 7))
+	// if (!ft_strncmp(cmd->line, "echo $?", 7))
+	// {
+	// 	// free(cmd->line);
+	// 	ft_putnbr_fd(g_xcode, STDERR_FILENO);
+	// 	ft_putstr_fd("\n", STDERR_FILENO);
+	// 	g_xcode = 0;
+	// }
+	if (ft_strncmp(cmd->line, "", ft_strlen(cmd->line)))
 	{
-		ft_putnbr_fd(g_xcode, STDERR_FILENO);
-		ft_putstr_fd("\n", STDERR_FILENO);
-		g_xcode = 0;
-	}
-	else if (ft_strncmp(cmd->line, "", ft_strlen(cmd->line)))
-	{
-		g_xcode = 0;
+		// g_xcode = 0;
 		cmd->tok_lst = tokenization(cmd);
 		expand_var(cmd);
 		parser(cmd);
-		if (g_xcode == 0)
-			g_xcode = pre_executor(cmd);
-		free_all(cmd, 4);
+		// if (g_xcode == 0)
+		g_xcode = pre_executor(cmd);
+		free_all_inside_loop(cmd);
 	}
 	return (0);
 }
@@ -95,6 +106,7 @@ int	main(int argc, char **argv, char **envp)
 			ft_putstr_fd("Malloc cmd allocation failed", STDERR_FILENO);
 			exit(1);
 		}
+		cmd->env_alloc = 0;
 		cmd->env_lst = init_envp(envp, cmd);
 		while (42)
 		{
@@ -103,7 +115,7 @@ int	main(int argc, char **argv, char **envp)
 				break ;
 		}
 		rl_clear_history();
-		free_all(cmd, 5);
+		free_all_exit(cmd);
 		free(cmd);
 	}
 	return (g_xcode);

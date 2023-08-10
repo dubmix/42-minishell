@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 16:22:42 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/10 10:03:36 by pdelanno         ###   ########.fr       */
+/*   Updated: 2023/08/10 15:28:01 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,16 +31,24 @@ void	free_env_lst(t_env **env_lst)
 {
 	t_env	*temp;
 
-	while (*env_lst != NULL)
+	if (!*env_lst || !env_lst)
+		return ;
+	while (*env_lst)
 	{
-		temp = *env_lst;
-		*env_lst = (*env_lst)->next;
-		free(temp->full_string);
-		free(temp->name);
-		free(temp->value);
-		free(temp);
+		temp = (*env_lst)->next;
+		if ((*env_lst)->full_string)
+			free((*env_lst)->full_string);
+		if ((*env_lst)->name)
+			free((*env_lst)->name);
+		if ((*env_lst)->value)
+			free((*env_lst)->value);
+		free(*env_lst);
+		*env_lst = temp;
 	}
+	*env_lst = NULL;
+
 }
+
 
 // void	free_env_lst(t_env **env_lst)
 // {

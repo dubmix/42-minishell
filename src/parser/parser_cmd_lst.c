@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 16:04:33 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/09 16:30:01 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/10 12:33:53 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ t_single_cmd	*triage_cmd_redir(t_shell *cmd)
 			temp = temp->next;
 		index_node++;
 	}
+	cmd->cmd_alloc = 1;
 	return (cmd_lst);
 }
 
@@ -40,7 +41,7 @@ void	init_node_cmd(t_single_cmd **new, t_shell *cmd, int index)
 	(*new)->command = (char **)malloc(sizeof(char *) * 
 			(cmd->words_per_pipe[index] + 1));
 	if (!(*new) || !(*new)->command)
-		ft_error(cmd, "New node creation failure", 6, 50);
+		ft_error(cmd, "New node creation failure", 1);
 	(*new)->append_str = NULL;
 	(*new)->redir_in_str = NULL;
 	(*new)->redir_out_str = NULL;

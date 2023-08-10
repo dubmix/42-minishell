@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 13:14:26 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/10 10:10:46 by pdelanno         ###   ########.fr       */
+/*   Updated: 2023/08/10 12:35:43 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ int	exxit(t_shell *cmd)
 	}
 	get_exit_code(cmd->cmd_lst->command);
 	rl_clear_history();
-	free_all(cmd, 5);
-	free_all(cmd, 4);
+	free_all_inside_loop(cmd);
+	free_all_exit(cmd);
 	free(cmd);
 	exit(g_xcode);
 }

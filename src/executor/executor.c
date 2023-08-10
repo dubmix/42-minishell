@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 10:45:11 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/09 16:36:13 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/10 17:34:23 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	pre_executor(t_shell *cmd)
 	{
 		cmd->pid = ft_calloc(sizeof(int), cmd->nb_of_pipes + 2);
 		if (!cmd->pid)
-			ft_error(cmd, "Pid error", 4, 1);
+			ft_error(cmd, "Pid error", 1);
 		g_xcode = exec_piped_command(cmd);
 	}
 	return (g_xcode);
@@ -37,7 +37,7 @@ int	exec_single_command(t_shell *cmd)
 	signal(SIGINT, sigint_child);
 	pid = fork();
 	if (pid < 0)
-		ft_error(cmd, "Fork error", 4, 1);
+		ft_error(cmd, "Fork error", 1);
 	if (pid == 0)
 	{
 		g_xcode = exec_command(cmd);
@@ -82,7 +82,8 @@ int	exec_command(t_shell *cmd)
 		check_redirections(cmd);
 	if (cmd->cmd_lst->command != NULL)
 	{
-		g_xcode = single_command(cmd);
+		if (!exec_single_command_sub(cmd)) // this has been changed 
+			g_xcode = single_command(cmd);
 		return (g_xcode); 
 	}
 	return (g_xcode);

@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 13:35:46 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/09 13:48:36 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/10 12:32:22 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	env(t_shell *cmd)
 	{
 		ft_putstr_fd("env: ", STDERR_FILENO);
 		ft_putstr_fd(cmd->cmd_lst->command[1], STDERR_FILENO);
-		ft_error(cmd, " No such file or directory\n", 2, 127);
+		ft_error(cmd, " No such file or directory\n", 127);
 		return (EXIT_FAILURE);
 	}
 	else
@@ -28,7 +28,8 @@ int	env(t_shell *cmd)
 		tmp = cmd->env_lst;
 		while (tmp != NULL)
 		{
-			printf("%s\n", tmp->full_string); // printf or stderr ?
+			if (ft_strchr(tmp->full_string, '=') != NULL)
+				printf("%s\n", tmp->full_string);
 			tmp = tmp->next;
 		}
 		

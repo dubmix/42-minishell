@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils_ext.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pdelanno <pdelanno@student.42berlin.d      +#+  +:+       +#+        */
+/*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 10:17:41 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/10 10:17:55 by pdelanno         ###   ########.fr       */
+/*   Updated: 2023/08/10 11:19:48 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,16 +78,16 @@ int	check_param(char *str)
 	int	i;
 
 	i = 0;
-	if (ft_findchar(str, '=') == 0)
-		return (EXIT_FAILURE);
-	if (str[i] == '=')
-		return (export_error(str));
+	// if (ft_findchar(str, '=') == 0)
+	// 	return (EXIT_FAILURE);
+	// if (str[i] == '=')
+	// 	return (export_error(str));
 	if (ft_isdigit(str[i]))
 		return (export_error(str));
-	while (str[i] != '=')
+	while (str[i] != '=' && str[i] != '\0')
 	{
-		if (check_valid_id(str[i]) == 1)
-			return (export_error(str));
+			if (check_valid_id(str[i]) == 1)
+		return (export_error(str));
 		i++;
 	}
 	return (0);

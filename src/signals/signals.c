@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 10:56:50 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/09 09:29:30 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/10 17:08:40 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,17 @@ void	init_signals(void)
 	signal(SIGQUIT, SIG_IGN);
 }
 
-void	sigint_heredoc(int sig)
+// void	sigint_heredoc(int sig)
+// {
+// 	ioctl(STDIN_FILENO, TIOCSTI, "");
+// 	g_xcode = 130;
+// 	(void)sig;
+// }
+// ISSUE !!!!!
+void sigint_heredoc(int sig)
 {
-	(void)sig;
-	ioctl(STDIN_FILENO, TIOCSTI, "\n");
+    (void)sig;
+	write(2, "\n", 1);
 	g_xcode = 130;
 }
 

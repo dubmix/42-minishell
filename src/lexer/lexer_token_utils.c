@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_token_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pdelanno <pdelanno@student.42berlin.d      +#+  +:+       +#+        */
+/*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 09:07:17 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/10 09:22:32 by pdelanno         ###   ########.fr       */
+/*   Updated: 2023/08/10 12:28:11 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,19 +23,19 @@ t_token	*tokenization(t_shell *cmd)
 	tok_lst = NULL;
 	while (cmd->line[i] != '\0')
 	{
-		i = tokenization_sub(cmd, i, tok_lst, nb_token);
-		// if (i == 0 && (cmd->line[i + 1] == '\0' 
-		//		|| ((cmd->line[i] == cmd->line[i + 1] 
-		// 		&& cmd->line[i + 2] == '\0'))))
-		// 	tok_lst = tokenization_simple_char(cmd, i, tok_lst, nb_token);
-		// else if (cmd->line[i] == '~' && (cmd->line[i + 1] == ' '
-		// || cmd->line[i + 1] == '\0'))
-		// {
-		// 	new_token(&tok_lst, "$HOME", nb_token, VARIABLE);
-		// 	i++;
-		// }
-		// else if
-		if (cmd->line[i] == 39 || cmd->line[i] == 34 
+		// i = tokenization_sub(cmd, i, tok_lst, nb_token); // ne fonctionne pas
+		if (i == 0 && (cmd->line[i + 1] == '\0' 
+				|| ((cmd->line[i] == cmd->line[i + 1] 
+				&& cmd->line[i + 2] == '\0'))))
+			tok_lst = tokenization_simple_char(cmd, i, tok_lst, nb_token);
+		else if (cmd->line[i] == '~' && (cmd->line[i + 1] == ' '
+		|| cmd->line[i + 1] == '\0'))
+		{
+			new_token(&tok_lst, "$HOME", nb_token, VARIABLE);
+			i++;
+		}
+		else if
+		 (cmd->line[i] == 39 || cmd->line[i] == 34 
 			|| cmd->line[i] == '$')
 			tok_lst = tokenization_special_char(cmd, &i, tok_lst, nb_token);
 		else if (cmd->line[i] == '>' || cmd->line[i] == '<' || 
@@ -46,6 +46,7 @@ t_token	*tokenization(t_shell *cmd)
 		i++;
 		nb_token++;
 	}
+	cmd->tok_alloc = 1;
 	return (tok_lst);
 }
 

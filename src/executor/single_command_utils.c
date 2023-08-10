@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   single_command_utils.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pdelanno <pdelanno@student.42berlin.d      +#+  +:+       +#+        */
+/*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 09:52:45 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/10 10:00:44 by pdelanno         ###   ########.fr       */
+/*   Updated: 2023/08/10 17:12:11 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

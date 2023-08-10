@@ -15,10 +15,11 @@
 # include <limits.h>
 # include <sys/ioctl.h>
 # include <linux/limits.h>
+# include <termios.h>
 
-# define READLINE_MSG "\033[1;32m\U0001F308 minishell >\033[0m"
+# define READLINE_MSG "\033[1;32m\U0001F308 minishell> \033[0m"
 # define EXIT_MSG "\033[1;35mexit \U0001F496\033[0m\n"
-# define HEREDOC_MSG "\033[1;36m\U0001F984 heredoc >\033[0m"
+# define HEREDOC_MSG "\033[1;36m\U0001F984 heredoc> \033[0m"
 
 extern int g_xcode;
 
@@ -74,15 +75,19 @@ typedef struct s_shell
     t_env   *env_lst;
     t_single_cmd *cmd_lst;
     char **envp_copy; // export function recre2er la char ** // do we really need something else than the path
-    int size_arr_var;
+    int     size_arr_var;
     char **heredoc_arr;
     char *heredoc_string;
-    int nb_of_heredocs;
-    int nb_of_pipes;
-    int nb_of_tokens;
-    int *words_per_pipe;
-    int	*pid;
+    int     nb_of_heredocs;
+    int     nb_of_pipes;
+    int     nb_of_tokens;
+    int     *words_per_pipe;
+    int	    *pid;
     char *oldpwd;
+    int     tok_alloc;
+    int     cmd_alloc;
+    int     env_alloc;
+    int     words_per_pipe_alloc;
 } t_shell;
 
 
@@ -139,8 +144,8 @@ t_token	*tokenization_bis(t_shell *cmd, int *i, t_token *tok_lst, int nb_token);
 /*parser_main.c*/
 void    parser(t_shell *cmd);
 void	number_words_per_pipe(t_shell *cmd);
-int	number_words_per_pipe_sub(t_token *temp, int j);
 int	error_syntax(t_shell *cmd);
+void init_words_per_pipe(t_shell *cmd);
 
 /*parser_triage.c*/
 void    triage_space(t_shell *cmd);
@@ -204,7 +209,8 @@ void	cd_sub(t_shell *cmd);
 int	    go_to_path(t_shell *cmd, char *str);
 char    *get_path_cd(t_shell *cmd, char *str);
 void   add_path_to_env(t_shell *cmd);
-int add_path_to_env_sub(t_shell *cmd, t_env *tmp, char *full_str, int check);
+int	add_path_to_env_sub(t_shell *cmd, t_env *tmp, int check);
+
 /*exit*/
 int	    exxit(t_shell *cmd);
 void    get_exit_code(char **command);
@@ -248,17 +254,15 @@ void sigint_child(int sig);
 void	sigterm_handler(int sig);
 
 /*errors.c*/
-void    free_arr(char **arr); // free any arrays
-void	free_all(t_shell *cmd, int type);
-void	free_tok_lst(t_token *tok_lst);
+void    free_arr(char **arr);
+void	free_all_inside_loop(t_shell *cmd);
+void	free_all_exit(t_shell *cmd);
+void	free_tok_lst(t_token **tok_lst);
 void	delete_node_cmd(t_single_cmd **head, t_single_cmd *node_to_delete);
 void	free_cmd_lst(t_single_cmd **cmd_lst);
 void	free_env_lst(t_env **env_lst);
-void    free_shell(t_shell *cmd);
-void	ft_error(t_shell *cmd, char *string, int type, int exit_code);
+void	ft_error(t_shell *cmd, char *string, int exit_code);
 int cd_error(char *str);
-
-//void	free_arr_int(int *arr);
 
 /* libft */
 int	countsubstr(char const *s, char c);

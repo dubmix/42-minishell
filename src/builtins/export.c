@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 13:29:20 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/10 10:16:07 by pdelanno         ###   ########.fr       */
+/*   Updated: 2023/08/10 11:46:49 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,10 @@ int	export_variable(t_shell *cmd)
 		{
 			str = var_arr(cmd, command[i]);
 			free(command[i]);
-			command[i] = ft_strjoin(ft_strjoin(str[0], "="), str[1]);
+			if (str[1] != NULL)
+				command[i] = ft_strjoin(ft_strjoin(str[0], "="), str[1]);
+			else
+				command[i] = ft_strdup(str[0]);
 			if (check_param(command[i]) == 0 
 				&& var_exists((*tmp)->env_lst, str[0]) == 0)
 				new_node_env(cmd, &(*tmp)->env_lst, str, command[i]);
@@ -78,14 +81,15 @@ int	export(t_shell *cmd, char **command)
 		i++;
 		while (command[i] != NULL)
 		{
-			 if (ft_strncmp(command[i], " ", 1) != 0 
-				&& ft_strncmp(command[i], "", ft_strlen(command[i]) != 0))
+			if (!ft_strncmp(command[i], "=", ft_strlen(command[i])))
+				export_error(command[i]);
+			else if (ft_strncmp(command[i], " ", 1) != 0 && ft_strncmp(command[i], "", ft_strlen(command[i]) != 0))
 			{
-				str = var_arr(cmd, command[i]);
-				free(command[i]);
-				command[i] = ft_strjoin(ft_strjoin(str[0], "="), str[1]); //ici segfault avec lol = lol
-				if (check_param(command[i]) == 0 
-					&& var_exists((*tmp)->env_lst, str[0]) == 0)
+				if (ft_strchr(command[i], '=') != NULL)
+					str = ft_split(command[i], '=');
+				else
+					str = ft_split(command[i], ' ');
+				if (check_param(command[i]) == 0 && var_exists((*tmp)->env_lst, str[0]) == 0)
 					new_node_env(cmd, &(*tmp)->env_lst, str, command[i]);
 				else if (var_exists((*tmp)->env_lst, str[0]) == 1)
 				{
