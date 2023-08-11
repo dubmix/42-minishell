@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 16:21:47 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/10 14:02:57 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/11 17:52:52 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ void	free_arr(char **arr)
 	i = 0;
 	while (arr[i] != NULL)
 	{
-		free(arr[i]);
+		if (ft_strncmp(arr[i], "", ft_strlen(arr[i])))
+			free(arr[i]);
 		i++;
 	}
 	free(arr);

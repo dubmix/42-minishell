@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 16:13:54 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/10 12:33:31 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/11 17:44:03 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,21 +24,21 @@ int	handle_redir_in(int fd, t_single_cmd *new, t_token *temp)
 	return (fd);
 }
 
-int	handle_redir_in_out(t_shell *cmd, t_single_cmd *new, t_token *temp, int i)
+void	handle_redir_in_out(t_single_cmd *new, t_token *temp)
 {
 	int	fd;
 
 	if (temp->next != NULL && temp->next->type == WORD)
 	{
+			// fd = handle_redir_in_out_sub(new, temp, fd);
 		fd = 0;
 		if (temp->type == REDIRECT_OUTPUT)
-			fd = handle_redir_in_out_sub(new, temp, fd);
-		// {
-		// 	free(new->redir_out_str);
-		// 	new->redir_out_str = ft_strdup(temp->next->command);
-		// 	fd = open(new->redir_out_str, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		// 	new->redir_out = 1;
-		// }
+		{
+			free(new->redir_out_str);
+			new->redir_out_str = ft_strdup(temp->next->command);
+			fd = open(new->redir_out_str, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+			new->redir_out = 1;
+		}
 		else if (temp->type == APPEND)
 		{
 			free(new->append_str);
@@ -47,14 +47,22 @@ int	handle_redir_in_out(t_shell *cmd, t_single_cmd *new, t_token *temp, int i)
 			new->append = 1;
 		}
 		else if (temp->type == REDIRECT_INPUT)
-			fd = handle_redir_in(fd, new, temp);
+		{
+			free(new->redir_in_str);
+			new->redir_in_str = ft_strdup(temp->next->command);
+			fd = open(new->redir_in_str, O_RDONLY, 0644);
+			new->redir_in = 1;
+		}		
 		if (fd < 0)
-			ft_error(cmd, "File descriptor error", 1);
+		{
+			ft_putstr_fd("minishell: ", 2);
+			ft_putstr_fd(new->redir_in_str, 2);
+			ft_putstr_fd(": No such file or directory\n", 2);
+			g_xcode = 1;
+		}
 		close(fd);
 	}
-	else
-		new->command[i] = ft_strdup(temp->command);
-	return (i);
+	return ;
 }
 
 int	handle_redir_in_out_sub(t_single_cmd *new, t_token *temp, int fd)

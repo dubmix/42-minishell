@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emiliedrouot <emiliedrouot@student.42.f    +#+  +:+       +#+        */
+/*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 14:30:49 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/08 22:15:13 by emiliedrouo      ###   ########.fr       */
+/*   Updated: 2023/08/11 15:44:59 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,13 @@ int	redir_error(char *str)
 int	check_redirections(t_shell *cmd)
 {
 	if (cmd->nb_of_heredocs != 0)
-		g_xcode = exec_heredoc(cmd);
+		exec_heredoc(cmd);
 	else if (cmd->cmd_lst->redir_in == 1)
-		g_xcode = exec_infile(cmd->cmd_lst->redir_in_str);
+		exec_infile(cmd->cmd_lst->redir_in_str);
 	if (cmd->cmd_lst->append == 1)
-		g_xcode = exec_outfile(cmd);
+		exec_outfile(cmd);
 	else if (cmd->cmd_lst->redir_out == 1)
-		g_xcode = exec_outfile(cmd);
+		exec_outfile(cmd);
 	return (EXIT_SUCCESS);
 }
 
@@ -72,7 +72,7 @@ int	exec_outfile(t_shell *cmd)
 	if (fd > 0 && dup < 0)
 	{
 		ft_putstr_fd("minishell: pipe error\n", STDERR_FILENO);
-		return (EXIT_FAILURE); // should we change it
+		return (EXIT_FAILURE);
 	}
 	if (fd > 0)
 		close(fd);

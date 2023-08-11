@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 16:04:33 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/10 12:33:53 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/11 18:24:00 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,21 +64,26 @@ t_token	*new_node_cmd(t_single_cmd **cmd_lst, int index,
 	{
 		if ((temp->type == WORD) && i < cmd->words_per_pipe[index])
 		{
-			new->command[i] = ft_strdup(temp->command);
+			if (ft_strncmp(temp->command, "", ft_strlen(temp->command)))
+				new->command[i] = ft_strdup(temp->command);
+			else
+				new->command[i] = ft_strdup("");
 			i++;
 		}
 		else if (temp->type == REDIRECT_INPUT 
 			|| temp->type == REDIRECT_OUTPUT || temp->type == APPEND)
-			i = handle_redir_in_out(cmd, new, temp, i) + 1;
+		{
+			handle_redir_in_out(new, temp);
+			temp = temp->next;
+			if (temp->next != NULL && !ft_strncmp(temp->next->command, " ", ft_strlen(temp->next->command)))
+				temp = temp->next;
+		}
 		else if (temp->type == HEREDOC && temp->next != NULL)
 			temp = temp->next->next;
 		if (temp != NULL)
 			temp = temp->next;
 	}
 	new_node_cmd_sub(new, i, index);
-	// new->next = NULL;
-	// new->command[i] = 0; //problem ici avec echo test > file1
-	// new->index = index;
 	add_stack_back_cmd(cmd_lst, new);
 	return (temp);
 }
@@ -86,7 +91,7 @@ t_token	*new_node_cmd(t_single_cmd **cmd_lst, int index,
 void	new_node_cmd_sub(t_single_cmd *new, int i, int index)
 {
 	new->next = NULL;
-	new->command[i] = 0; //problem ici avec echo test > file1
+	new->command[i] = 0;
 	new->index = index;
 }
 

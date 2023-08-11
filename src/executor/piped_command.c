@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 14:54:27 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/10 12:32:45 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/11 11:59:28 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,13 +78,13 @@ void	dup_cmd(t_shell *cmd, int pipefd[2], int fd)
 	if (cmd->cmd_lst->index != 0)
 	{
 		if (dup2(fd, STDIN_FILENO) < 0)
-			ft_error(cmd, "Dup failed", 1);
+			ft_error(cmd, "Dup failed IN", 1);
 	}
 	close(pipefd[0]);
 	if (cmd->cmd_lst->next)
 	{
 		if (dup2(pipefd[1], STDOUT_FILENO) < 0)
-			ft_error(cmd, "Dup failed", 1);
+			ft_error(cmd, "Dup failed OUT", 1);
 	}
 	close(pipefd[1]);
 	exec_command(cmd);

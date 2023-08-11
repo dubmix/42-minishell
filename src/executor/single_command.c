@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:46:21 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/09 16:13:23 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/11 14:48:45 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ char	**get_path(char **envp)
 			break ;
 		i++;
 	}
+	if (envp[i] == NULL)
+		return (NULL);
 	length = ft_strlen(envp[i]);
 	path = malloc(sizeof(char *) * length + 1);
 	if (!path)
@@ -52,6 +54,8 @@ char	*check_access(char **envp, char **command)
 		return (NULL);
 	}
 	path_arr = get_path(envp);
+	if (!path_arr)
+		return (NULL);
 	i = 0;
 	while (path_arr[i] != (void *) '\0')
 	{

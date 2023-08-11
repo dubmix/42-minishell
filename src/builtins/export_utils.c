@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 11:44:34 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/10 10:56:39 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/11 15:34:31 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ void	print_chararr(char **arr)
 		return ;
 	while (arr[i] != 0)
 	{
+		ft_putstr_fd(arr[i], STDERR_FILENO);
 		printf("'%s'\n", arr[i]);
 		i++;
 	}

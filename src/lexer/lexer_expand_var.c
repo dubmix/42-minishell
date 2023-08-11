@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:45:38 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/10 12:33:02 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/11 18:22:49 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ char	**string_variables_bis(t_shell *cmd, char *command,
 {
 	int	j;
 	int	start;
-
+	char *string;
+	
 	j = 0;
 	start = 0;
 	while (command[i] != '\0')
@@ -54,8 +55,11 @@ char	**string_variables_bis(t_shell *cmd, char *command,
 				i++;
 			if (command[i] == '$' && command[i - 1] != '$')
 				i = i - 1;
-			arr_string[j] = look_into_envir_quote(cmd, 
-					ft_substr(command, start, i - start));
+			string = ft_substr(command, start, i - start); // here issue for echo "$tests""Makefile"
+			arr_string[j] = look_into_envir_quote(cmd, string);
+			if (arr_string[j] == NULL)
+				arr_string[j] = ft_strdup("");
+			free(string);
 			j++;
 		}
 		i++;

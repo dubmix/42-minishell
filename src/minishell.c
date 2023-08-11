@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 11:16:23 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/10 16:35:39 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/11 16:40:43 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,21 @@ void	init_shell(t_shell *cmd)
 	cmd->words_per_pipe_alloc = 0;
 	cmd->heredoc_arr = NULL;
 	cmd->heredoc_string = NULL;
+}
+
+int	find_echo(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] != '\0')
+	{
+		if (str[i] == 'e' && str[i + 1] == 'c' && str[i + 2] == 'h'
+			&& str[i + 3] == 'o' && str[i + 4] == ' ' && str[i + 5] == '$' && str[i + 6] == '?')
+			return (1);
+		i++;
+	}
+	return (0);
 }
 
 void	clear_line_space(char *line, t_shell *cmd)
@@ -64,30 +79,25 @@ int	minishell_start(t_shell *cmd)
 		free(cmd->line);
 		ft_putstr_fd(EXIT_MSG, STDERR_FILENO);
 		free_all_inside_loop(cmd);
-		g_xcode = 130;
+		g_xcode = 0;
 		return (-1);
 	}
 	clear_line_space(cmd->line, cmd);
-	// if (!ft_strncmp(cmd->line, "echo $?", 7))
-	// {
-	// 	// free(cmd->line);
-	// 	ft_putnbr_fd(g_xcode, STDERR_FILENO);
-	// 	ft_putstr_fd("\n", STDERR_FILENO);
-	// 	g_xcode = 0;
-	// }
 	if (ft_strncmp(cmd->line, "", ft_strlen(cmd->line)))
 	{
-		// g_xcode = 0;
 		cmd->tok_lst = tokenization(cmd);
 		expand_var(cmd);
-		parser(cmd);
-		// if (g_xcode == 0)
+		if (!parser(cmd) || g_xcode == 130)
+		{
+			free_all_inside_loop(cmd);
+			return (1);
+		}
+		g_xcode = 0;
 		g_xcode = pre_executor(cmd);
 		free_all_inside_loop(cmd);
 	}
 	return (0);
 }
-
 
 int	main(int argc, char **argv, char **envp)
 {

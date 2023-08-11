@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emiliedrouot <emiliedrouot@student.42.f    +#+  +:+       +#+        */
+/*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 13:24:27 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/08 22:40:52 by emiliedrouo      ###   ########.fr       */
+/*   Updated: 2023/08/11 16:03:20 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ void	print_list_commands(t_single_cmd *cmd, t_shell *shell)
 		printf("append is %d : %s,\n", tmp->append, tmp->append_str);
 		while (tmp->command[i] != NULL)
 		{
+			// ft_putstr_fd(tmp->command[i], STDERR_FILENO);
 			printf("Command are %s \n", tmp->command[i]);
 			i++;
 		}

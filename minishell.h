@@ -74,7 +74,7 @@ typedef struct s_shell
     t_token *tok_lst;
     t_env   *env_lst;
     t_single_cmd *cmd_lst;
-    char **envp_copy; // export function recre2er la char ** // do we really need something else than the path
+    char **envp_copy;
     int     size_arr_var;
     char **heredoc_arr;
     char *heredoc_string;
@@ -97,7 +97,8 @@ void print_chararr(char **envp);
 /* main.c */
 int     minishell_start(t_shell *cmd);
 void	init_shell(t_shell *cmd);
-void minishell_start_sub(char *str);
+void    minishell_start_sub(char *str);
+int     find_echo(char *str);
 
 /////////////////////////////////// LEXER //////////////////////////////////
 
@@ -142,10 +143,12 @@ t_token	*tokenization_bis(t_shell *cmd, int *i, t_token *tok_lst, int nb_token);
 /////////////////////////////////// PARSER //////////////////////////////////
 
 /*parser_main.c*/
-void    parser(t_shell *cmd);
+int    parser(t_shell *cmd);
 void	number_words_per_pipe(t_shell *cmd);
 int	error_syntax(t_shell *cmd);
 void init_words_per_pipe(t_shell *cmd);
+void	number_heredocs(t_shell *cmd);
+int	test_tok_lst(t_shell *cmd);
 
 /*parser_triage.c*/
 void    triage_space(t_shell *cmd);
@@ -161,8 +164,8 @@ void	add_stack_back_cmd(t_single_cmd **cmd_lst, t_single_cmd *new);
 
 /*parser_redir.c*/
 int     handle_redir_in(int fd, t_single_cmd *new, t_token *temp);
-int	handle_redir_in_out(t_shell *cmd, t_single_cmd *new, t_token *temp, int i);
-int	handle_redir_in_out_sub(t_single_cmd *new, t_token *temp, int fd);
+void	handle_redir_in_out(t_single_cmd *new, t_token *temp);
+int     handle_redir_in_out_sub(t_single_cmd *new, t_token *temp, int fd);
 
 /*parser_utils.c*/
 void    delete_node_tok(t_token **head, t_token *nodeToDelete);

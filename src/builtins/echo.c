@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 11:55:39 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/08 13:38:55 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/11 16:46:05 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,9 @@ void	echo(char **commands, t_shell *cmd)
 		check = echo_sub(commands, i, check);
 	}
 	else
-		ft_putstr_fd("\n", STDERR_FILENO);
+		ft_putstr_fd("\n", STDOUT_FILENO);
 	if ((newline == 1 && check == 1) || cmd->nb_of_heredocs != 0)
-		ft_putstr_fd("\n", STDERR_FILENO);
+		ft_putstr_fd("\n", STDOUT_FILENO);
 }
 
 int	echo_sub(char **cmd, int i, int check)

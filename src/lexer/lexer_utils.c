@@ -6,35 +6,35 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:46:03 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/05 15:00:58 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/11 16:09:57 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-// void	print_list(t_env *env)
-// {
-// 	t_env	*tmp;
+void	print_list(t_env *env)
+{
+	t_env	*tmp;
 
-// 	tmp = env;
-// 	while (tmp != NULL)
-// 	{
-// 		printf("%s\n", tmp->full_string);
-// 		tmp = tmp->next;
-// 	}
-// }
+	tmp = env;
+	while (tmp != NULL)
+	{
+		printf("%s\n", tmp->full_string);
+		tmp = tmp->next;
+	}
+}
 
-// void	print_list_tok(t_token *tok)
-// {
-// 	t_token	*tmp;
+void	print_list_tok(t_token *tok)
+{
+	t_token	*tmp;
 
-// 	tmp = tok;
-// 	while (tmp)
-// 	{
-// 		printf("node is %s, nb is %d, state is %d, type is %d\n", tmp->command, tmp->index, tmp->state, tmp->type);
-// 		tmp = tmp->next;
-// 	}
-// }
+	tmp = tok;
+	while (tmp)
+	{
+		printf("node is '%s' , nb is %d, state is %d, type is %d\n", tmp->command, tmp->index, tmp->state, tmp->type);
+		tmp = tmp->next;
+	}
+}
 
 int	special_char(int c)
 {
