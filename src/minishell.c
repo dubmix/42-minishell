@@ -16,6 +16,7 @@ int	g_xcode = 0;
 
 void	init_shell(t_shell *cmd)
 {
+	cmd->stop_heredoc = 0;
 	cmd->nb_of_heredocs = 0;
 	cmd->nb_of_pipes = 0;
 	cmd->cmd_alloc = 0;

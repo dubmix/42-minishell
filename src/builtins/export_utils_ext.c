@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 10:17:41 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/10 11:19:48 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/12 09:49:08 by pdelanno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,8 @@ int	check_param(char *str)
 		return (export_error(str));
 	while (str[i] != '=' && str[i] != '\0')
 	{
-			if (check_valid_id(str[i]) == 1)
-		return (export_error(str));
+		if (check_valid_id(str[i]) == 1)
+			return (export_error(str));
 		i++;
 	}
 	return (0);

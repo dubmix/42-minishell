@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 16:21:47 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/11 17:52:52 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/12 09:51:47 by pdelanno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ void	free_arr(char **arr)
 // 	}
 // }
 
-
 void	free_all_inside_loop(t_shell *cmd)
 {
 	if (cmd->tok_alloc == 1)
@@ -66,18 +65,16 @@ void	free_all_inside_loop(t_shell *cmd)
 		free(cmd->words_per_pipe);
 }
 
-
 void	free_all_exit(t_shell *cmd)
 {
-	
 	if (cmd->env_alloc == 1)
 		free_env_lst(&cmd->env_lst);
 	if (cmd->envp_copy != NULL)
 		free_arr(cmd->envp_copy);
 	if (cmd->oldpwd != NULL)
 		free(cmd->oldpwd);
-
 }
+
 void	ft_error(t_shell *cmd, char *string, int exit_code)
 {
 	ft_putstr_fd(string, STDERR_FILENO);
@@ -136,6 +133,7 @@ void	ft_error(t_shell *cmd, char *string, int exit_code)
 // 	*tok_lst = NULL;
 // 	printf("IS FREEING END\n");
 // }
+
 void	free_tok_lst(t_token **tok_lst)
 {
 	t_token	*temp;
@@ -151,5 +149,4 @@ void	free_tok_lst(t_token **tok_lst)
 		*tok_lst = temp;
 	}
 	*tok_lst = NULL;
-
 }

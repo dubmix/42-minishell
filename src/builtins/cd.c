@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 12:21:08 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/11 12:05:09 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/12 09:45:59 by pdelanno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ int	cd(t_shell *cmd)
 {
 	int		ret;
 	t_shell	**tmp;
-	char *path;
-	
+	char	*path;
+
 	path = NULL;
 	ret = 42;
 	tmp = &cmd;
@@ -53,7 +53,7 @@ int	cd(t_shell *cmd)
 	else if (ret == 42)
 		ret = chdir((*tmp)->cmd_lst->command[1]);
 	if (ret != 0)
-		return(cd_error((*tmp)->cmd_lst->command[1]));
+		return (cd_error((*tmp)->cmd_lst->command[1]));
 	add_path_to_env(cmd);
 	return (EXIT_SUCCESS);
 }

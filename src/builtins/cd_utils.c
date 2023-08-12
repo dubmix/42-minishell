@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 17:10:21 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/10 15:31:49 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/12 09:46:50 by pdelanno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ void	add_path_to_env(t_shell *cmd)
 	int		check;
 	char	cwd[PATH_MAX];
 	char	*full_string_pwd;
-	char 	*temp;
-	
+	char	*temp;
+
 	check = 0;
 	tmp = cmd->env_lst;
 	while (tmp && check != 2)
@@ -47,8 +47,8 @@ void	add_path_to_env(t_shell *cmd)
 int	add_path_to_env_sub(t_shell *cmd, t_env *tmp, int check)
 {
 	char	*full_string_oldpwd;
-	char *temp;
-	
+	char	*temp;
+
 	free(tmp->value);
 	free(tmp->full_string);
 	tmp->value = ft_strdup(cmd->oldpwd);

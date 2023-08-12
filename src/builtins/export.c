@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 13:29:20 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/10 11:46:49 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/12 09:48:34 by pdelanno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ void	unset_if_export(t_shell *cmd, char *command)
 	}
 }
 
-char **var_arr(t_shell *cmd, char *command)
+char	**var_arr(t_shell *cmd, char *command)
 {
 	char	**str_arr;
 	int		i;

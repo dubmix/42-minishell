@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 16:22:42 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/10 15:28:01 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/12 09:51:07 by pdelanno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,7 @@ void	free_env_lst(t_env **env_lst)
 		*env_lst = temp;
 	}
 	*env_lst = NULL;
-
 }
-
 
 // void	free_env_lst(t_env **env_lst)
 // {

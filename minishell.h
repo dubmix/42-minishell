@@ -88,6 +88,7 @@ typedef struct s_shell
     int     cmd_alloc;
     int     env_alloc;
     int     words_per_pipe_alloc;
+    int     stop_heredoc;
 } t_shell;
 
 

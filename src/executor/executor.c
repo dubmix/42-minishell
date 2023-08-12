@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 10:45:11 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/11 12:04:48 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/12 09:52:58 by pdelanno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 int	pre_executor(t_shell *cmd)
 {
 	signal(SIGQUIT, sigquit_handler); 
-
 	if (cmd->nb_of_pipes == 0)
 		g_xcode = exec_single_command(cmd);
 	else 
@@ -78,7 +77,6 @@ int	exec_single_command_sub(t_shell *cmd)
 		return (0);
 	}
 	return (0);
-
 }
 
 int	exec_command(t_shell *cmd)

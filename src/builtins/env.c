@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 13:35:46 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/10 12:32:22 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/12 09:47:40 by pdelanno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,6 @@ int	env(t_shell *cmd)
 				printf("%s\n", tmp->full_string);
 			tmp = tmp->next;
 		}
-		
-		
 	}
 	return (EXIT_SUCCESS);
 }
