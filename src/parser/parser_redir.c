@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 16:13:54 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/11 17:44:03 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/12 14:39:32 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,13 +54,9 @@ void	handle_redir_in_out(t_single_cmd *new, t_token *temp)
 			new->redir_in = 1;
 		}		
 		if (fd < 0)
-		{
-			ft_putstr_fd("minishell: ", 2);
-			ft_putstr_fd(new->redir_in_str, 2);
-			ft_putstr_fd(": No such file or directory\n", 2);
 			g_xcode = 1;
-		}
-		close(fd);
+		if (fd > 0)
+			close(fd);
 	}
 	return ;
 }

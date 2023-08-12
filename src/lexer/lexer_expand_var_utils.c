@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 09:25:02 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/11 18:22:31 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/12 13:25:09 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ void	look_into_envir(t_shell *cmd, t_token *var)
 		{
 			str = ft_itoa(g_xcode);
 			var->command = ft_strdup(str);
+			free(str);
 			break ;
 		}
 		else if (ft_strncmp(string[0], tmp->name, ft_strlen(string[0])) == 0)

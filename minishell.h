@@ -64,7 +64,7 @@ typedef struct s_single_cmd
     char *redir_out_str;
     int append;
     char *append_str;
-    int index; // is the index of the pipe basically
+    int index;
     struct s_single_cmd *next;
 } t_single_cmd;
 
@@ -88,7 +88,7 @@ typedef struct s_shell
     int     cmd_alloc;
     int     env_alloc;
     int     words_per_pipe_alloc;
-    int     stop_heredoc;
+    int     pid_alloc;
 } t_shell;
 
 
@@ -99,7 +99,7 @@ void print_chararr(char **envp);
 int     minishell_start(t_shell *cmd);
 void	init_shell(t_shell *cmd);
 void    minishell_start_sub(char *str);
-int     find_echo(char *str);
+void	clear_line_space(t_shell *cmd);
 
 /////////////////////////////////// LEXER //////////////////////////////////
 
@@ -150,6 +150,8 @@ int	error_syntax(t_shell *cmd);
 void init_words_per_pipe(t_shell *cmd);
 void	number_heredocs(t_shell *cmd);
 int	test_tok_lst(t_shell *cmd);
+void	space_commands(t_shell *cmd);
+
 
 /*parser_triage.c*/
 void    triage_space(t_shell *cmd);

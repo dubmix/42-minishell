@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 11:44:34 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/11 15:34:31 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/12 13:47:01 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,5 +69,6 @@ char	**new_line(char *line)
 		i--;
 	new = ft_substr(line, 0, ft_strlen(line) - i);
 	new_line = ft_split(new, ' ');
+	free(new);
 	return (new_line);
 }

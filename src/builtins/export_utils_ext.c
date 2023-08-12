@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 10:17:41 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/12 09:49:08 by pdelanno         ###   ########.fr       */
+/*   Updated: 2023/08/12 14:48:54 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ char	*look_into_envir_export(t_shell *cmd, char *string)
 		}
 		tmp = tmp->next;
 	}
+	if (tmp == NULL)
+		return (NULL);
 	return (string);
 }
 

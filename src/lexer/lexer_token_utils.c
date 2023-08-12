@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 09:07:17 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/10 12:28:11 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/12 12:58:04 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,15 @@ t_token	*tokenization(t_shell *cmd)
 	while (cmd->line[i] != '\0')
 	{
 		// i = tokenization_sub(cmd, i, tok_lst, nb_token); // ne fonctionne pas
-		if (i == 0 && (cmd->line[i + 1] == '\0' 
-				|| ((cmd->line[i] == cmd->line[i + 1] 
-				&& cmd->line[i + 2] == '\0'))))
-			tok_lst = tokenization_simple_char(cmd, i, tok_lst, nb_token);
-		else if (cmd->line[i] == '~' && (cmd->line[i + 1] == ' '
-		|| cmd->line[i + 1] == '\0'))
+		if (cmd->line[i] == '~' && (cmd->line[i + 1] == '\0' || cmd->line[i + 1] == ' '))
 		{
 			new_token(&tok_lst, "$HOME", nb_token, VARIABLE);
 			i++;
 		}
+		else if (i == 0 && (cmd->line[i + 1] == '\0' 
+				|| ((cmd->line[i] == cmd->line[i + 1] 
+				&& cmd->line[i + 2] == '\0'))))
+			tok_lst = tokenization_simple_char(cmd, i, tok_lst, nb_token);
 		else if
 		 (cmd->line[i] == 39 || cmd->line[i] == 34 
 			|| cmd->line[i] == '$')
@@ -43,7 +42,9 @@ t_token	*tokenization(t_shell *cmd)
 			tok_lst = tokenization_bis(cmd, &i, tok_lst, nb_token);
 		else
 			i = new_token_var_words(&tok_lst, cmd->line, i, nb_token);
-		i++;
+		
+		if (cmd->line[i] != '\0')
+			i++;
 		nb_token++;
 	}
 	cmd->tok_alloc = 1;

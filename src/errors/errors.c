@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 16:21:47 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/12 09:51:47 by pdelanno         ###   ########.fr       */
+/*   Updated: 2023/08/12 13:02:32 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ void	free_arr(char **arr)
 	i = 0;
 	while (arr[i] != NULL)
 	{
-		if (ft_strncmp(arr[i], "", ft_strlen(arr[i])))
-			free(arr[i]);
+		// if (ft_strncmp(arr[i], "", ft_strlen(arr[i])))
+		free(arr[i]);
 		i++;
 	}
 	free(arr);
@@ -63,6 +63,8 @@ void	free_all_inside_loop(t_shell *cmd)
 		free(cmd->heredoc_string);
 	if (cmd->words_per_pipe_alloc == 1)
 		free(cmd->words_per_pipe);
+	if (cmd->pid_alloc == 1)
+		free(cmd->pid);
 }
 
 void	free_all_exit(t_shell *cmd)

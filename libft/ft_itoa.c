@@ -6,12 +6,13 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 15:51:33 by edrouot           #+#    #+#             */
-/*   Updated: 2022/12/16 15:58:54 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/12 13:23:46 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 int	ft_intlen(int n)
 {
@@ -35,6 +36,8 @@ int	ft_intlen(int n)
 
 char	*checkitoa(char *str, int n, int index)
 {
+	str[index] = '\0';
+	index--;
 	if (n < 0)
 	{
 		str[0] = 45;
@@ -70,8 +73,6 @@ char	*ft_itoa(int n)
 		str = malloc(sizeof (char) * (index + 1));
 		if (!str)
 			return (NULL);
-		str[index] = '\0';
-		index = index - 1;
 		str = checkitoa(str, n, index);
 	}
 	return (str);

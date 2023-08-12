@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 11:16:23 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/11 16:40:43 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/12 16:02:15 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ int	g_xcode = 0;
 
 void	init_shell(t_shell *cmd)
 {
-	cmd->stop_heredoc = 0;
 	cmd->nb_of_heredocs = 0;
 	cmd->nb_of_pipes = 0;
 	cmd->cmd_alloc = 0;
@@ -24,43 +23,32 @@ void	init_shell(t_shell *cmd)
 	cmd->words_per_pipe_alloc = 0;
 	cmd->heredoc_arr = NULL;
 	cmd->heredoc_string = NULL;
+	cmd->pid_alloc = 0;
+
 }
 
-int	find_echo(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i] != '\0')
-	{
-		if (str[i] == 'e' && str[i + 1] == 'c' && str[i + 2] == 'h'
-			&& str[i + 3] == 'o' && str[i + 4] == ' ' && str[i + 5] == '$' && str[i + 6] == '?')
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-void	clear_line_space(char *line, t_shell *cmd)
+void	clear_line_space(t_shell *cmd)
 {
 	int		i;
 	char	*temp;
 	int		j;
 
 	j = 0;
-	temp = ft_strdup(line);
-	i = ft_strlen(line) - 1;
+	temp = ft_strdup(cmd->line);
+	i = ft_strlen(cmd->line) - 1;
 	while (i > 0)
 	{
 		if (temp[i] != ' ')
-		{
-			i++;
 			break ;
-		}
 		i--;
 	}
 	while (temp[j] != '\0' && temp[j] == ' ')
 		j++;
+	if (j == 0 && i == (int)(ft_strlen(cmd->line) - 1))
+	{
+		free(temp);
+		return ;
+	}
 	free(cmd->line);
 	if (j > i)
 		cmd->line = ft_strdup("");
@@ -83,7 +71,7 @@ int	minishell_start(t_shell *cmd)
 		g_xcode = 0;
 		return (-1);
 	}
-	clear_line_space(cmd->line, cmd);
+	clear_line_space(cmd);
 	if (ft_strncmp(cmd->line, "", ft_strlen(cmd->line)))
 	{
 		cmd->tok_lst = tokenization(cmd);

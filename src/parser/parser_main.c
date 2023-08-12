@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 09:01:11 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/11 17:29:06 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/12 16:02:09 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,28 @@ int	parser(t_shell *cmd)
 	return (1);
 }
 
+void	space_commands(t_shell *cmd)
+{
+	t_single_cmd *temp;
+	int i;
+
+	i = 0;
+	temp = cmd->cmd_lst;
+	while (temp != NULL)
+	{
+		while (temp->command[i] != 0)
+		{
+			if (!ft_strncmp(temp->command[i], " ", ft_strlen(temp->command[i])) && temp->command[i+1] == 0)
+			{
+				free(temp->command[i]);
+				temp->command[i] = ft_strdup("");
+				break;
+			}
+		}
+		temp = temp->next;		
+	}	
+}
+
 int	error_syntax(t_shell *cmd)
 {
 	t_token	*temp;
@@ -126,7 +148,7 @@ void	init_words_per_pipe(t_shell *cmd)
 {
 	if (cmd->nb_of_pipes != 0)
 	{
-		cmd->words_per_pipe = (int *)malloc(sizeof(int) * (cmd->nb_of_pipes));
+		cmd->words_per_pipe = (int *)malloc(sizeof(int) * (cmd->nb_of_pipes + 1));
 		if (!cmd->words_per_pipe)
 			ft_error(cmd, "Int array memory allocation failure", 1);
 	}

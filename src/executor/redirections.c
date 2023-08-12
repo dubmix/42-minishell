@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 14:30:49 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/11 15:44:59 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/12 14:08:15 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,13 @@ int	redir_error(char *str)
 int	check_redirections(t_shell *cmd)
 {
 	if (cmd->nb_of_heredocs != 0)
-		exec_heredoc(cmd);
+		return(exec_heredoc(cmd));
 	else if (cmd->cmd_lst->redir_in == 1)
-		exec_infile(cmd->cmd_lst->redir_in_str);
+		return(exec_infile(cmd->cmd_lst->redir_in_str));
 	if (cmd->cmd_lst->append == 1)
-		exec_outfile(cmd);
+		return(exec_outfile(cmd));
 	else if (cmd->cmd_lst->redir_out == 1)
-		exec_outfile(cmd);
+		return(exec_outfile(cmd));
 	return (EXIT_SUCCESS);
 }
 
@@ -87,7 +87,9 @@ int	exec_infile(char *file)
 	fd = open(file, O_RDONLY);
 	if (fd < 0)
 	{
-		ft_putstr_fd("minishell: infile: No such file or directory\n", STDERR_FILENO);
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
+		ft_putstr_fd(file, STDERR_FILENO);
+		ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
 		return (EXIT_FAILURE);
 	}
 	dup = dup2(fd, STDIN_FILENO);

@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 13:29:20 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/12 09:48:34 by pdelanno         ###   ########.fr       */
+/*   Updated: 2023/08/12 14:49:54 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int	export_variable(t_shell *cmd)
 	t_shell	**tmp;
 	int		i;
 	char	**command;
+	char *temp;
 
 	i = 0;
 	tmp = &cmd;
@@ -41,7 +42,11 @@ int	export_variable(t_shell *cmd)
 			str = var_arr(cmd, command[i]);
 			free(command[i]);
 			if (str[1] != NULL)
-				command[i] = ft_strjoin(ft_strjoin(str[0], "="), str[1]);
+			{
+				temp = ft_strjoin(str[0], "=");
+				command[i] = ft_strjoin(temp, str[1]);
+				free(temp);
+			}
 			else
 				command[i] = ft_strdup(str[0]);
 			if (check_param(command[i]) == 0 
@@ -56,6 +61,7 @@ int	export_variable(t_shell *cmd)
 		}
 		i++;
 	}
+	free_arr(command);
 	update_envp_copy(cmd);
 	return (EXIT_SUCCESS);
 }
@@ -127,14 +133,20 @@ char	**var_arr(t_shell *cmd, char *command)
 {
 	char	**str_arr;
 	int		i;
-
+	char *str;
 	i = 0;
 	str_arr = ft_split(command, '=');
 	while (str_arr[i] != 0)
 	{
 		if (str_arr[i][0] == '$')
-			str_arr[i] = look_into_envir_export(cmd, 
-					ft_substr(str_arr[i], 1, ft_strlen(str_arr[i])));
+		{
+			str = ft_substr(str_arr[i], 1, ft_strlen(str_arr[i]));
+			free(str_arr[i]);
+			str_arr[i] = look_into_envir_export(cmd, str);
+			if (str_arr[i] == NULL)
+				str_arr[i] = ft_strdup("");
+			free(str);			
+		}
 		i++;
 	}
 	return (str_arr);

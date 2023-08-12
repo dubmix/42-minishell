@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 16:04:33 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/11 18:24:00 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/12 15:57:21 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,11 @@ t_token	*new_node_cmd(t_single_cmd **cmd_lst, int index,
 				temp = temp->next;
 		}
 		else if (temp->type == HEREDOC && temp->next != NULL)
-			temp = temp->next->next;
+		{
+			temp = temp->next;
+			if (temp->next != NULL && !ft_strncmp(temp->next->command, " ", ft_strlen(temp->next->command)))
+				temp = temp->next;
+		}
 		if (temp != NULL)
 			temp = temp->next;
 	}
