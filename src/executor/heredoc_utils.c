@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 16:44:56 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/12 15:40:56 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/12 17:00:50 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	*double_quote_env_heredoc(t_shell *cmd, char *string)
 	new_string = (char *)malloc(sizeof(char) * (length_arr_var(arr_var, cmd)
 				+ length_string_without_var(string)) + 1);
 	if (!new_string)
-		return (NULL);
+		ft_error(cmd, "Memory allocation failed for expander", 1);
 	new_string = double_quote_env_hd_sub(string, new_string, arr_var);
 	temp = ft_strjoin(new_string, "\n");
 	free(new_string);
@@ -37,6 +37,7 @@ char	*double_quote_env_hd_sub(char *string, char *n_str, char **arr_var)
 	int	i;
 	int	j;
 	int	k;
+	char *temp;
 
 	i = 0;
 	j = 0;
@@ -47,7 +48,9 @@ char	*double_quote_env_hd_sub(char *string, char *n_str, char **arr_var)
 		{
 			while (string[i] != ' ' && string[i] != 34 && string[i] != '\0')
 				i++;
-			n_str = ft_strjoin(n_str, arr_var[k]);
+			temp = ft_strjoin(n_str, arr_var[k]);
+			n_str = ft_strdup(temp);
+			free(temp);
 			j = ft_strlen(n_str);
 			k++;
 		}

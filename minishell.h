@@ -100,6 +100,7 @@ int     minishell_start(t_shell *cmd);
 void	init_shell(t_shell *cmd);
 void    minishell_start_sub(char *str);
 void	clear_line_space(t_shell *cmd);
+t_shell	*main_bis(t_shell *cmd);
 
 /////////////////////////////////// LEXER //////////////////////////////////
 

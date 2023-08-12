@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 11:16:23 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/12 16:02:15 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/12 16:43:13 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,37 +24,15 @@ void	init_shell(t_shell *cmd)
 	cmd->heredoc_arr = NULL;
 	cmd->heredoc_string = NULL;
 	cmd->pid_alloc = 0;
-
 }
 
-void	clear_line_space(t_shell *cmd)
+int	minishell_start_null(t_shell *cmd)
 {
-	int		i;
-	char	*temp;
-	int		j;
-
-	j = 0;
-	temp = ft_strdup(cmd->line);
-	i = ft_strlen(cmd->line) - 1;
-	while (i > 0)
-	{
-		if (temp[i] != ' ')
-			break ;
-		i--;
-	}
-	while (temp[j] != '\0' && temp[j] == ' ')
-		j++;
-	if (j == 0 && i == (int)(ft_strlen(cmd->line) - 1))
-	{
-		free(temp);
-		return ;
-	}
 	free(cmd->line);
-	if (j > i)
-		cmd->line = ft_strdup("");
-	else
-		cmd->line = ft_substr(temp, j, i - j + 1);
-	free(temp);
+	ft_putstr_fd(EXIT_MSG, STDERR_FILENO);
+	free_all_inside_loop(cmd);
+	g_xcode = 0;
+	return (-1);
 }
 
 int	minishell_start(t_shell *cmd)
@@ -64,13 +42,7 @@ int	minishell_start(t_shell *cmd)
 	cmd->line = readline(READLINE_MSG);
 	add_history(cmd->line);
 	if (cmd->line == NULL)
-	{
-		free(cmd->line);
-		ft_putstr_fd(EXIT_MSG, STDERR_FILENO);
-		free_all_inside_loop(cmd);
-		g_xcode = 0;
-		return (-1);
-	}
+		return (minishell_start_null(cmd));
 	clear_line_space(cmd);
 	if (ft_strncmp(cmd->line, "", ft_strlen(cmd->line)))
 	{
@@ -88,24 +60,32 @@ int	minishell_start(t_shell *cmd)
 	return (0);
 }
 
+t_shell	*main_bis(t_shell *cmd)
+{
+	cmd = malloc(sizeof(t_shell));
+	if (!cmd)
+	{
+		ft_putstr_fd("Malloc cmd allocation failed", STDERR_FILENO);
+		exit(1);
+	}
+	cmd->env_alloc = 0;
+	return(cmd);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_shell	*cmd;
-	int check;
+	int		check;
 
 	check = 42;
 	argv = NULL;
+	cmd = NULL;
 	if (argc != 1)
-		ft_putstr_fd("Error, program should not take any arguments\n", STDERR_FILENO);
+		ft_putstr_fd("Error, program should not take any arguments\n",
+			STDERR_FILENO);
 	else
 	{
-		cmd = malloc(sizeof(t_shell));
-		if (!cmd)
-		{
-			ft_putstr_fd("Malloc cmd allocation failed", STDERR_FILENO);
-			exit(1);
-		}
-		cmd->env_alloc = 0;
+		cmd = main_bis(cmd);
 		cmd->env_lst = init_envp(envp, cmd);
 		while (42)
 		{

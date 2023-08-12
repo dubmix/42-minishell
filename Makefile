@@ -6,7 +6,7 @@
 #    By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/26 12:53:21 by edrouot           #+#    #+#              #
-#    Updated: 2023/08/06 08:04:40 by edrouot          ###   ########.fr        #
+#    Updated: 2023/08/12 16:30:36 by edrouot          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,6 +15,7 @@ NAME = minishell
 LIBFT = ./libft/libft.a
 
 SRCS = src/minishell.c \
+		src/minishell_utils.c \
 		src/executor/executor.c \
 		src/executor/redirections.c \
 		src/executor/single_command.c \

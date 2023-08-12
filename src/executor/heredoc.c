@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 11:32:47 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/10 17:05:12 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/12 17:10:43 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,11 @@ void	grab_heredoc(t_shell *cmd)
 		free(final_line);
 	}
 	else
+	{
+		if (final_line != NULL)
+			free(final_line);
 		cmd->heredoc_string = ft_strdup("");
+	}
 	return ;
 }
 
@@ -37,6 +41,7 @@ char	*grab_hd_sub(char *l_ipt, char *fir_l, char *fin_l, t_shell *c)
 {
 	int	i;
 
+	char *temp;
 	i = 0;
 	while (i < c->nb_of_heredocs)
 	{
@@ -56,7 +61,11 @@ char	*grab_hd_sub(char *l_ipt, char *fir_l, char *fin_l, t_shell *c)
 			if (fin_l == NULL)
 				fin_l = ft_strdup(fir_l);
 			else
-				fin_l = ft_strjoin(fin_l, fir_l);
+			{
+				temp = ft_strjoin(fin_l, fir_l);
+				fin_l = ft_strdup(temp);
+				free(temp);
+			}
 			free(fir_l);
 		}
 		if (g_xcode == 130)
@@ -83,6 +92,7 @@ char	**string_var_hd_sub(t_shell *c, char *str, char **arr_str, int start)
 {
 	int	i;
 	int	j;
+	char *string;
 
 	i = 0;
 	j = 0;
@@ -93,8 +103,8 @@ char	**string_var_hd_sub(t_shell *c, char *str, char **arr_str, int start)
 			start = i + 1;
 			while (str[i] != ' ' && str[i] != '\0')
 				i++;
-			arr_str[j] = look_into_envir_quote(c, ft_substr(str, start,
-						i - start));
+			string = ft_substr(str, start, i - start);
+			arr_str[j] = look_into_envir_quote(c, string);
 			j++;
 		}
 		i++;
