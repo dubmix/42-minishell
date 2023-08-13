@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 16:22:42 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/12 11:36:06 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/13 12:54:44 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@ void	free_cmd_lst(t_single_cmd **cmd_lst)
 	while (*cmd_lst)
 	{
 		temp = (*cmd_lst)->next;
-		if ((*cmd_lst)->redir_in == 1)
+		if ((*cmd_lst)->redir_in != 0)
 			free((*cmd_lst)->redir_in_str);
-		if ((*cmd_lst)->redir_out == 1)
+		if ((*cmd_lst)->redir_out != 0)
 			free((*cmd_lst)->redir_out_str);
-		if ((*cmd_lst)->append == 1)
+		if ((*cmd_lst)->append != 0)
 			free((*cmd_lst)->append_str);
 		if ((*cmd_lst)->command != NULL)
 			free_arr((*cmd_lst)->command);

@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 16:21:47 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/12 13:02:32 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/13 12:54:32 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,35 +19,11 @@ void	free_arr(char **arr)
 	i = 0;
 	while (arr[i] != NULL)
 	{
-		// if (ft_strncmp(arr[i], "", ft_strlen(arr[i])))
 		free(arr[i]);
 		i++;
 	}
 	free(arr);
 }
-
-// void	free_all(t_shell *cmd, int type)
-// {
-// 	if (type == 0)
-// 		free_tok_lst(cmd->tok_lst);
-// 	else if (type == 1)
-// 		free_cmd_lst(&cmd->cmd_lst);
-// 	else if (type == 2)
-// 	{
-// 		free_tok_lst(cmd->tok_lst);
-// 		free_cmd_lst(&cmd->cmd_lst);
-// 	}
-// 	else if (type == 3)
-// 		free_env_lst(&cmd->env_lst);
-// 	else if (type == 4)
-// 		free_shell(cmd);
-// 	else if (type == 5)
-// 	{
-// 		free_env_lst(&cmd->env_lst);
-// 		free_arr(cmd->envp_copy);
-// 		free(cmd->oldpwd);
-// 	}
-// }
 
 void	free_all_inside_loop(t_shell *cmd)
 {

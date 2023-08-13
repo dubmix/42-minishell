@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 16:13:54 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/12 14:39:32 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/13 12:55:13 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ void	handle_redir_in_out(t_single_cmd *new, t_token *temp)
 			new->redir_out_str = ft_strdup(temp->next->command);
 			fd = open(new->redir_out_str, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 			new->redir_out = 1;
+			if (new->append == 1)
+				new->append = 2;
 		}
 		else if (temp->type == APPEND)
 		{
@@ -45,6 +47,8 @@ void	handle_redir_in_out(t_single_cmd *new, t_token *temp)
 			new->append_str = ft_strdup(temp->next->command);
 			fd = open(new->append_str, O_WRONLY | O_CREAT | O_APPEND, 0644);
 			new->append = 1;
+			if (new->redir_out == 1)
+				new->redir_out = 2;
 		}
 		else if (temp->type == REDIRECT_INPUT)
 		{
