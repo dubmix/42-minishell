@@ -42,6 +42,7 @@ SRCS = src/main/minishell.c \
 		src/builtins/export_utils_ext.c \
 		src/builtins/export_bis.c \
 		src/builtins/unset.c \
+		src/parser/parser_main_utils.c \
 		src/parser/parser_utils.c \
 		src/parser/parser_triage.c \
 		src/parser/parser_cmd_lst.c \

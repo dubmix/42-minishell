@@ -57,7 +57,7 @@ char	*check_access(char **envp, char **command)
 	path_arr = get_path(envp);
 	if (!path_arr)
 		return (NULL);
-	path_cmd = check_access_sub(path_arr, command, path_cmd, tmp);
+	path_cmd = check_acc_sub(path_arr, command, path_cmd, tmp);
 	return (path_cmd);
 }
 

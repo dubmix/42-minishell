@@ -254,6 +254,7 @@ void	sort_env(t_env **env_lst);
 void	export_variable_bis(t_shell *cmd, char **command, int i, t_shell **tmp);
 void	assign_back_to_zero(t_env **env_lst);
 void	export_bis(char **command, t_shell **tmp, int i, t_shell *cmd);
+char	*look_into_envir_export(t_shell *cmd, char *string);
 
 /*unset*/
 int unset(t_shell *cmd, char **command);
