@@ -6,20 +6,11 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:45:38 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/11 18:22:49 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/13 15:26:36 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-
-void	look_into_envir(t_shell *cmd, t_token *var);
-char	**string_variables(t_shell *cmd, t_token *var);
-void	double_quote_env(t_shell *cmd, t_token *var);
-char	*look_into_envir_quote(t_shell *cmd, char *string);
-char	**string_variables_bis(t_shell *cmd, char *command,
-			char **arr_string, int i);
-char	*double_quote_env_bis(char *command, char *new_string, 
-			char **arr_var, int i);
 
 char	**string_variables(t_shell *cmd, t_token *var)
 {
@@ -38,10 +29,10 @@ char	**string_variables(t_shell *cmd, t_token *var)
 char	**string_variables_bis(t_shell *cmd, char *command,
 		char **arr_string, int i)
 {
-	int	j;
-	int	start;
-	char *string;
-	
+	int		j;
+	int		start;
+	char	*string;
+
 	j = 0;
 	start = 0;
 	while (command[i] != '\0')
@@ -55,7 +46,7 @@ char	**string_variables_bis(t_shell *cmd, char *command,
 				i++;
 			if (command[i] == '$' && command[i - 1] != '$')
 				i = i - 1;
-			string = ft_substr(command, start, i - start); // here issue for echo "$tests""Makefile"
+			string = ft_substr(command, start, i - start);
 			arr_string[j] = look_into_envir_quote(cmd, string);
 			if (arr_string[j] == NULL)
 				arr_string[j] = ft_strdup("");

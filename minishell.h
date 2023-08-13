@@ -120,6 +120,8 @@ void	look_into_envir_sub(char **string, t_token *var, t_env *tmp);
 char	*double_quote_env_bis(char *command, char *new_string, 
 			char **arr_var, int i);
 int	double_quote_env_bis_sub(char *command, int i);
+char	**string_variables_bis(t_shell *cmd, char *command,
+			char **arr_string, int i);
 
 /* lexer_utils.c */
 void    print_list(t_env *env);
