@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 13:29:20 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/13 14:40:31 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/13 15:05:19 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,7 @@ int	export_variable(t_shell *cmd)
 	tmp = &cmd;
 	command = new_line(cmd->line);
 	if (!command[i + 1])
-	{
-		
-		sort_env(&cmd->env_lst);
-		print_sorted_env(&cmd->env_lst);
-		return (EXIT_SUCCESS);
-	}
+		return (print_sorted_env(&cmd->env_lst));
 	i++;
 	while (command[i] != NULL)
 	{
@@ -71,11 +66,8 @@ void	export_variable_bis(t_shell *cmd, char **command, int i, t_shell **tmp)
 	free_arr(str);
 }
 
-
-
 int	export(t_shell *cmd, char **command)
 {
-	char	**str;
 	t_shell	**tmp;
 	int		i;
 
@@ -86,36 +78,39 @@ int	export(t_shell *cmd, char **command)
 	else
 	{
 		if (!command[i + 1])
-		{
-			sort_env(&cmd->env_lst);
-			print_sorted_env(&cmd->env_lst);
-			return (EXIT_SUCCESS);
-		}
+			return (print_sorted_env(&cmd->env_lst));
 		i++;
 		while (command[i] != NULL)
 		{
 			if (!ft_strncmp(command[i], "=", ft_strlen(command[i])))
 				export_error(command[i]);
-			else if (ft_strncmp(command[i], " ", 1) != 0 && ft_strncmp(command[i], "", ft_strlen(command[i]) != 0))
-			{
-				if (ft_strchr(command[i], '=') != NULL)
-					str = ft_split(command[i], '=');
-				else
-					str = ft_split(command[i], ' ');
-				if (check_param(command[i]) == 0 && var_exists((*tmp)->env_lst, str[0]) == 0)
-					new_node_env(cmd, &(*tmp)->env_lst, str, command[i]);
-				else if (var_exists((*tmp)->env_lst, str[0]) == 1)
-				{
-					unset_if_export(cmd, str[0]);
-					new_node_env(cmd, &(*tmp)->env_lst, str, command[i]);
-				}
-				free_arr(str);
-			}
+			else if (ft_strncmp(command[i], " ", 1) != 0 
+				&& ft_strncmp(command[i], "", ft_strlen(command[i]) != 0))
+				export_bis(command, tmp, i, cmd);
 			i++;
 		}
 		update_envp_copy(cmd);
 	}
 	return (EXIT_SUCCESS);
+}
+
+void	export_bis(char **command, t_shell **tmp, int i, t_shell *cmd)
+{
+	char	**str;
+
+	if (ft_strchr(command[i], '=') != NULL)
+		str = ft_split(command[i], '=');
+	else
+		str = ft_split(command[i], ' ');
+	if (check_param(command[i]) == 0 
+		&& var_exists((*tmp)->env_lst, str[0]) == 0)
+		new_node_env(cmd, &(*tmp)->env_lst, str, command[i]);
+	else if (var_exists((*tmp)->env_lst, str[0]) == 1)
+	{
+		unset_if_export(cmd, str[0]);
+		new_node_env(cmd, &(*tmp)->env_lst, str, command[i]);
+	}
+	free_arr(str);
 }
 
 void	unset_if_export(t_shell *cmd, char *command)
@@ -134,27 +129,4 @@ void	unset_if_export(t_shell *cmd, char *command)
 		}
 		tmp_env = tmp_env->next;
 	}
-}
-
-char	**var_arr(t_shell *cmd, char *command)
-{
-	char	**str_arr;
-	int		i;
-	char *str;
-	i = 0;
-	str_arr = ft_split(command, '=');
-	while (str_arr[i] != 0)
-	{
-		if (str_arr[i][0] == '$')
-		{
-			str = ft_substr(str_arr[i], 1, ft_strlen(str_arr[i]));
-			free(str_arr[i]);
-			str_arr[i] = look_into_envir_export(cmd, str);
-			if (str_arr[i] == NULL)
-				str_arr[i] = ft_strdup("");
-			free(str);			
-		}
-		i++;
-	}
-	return (str_arr);
 }

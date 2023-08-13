@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 10:17:41 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/12 14:48:54 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/13 15:09:52 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,10 +80,6 @@ int	check_param(char *str)
 	int	i;
 
 	i = 0;
-	// if (ft_findchar(str, '=') == 0)
-	// 	return (EXIT_FAILURE);
-	// if (str[i] == '=')
-	// 	return (export_error(str));
 	if (ft_isdigit(str[i]))
 		return (export_error(str));
 	while (str[i] != '=' && str[i] != '\0')

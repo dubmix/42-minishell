@@ -122,8 +122,8 @@ char	*double_quote_env_bis(char *command, char *new_string,
 int	double_quote_env_bis_sub(char *command, int i);
 
 /* lexer_utils.c */
-void    print_list(t_env *env); // print the envp
-void    print_list_tok(t_token *tok); // print the token list
+void    print_list(t_env *env);
+void    print_list_tok(t_token *tok);
 int         special_char(int c);
 int         length_arr_var(char **arr_var, t_shell *cmd);
 int         length_string_without_var(char *string);
@@ -140,7 +140,6 @@ t_token	*tokenization_special_char(t_shell *cmd, int *i,
 t_token	*tokenization_simple_char(t_shell *cmd, int i, 
 	t_token *tok_lst, int nb_token);
 t_token	*tokenization_bis(t_shell *cmd, int *i, t_token *tok_lst, int nb_token);
-
 
 /////////////////////////////////// PARSER //////////////////////////////////
 
@@ -211,8 +210,6 @@ char *grab_hd_sub(char *l_ipt, char *fir_l, char *fin_l, t_shell *c);
 char **string_var_hd_sub(t_shell *c, char *str, char **arr_str, int start);
 char	*grab_hd_sub_sub(char *l_ipt, char *fir_l, char *fin_l, t_shell *c);
 
-
-
 /////////////////////////////////// BUILTINS //////////////////////////////////
 
 /*cd*/
@@ -250,12 +247,13 @@ int	ft_findchar(char *str, char c);
 int var_exists(t_env *env, char *str);
 int	ft_lstsize_env(t_env *lst);
 void	update_envp_copy(t_shell *cmd);
-void print_sorted_env(t_env **env_lst);
+int     print_sorted_env(t_env **env_lst);
 void	assign_index(t_env **env_lst, char *string, int i);
 char *find_biggest(t_env **env_lst);
 void	sort_env(t_env **env_lst);
 void	export_variable_bis(t_shell *cmd, char **command, int i, t_shell **tmp);
 void	assign_back_to_zero(t_env **env_lst);
+void	export_bis(char **command, t_shell **tmp, int i, t_shell *cmd);
 
 /*unset*/
 int unset(t_shell *cmd, char **command);

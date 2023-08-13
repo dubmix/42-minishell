@@ -6,20 +6,20 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 11:53:28 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/13 14:42:10 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/13 15:00:48 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-void	print_sorted_env(t_env **env_lst)
+int	print_sorted_env(t_env **env_lst)
 {
 	t_env	*tmp;
 	int		i;
 
 	tmp = *env_lst;
-
 	i = ft_lstsize_env(*env_lst);
+	sort_env(env_lst);
 	while (i > 0)
 	{
 		while (tmp != NULL)
@@ -34,6 +34,7 @@ void	print_sorted_env(t_env **env_lst)
 		tmp = *env_lst;
 		i--;
 	}
+	return (EXIT_SUCCESS);
 }
 
 void	sort_env(t_env **env_lst)
