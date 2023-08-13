@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 09:25:02 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/12 17:10:54 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/13 12:36:53 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,33 +69,35 @@ void	look_into_envir(t_shell *cmd, t_token *var)
 	return ;
 }
 
-void	look_into_envir_sub(char **string, t_token *var, t_env *tmp)
-{
-	while (tmp != NULL)
-	{
-		if (ft_strncmp(string[0], "$", ft_strlen(string[0])) == 0)
-		{
-			var->command = ft_strdup("Process ID ");
-			return ;
-		}
-		else if (ft_strncmp(string[0], "?", 1) == 0)
-		{
-			var->command = ft_strdup(ft_itoa(g_xcode));
-			return ;
-		}
-		else if (ft_strncmp(string[0], tmp->name, ft_strlen(string[0])) == 0)
-		{
-			var->command = ft_strdup(tmp->value);
-			return ;
-		}
-		tmp = tmp->next;
-	}
-}
+// void	look_into_envir_sub(char **string, t_token *var, t_env *tmp)
+// {
+// 	char *str;
+// 	while (tmp != NULL)
+// 	{
+// 		if (ft_strncmp(string[0], "$", ft_strlen(string[0])) == 0)
+// 		{
+// 			var->command = ft_strdup("Process ID ");
+// 			return ;
+// 		}
+// 		else if (ft_strncmp(string[0], "?", 1) == 0)
+// 		{
+			
+// 			var->command = ft_strdup(ft_itoa(g_xcode));
+// 			return ;
+// 		}
+// 		else if (ft_strncmp(string[0], tmp->name, ft_strlen(string[0])) == 0)
+// 		{
+// 			var->command = ft_strdup(tmp->value);
+// 			return ;
+// 		}
+// 		tmp = tmp->next;
+// 	}
+// }
 
 char	*look_into_envir_quote(t_shell *cmd, char *string)
 {
 	t_env	*tmp;
-
+	char 	*str;
 	tmp = cmd->env_lst;
 	while (tmp != NULL)
 	{
@@ -108,7 +110,9 @@ char	*look_into_envir_quote(t_shell *cmd, char *string)
 		else if (ft_strncmp(string, "?", ft_strlen(string)) == 0)
 		{
 			free(string);
-			string = ft_strdup(ft_itoa(g_xcode));
+			str = ft_itoa(g_xcode);
+			string = ft_strdup(str);
+			free(str);
 			return (string);
 		}
 		else if (ft_strncmp(string, tmp->name, ft_strlen(string)) == 0)

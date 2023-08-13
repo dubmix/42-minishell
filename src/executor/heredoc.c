@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 11:32:47 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/12 17:10:43 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/13 12:34:27 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	grab_heredoc(t_shell *cmd)
 	char	*first_line;
 	char	*final_line;
 
-	final_line = NULL;
+	final_line = ft_strdup("");
 	first_line = NULL;
 	line_input = NULL;
 	signal(SIGINT, sigint_heredoc);
@@ -30,8 +30,7 @@ void	grab_heredoc(t_shell *cmd)
 	}
 	else
 	{
-		if (final_line != NULL)
-			free(final_line);
+		free(final_line);
 		cmd->heredoc_string = ft_strdup("");
 	}
 	return ;
@@ -46,8 +45,8 @@ char	*grab_hd_sub(char *l_ipt, char *fir_l, char *fin_l, t_shell *c)
 	while (i < c->nb_of_heredocs)
 	{
 		l_ipt = readline(HEREDOC_MSG);
-		if (!l_ipt)
-			break ;
+		if (l_ipt == NULL)
+			break;
 		else if (ft_strncmp(l_ipt, c->heredoc_arr[i],
 				ft_strlen(l_ipt)) == 0 && l_ipt[0] != 0)
 		{
@@ -58,14 +57,10 @@ char	*grab_hd_sub(char *l_ipt, char *fir_l, char *fin_l, t_shell *c)
 		{
 			fir_l = double_quote_env_heredoc(c, l_ipt);
 			free(l_ipt);
-			if (fin_l == NULL)
-				fin_l = ft_strdup(fir_l);
-			else
-			{
-				temp = ft_strjoin(fin_l, fir_l);
-				fin_l = ft_strdup(temp);
-				free(temp);
-			}
+			temp = ft_strjoin(fin_l, fir_l);
+			free(fin_l);
+			fin_l = ft_strdup(temp);
+			free(temp);
 			free(fir_l);
 		}
 		if (g_xcode == 130)
@@ -88,7 +83,7 @@ char	**string_variables_heredoc(t_shell *cmd, char *string)
 	return (arr_string);
 }
 
-char	**string_var_hd_sub(t_shell *c, char *str, char **arr_str, int start)
+char	**string_var_hd_sub(t_shell *cmd, char *str, char **arr_str, int start)
 {
 	int	i;
 	int	j;
@@ -101,13 +96,14 @@ char	**string_var_hd_sub(t_shell *c, char *str, char **arr_str, int start)
 		if (str[i] == '$')
 		{
 			start = i + 1;
-			while (str[i] != ' ' && str[i] != '\0')
+			while (str[i] != '\0' && str[i] != ' ')
 				i++;
 			string = ft_substr(str, start, i - start);
-			arr_str[j] = look_into_envir_quote(c, string);
+			arr_str[j] = look_into_envir_quote(cmd, string);
 			j++;
 		}
-		i++;
+		if (str[i] != '\0')
+			i++;
 	}
 	arr_str[j] = 0;
 	return (arr_str);
