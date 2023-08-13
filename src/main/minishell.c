@@ -6,11 +6,11 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 11:16:23 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/12 16:43:13 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/13 14:46:10 by pdelanno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
 
 int	g_xcode = 0;
 
@@ -69,7 +69,7 @@ t_shell	*main_bis(t_shell *cmd)
 		exit(1);
 	}
 	cmd->env_alloc = 0;
-	return(cmd);
+	return (cmd);
 }
 
 int	main(int argc, char **argv, char **envp)

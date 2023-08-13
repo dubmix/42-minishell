@@ -14,8 +14,8 @@ NAME = minishell
 
 LIBFT = ./libft/libft.a
 
-SRCS = src/minishell.c \
-		src/minishell_utils.c \
+SRCS = src/main/minishell.c \
+		src/main/minishell_utils.c \
 		src/executor/executor.c \
 		src/executor/redirections.c \
 		src/executor/single_command.c \
