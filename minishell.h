@@ -141,7 +141,6 @@ t_token	*tokenization_simple_char(t_shell *cmd, int i,
 	t_token *tok_lst, int nb_token);
 t_token	*tokenization_bis(t_shell *cmd, int *i, t_token *tok_lst, int nb_token);
 
-
 /////////////////////////////////// PARSER //////////////////////////////////
 
 /*parser_main.c*/
@@ -204,8 +203,6 @@ char	**string_variables_heredoc(t_shell *cmd, char *string);
 char *double_quote_env_heredoc(t_shell *cmd, char *string);
 char *grab_hd_sub(char *l_ipt, char *fir_l, char *fin_l, t_shell *c);
 char **string_var_hd_sub(t_shell *c, char *str, char **arr_str, int start);
-
-
 
 /////////////////////////////////// BUILTINS //////////////////////////////////
 
