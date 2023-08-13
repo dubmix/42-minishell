@@ -199,9 +199,10 @@ int   exec_piped_command_sub(t_shell *cmd, int pipefd[], int fd, int i);
 int    exec_single_command_sub(t_shell *cmd);
 int	exec_single_command_sub_sub(t_shell *cmd);
 void	single_command_sub(t_shell *cmd, char *path, t_single_cmd *temp);
-char *check_access_sub(char **path_arr, char **command, char *path_cmd, char *tmp);
+char *check_acc_sub(char **path_arr, char **cmd, char *path_cmd, char *tmp);
 void	single_command_sub_sub(t_shell *cmd, char *path, t_single_cmd *temp);
 void	single_command_error(char *str, t_single_cmd *temp);
+
 
 /*heredoc.c*/
 void	grab_heredoc(t_shell *cmd);
@@ -209,6 +210,7 @@ char	**string_variables_heredoc(t_shell *cmd, char *string);
 char *double_quote_env_heredoc(t_shell *cmd, char *string);
 char *grab_hd_sub(char *l_ipt, char *fir_l, char *fin_l, t_shell *c);
 char **string_var_hd_sub(t_shell *c, char *str, char **arr_str, int start);
+char	*grab_hd_sub_sub(char *l_ipt, char *fir_l, char *fin_l, t_shell *c);
 
 /////////////////////////////////// BUILTINS //////////////////////////////////
 
