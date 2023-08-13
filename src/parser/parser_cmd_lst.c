@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_cmd_lst.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
+/*   By: emiliedrouot <emiliedrouot@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 16:04:33 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/12 15:57:21 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/13 22:55:37 by emiliedrouo      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ void	init_node_cmd(t_single_cmd **new, t_shell *cmd, int index)
 	(*new)->redir_in = 0;
 	(*new)->redir_out = 0;
 }
+int new_node_word(t_token *temp, t_single_cmd *new, int i);
 
 t_token	*new_node_cmd(t_single_cmd **cmd_lst, int index, 
 	t_token *tok_lst, t_shell *cmd)
@@ -63,23 +64,11 @@ t_token	*new_node_cmd(t_single_cmd **cmd_lst, int index,
 	while (temp != NULL && temp->type != PIPE)
 	{
 		if ((temp->type == WORD) && i < cmd->words_per_pipe[index])
+			i = new_node_word(temp, new, i);
+		else if (temp->type == REDIRECT_INPUT || temp->type == REDIRECT_OUTPUT || temp->type == APPEND || (temp->type == HEREDOC && temp->next != NULL))
 		{
-			if (ft_strncmp(temp->command, "", ft_strlen(temp->command)))
-				new->command[i] = ft_strdup(temp->command);
-			else
-				new->command[i] = ft_strdup("");
-			i++;
-		}
-		else if (temp->type == REDIRECT_INPUT 
-			|| temp->type == REDIRECT_OUTPUT || temp->type == APPEND)
-		{
-			handle_redir_in_out(new, temp);
-			temp = temp->next;
-			if (temp->next != NULL && !ft_strncmp(temp->next->command, " ", ft_strlen(temp->next->command)))
-				temp = temp->next;
-		}
-		else if (temp->type == HEREDOC && temp->next != NULL)
-		{
+			if	(temp->type == REDIRECT_INPUT || temp->type == REDIRECT_OUTPUT || temp->type == APPEND)
+				handle_redir_in_out(new, temp);
 			temp = temp->next;
 			if (temp->next != NULL && !ft_strncmp(temp->next->command, " ", ft_strlen(temp->next->command)))
 				temp = temp->next;
@@ -90,6 +79,15 @@ t_token	*new_node_cmd(t_single_cmd **cmd_lst, int index,
 	new_node_cmd_sub(new, i, index);
 	add_stack_back_cmd(cmd_lst, new);
 	return (temp);
+}
+int new_node_word(t_token *temp, t_single_cmd *new, int i)
+{
+	if (ft_strncmp(temp->command, "", ft_strlen(temp->command)))
+		new->command[i] = ft_strdup(temp->command);
+	else
+		new->command[i] = ft_strdup("");
+	i++;
+	return (i);
 }
 
 void	new_node_cmd_sub(t_single_cmd *new, int i, int index)

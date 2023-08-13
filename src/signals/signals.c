@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
+/*   By: emiliedrouot <emiliedrouot@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 10:56:50 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/11 17:00:53 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/13 20:50:15 by emiliedrouo      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	sigint_handler(int sig)
 {
 	ft_putstr_fd("\n", STDERR_FILENO);
 	rl_on_new_line();
-	rl_replace_line("", 0);
+	// rl_replace_line("", 0); // to put again
 	rl_redisplay();
 	g_xcode = 130;
 	(void)sig;
