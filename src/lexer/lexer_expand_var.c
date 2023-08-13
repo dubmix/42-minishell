@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:45:38 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/13 15:26:36 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/13 17:34:45 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,25 +35,19 @@ char	**string_variables_bis(t_shell *cmd, char *command,
 
 	j = 0;
 	start = 0;
-	while (command[i] != '\0')
+	while (command[i++] != '\0')
 	{
-		if (command[i] == '$')
+		if (command[i] == '$' && command[i + 1] == '$')
+			arr_string[j++] = ft_strdup("Process ID");
+		else if (command[i] == '$' && command[i + 1] != '$')
 		{
 			i++;
 			start = i;
-			while (command[i] != '\0' && !check_valid_id(command[i])
-				&& command[i] != '$')
-				i++;
-			if (command[i] == '$' && command[i - 1] != '$')
-				i = i - 1;
+			i = string_variables_tri(command, i);
 			string = ft_substr(command, start, i - start);
 			arr_string[j] = look_into_envir_quote(cmd, string);
-			if (arr_string[j] == NULL)
-				arr_string[j] = ft_strdup("");
-			free(string);
 			j++;
 		}
-		i++;
 	}
 	arr_string[j] = 0;
 	return (arr_string);
@@ -93,13 +87,7 @@ char	*double_quote_env_bis(char *command, char *new_string,
 		{
 			i++;
 			n = 0;
-			while (command[i] != '\0' && !check_valid_id(command[i])
-				&& command[i] != '$')
-				i++;
 			i = double_quote_env_bis_sub(command, i);
-			// if ((command[i] == '?' && (command[i + 1] == ' ' 
-			// 		|| command[i + 1] == '\0')) || (command[i] == '$'))
-			// 	i++;
 			while (arr_var[k][n] != '\0')
 				new_string[j++] = arr_var[k][n++];
 			k++;
@@ -113,8 +101,14 @@ char	*double_quote_env_bis(char *command, char *new_string,
 
 int	double_quote_env_bis_sub(char *command, int i)
 {
-	if ((command[i] == '?' && (command[i + 1] == ' ' 
-				|| command[i + 1] == '\0')) || (command[i] == '$'))
+	if (command[i] == '$')
+		return (i+1);
+	while (command[i] != '\0' && !check_valid_id(command[i])
+		&& command[i] != '$')
 		i++;
+	if ((command[i] == '?' && (command[i + 1] == ' ' 
+				|| command[i + 1] == '\0')))
+		i++;
+	
 	return (i);
 }

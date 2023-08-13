@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:46:21 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/13 15:24:46 by pdelanno         ###   ########.fr       */
+/*   Updated: 2023/08/13 15:33:50 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ char	*check_access(char **envp, char **command)
 	path_arr = get_path(envp);
 	if (!path_arr)
 		return (NULL);
-	path_cmd = check_access_sub(path_arr, command, path_cmd, tmp);
+	path_cmd = check_acc_sub(path_arr, command, path_cmd, tmp);
 	return (path_cmd);
 }
 

@@ -122,6 +122,8 @@ char	*double_quote_env_bis(char *command, char *new_string,
 int	double_quote_env_bis_sub(char *command, int i);
 char	**string_variables_bis(t_shell *cmd, char *command,
 			char **arr_string, int i);
+int		string_variables_tri(char *command, int i);
+int	string_variables_bis_bis(t_shell *cmd, char *command, int i, char **arr_string);
 
 /* lexer_utils.c */
 void    print_list(t_env *env);
@@ -183,6 +185,7 @@ void	print_list_commands(t_single_cmd *cmd, t_shell *shell);
 int   single_command(t_shell *cmd);
 char	**get_path(char **envp);
 char	*check_access(char **envp, char **command);
+char *check_acc_sub(char **path_arr, char **cmd, char *path_cmd, char *tmp);
 int	check_redirections(t_shell *cmd);
 int exec_single_command(t_shell *cmd);
 int pre_executor(t_shell *cmd);
@@ -199,10 +202,8 @@ int   exec_piped_command_sub(t_shell *cmd, int pipefd[], int fd, int i);
 int    exec_single_command_sub(t_shell *cmd);
 int	exec_single_command_sub_sub(t_shell *cmd);
 void	single_command_sub(t_shell *cmd, char *path, t_single_cmd *temp);
-char *check_acc_sub(char **path_arr, char **cmd, char *path_cmd, char *tmp);
 void	single_command_sub_sub(t_shell *cmd, char *path, t_single_cmd *temp);
 void	single_command_error(char *str, t_single_cmd *temp);
-
 
 /*heredoc.c*/
 void	grab_heredoc(t_shell *cmd);
@@ -256,6 +257,7 @@ void	sort_env(t_env **env_lst);
 void	export_variable_bis(t_shell *cmd, char **command, int i, t_shell **tmp);
 void	assign_back_to_zero(t_env **env_lst);
 void	export_bis(char **command, t_shell **tmp, int i, t_shell *cmd);
+char	*look_into_envir_export(t_shell *cmd, char *string);
 
 /*unset*/
 int unset(t_shell *cmd, char **command);
