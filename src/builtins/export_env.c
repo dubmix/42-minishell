@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_env.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pdelanno <pdelanno@student.42berlin.d      +#+  +:+       +#+        */
+/*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 11:53:28 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/06 12:11:56 by pdelanno         ###   ########.fr       */
+/*   Updated: 2023/08/13 14:42:10 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	print_sorted_env(t_env **env_lst)
 	int		i;
 
 	tmp = *env_lst;
+
 	i = ft_lstsize_env(*env_lst);
 	while (i > 0)
 	{
@@ -41,6 +42,7 @@ void	sort_env(t_env **env_lst)
 	int		i;
 
 	i = 1;
+	assign_back_to_zero(env_lst);
 	while (i < ft_lstsize_env(*env_lst))
 	{
 		string = find_biggest(env_lst);
@@ -48,6 +50,19 @@ void	sort_env(t_env **env_lst)
 		free(string);
 		i++;
 	}
+}
+
+void	assign_back_to_zero(t_env **env_lst)
+{
+	t_env	*tmp;
+
+	tmp = *env_lst;
+	while (tmp != NULL)
+	{
+		tmp->index = 0;
+		tmp = tmp->next;
+	}
+	return ;
 }
 
 void	assign_index(t_env **env_lst, char *string, int i)
