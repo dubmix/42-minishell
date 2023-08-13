@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 16:21:47 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/13 12:54:32 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/13 13:49:23 by pdelanno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,57 +60,6 @@ void	ft_error(t_shell *cmd, char *string, int exit_code)
 	g_xcode = exit_code;
 	exit(g_xcode);
 }
-
-// void	free_shell(t_shell *cmd)
-// {
-// 	//free_tok_lst(cmd->tok_lst);
-// 	free_cmd_lst(&cmd->cmd_lst);
-// 	cmd->size_arr_var = 0;
-// 	if (cmd->nb_of_heredocs != 0)
-// 	{
-// 		free_arr(cmd->heredoc_arr);
-// 		if (cmd->heredoc_string != NULL)
-// 			free(cmd->heredoc_string);
-// 	}
-// 	cmd->nb_of_heredocs = 0;
-// 	cmd->nb_of_pipes = 0;
-// 	cmd->nb_of_tokens = 0;
-// 	cmd->nb_of_heredocs = 0;
-// 	//free(cmd->words_per_pipe); ->segfault lorsque ctrl D heredoc puis direct apres
-// 	free(cmd->line);
-// 	free(cmd->cmd_lst);
-// }
-
-// void	free_tok_lst(t_token *tok_lst)
-// {
-// 	t_token	*temp;
-
-// 	temp = tok_lst;
-// 	while (tok_lst != NULL)
-// 	{
-// 		tok_lst = tok_lst->next;
-// 		free(temp->command); // Free the command string
-// 		free(temp);
-// 	}
-// }
-
-// void	free_tok_lst(t_token **tok_lst)
-// {
-// 	t_token	*current;
-// 	t_token	*next;
-// 	printf("IS FREEING BEG \n");
-
-// 	current = *tok_lst;
-// 	while (current != NULL)
-// 	{
-// 		next = current->next;
-// 		delete_node_tok(tok_lst, current);
-// 		current = next;
-// 	}
-// 	free(current);
-// 	*tok_lst = NULL;
-// 	printf("IS FREEING END\n");
-// }
 
 void	free_tok_lst(t_token **tok_lst)
 {

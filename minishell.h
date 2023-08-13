@@ -196,7 +196,11 @@ int pipe_wait(t_shell *cmd);
 int exec_heredoc(t_shell *cmd);
 int   exec_piped_command_sub(t_shell *cmd, int pipefd[], int fd, int i);
 int    exec_single_command_sub(t_shell *cmd);
+int	exec_single_command_sub_sub(t_shell *cmd);
 void	single_command_sub(t_shell *cmd, char *path, t_single_cmd *temp);
+char *check_access_sub(char **path_arr, char **command, char *path_cmd, char *tmp);
+void	single_command_sub_sub(t_shell *cmd, char *path, t_single_cmd *temp);
+void	single_command_error(char *str, t_single_cmd *temp);
 
 /*heredoc.c*/
 void	grab_heredoc(t_shell *cmd);

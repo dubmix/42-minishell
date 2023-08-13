@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 10:45:11 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/12 14:12:19 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/13 13:56:10 by pdelanno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,34 +55,60 @@ int	exec_single_command_sub(t_shell *cmd)
 {
 	if (g_xcode != 130)
 	{
-		if (ft_strncmp(cmd->cmd_lst->command[0], "exit", ft_strlen(cmd->cmd_lst->command[0])) == 0)
+		if (ft_strncmp(cmd->cmd_lst->command[0], "exit",
+				ft_strlen(cmd->cmd_lst->command[0])) == 0)
 		{
 			exxit(cmd);
 			return (1);
 		}
-		else if (ft_strncmp(cmd->cmd_lst->command[0], "export", ft_strlen(cmd->cmd_lst->command[0])) == 0)
-		{
-			export(cmd, cmd->cmd_lst->command);
+		else if (exec_single_command_sub_sub(cmd) == 1)
 			return (1);
-		}
-		else if (ft_strncmp(cmd->cmd_lst->command[0], "unset", ft_strlen(cmd->cmd_lst->command[0])) == 0)
-		{
-			unset(cmd, cmd->cmd_lst->command);
-			return (1);
-		}
-		else if (ft_strncmp(cmd->cmd_lst->command[0], "cd", ft_strlen(cmd->cmd_lst->command[0])) == 0)
-		{
-			cd(cmd);
-			return (1);
-		}
+		// else if (ft_strncmp(cmd->cmd_lst->command[0], "export", ft_strlen(cmd->cmd_lst->command[0])) == 0)
+		// {
+		// 	export(cmd, cmd->cmd_lst->command);
+		// 	return (1);
+		// }
+		// else if (ft_strncmp(cmd->cmd_lst->command[0], "unset", ft_strlen(cmd->cmd_lst->command[0])) == 0)
+		// {
+		// 	unset(cmd, cmd->cmd_lst->command);
+		// 	return (1);
+		// }
+		// else if (ft_strncmp(cmd->cmd_lst->command[0], "cd", ft_strlen(cmd->cmd_lst->command[0])) == 0)
+		// {
+		// 	cd(cmd);
+		// 	return (1);
+		// }
 		return (0);
+	}
+	return (0);
+}
+
+int	exec_single_command_sub_sub(t_shell *cmd)
+{
+	if (ft_strncmp(cmd->cmd_lst->command[0], "export",
+			ft_strlen(cmd->cmd_lst->command[0])) == 0)
+	{
+		export(cmd, cmd->cmd_lst->command);
+		return (1);
+	}
+	else if (ft_strncmp(cmd->cmd_lst->command[0], "unset",
+			ft_strlen(cmd->cmd_lst->command[0])) == 0)
+	{
+		unset(cmd, cmd->cmd_lst->command);
+		return (1);
+	}
+	else if (ft_strncmp(cmd->cmd_lst->command[0], "cd",
+			ft_strlen(cmd->cmd_lst->command[0])) == 0)
+	{
+		cd(cmd);
+		return (1);
 	}
 	return (0);
 }
 
 int	exec_command(t_shell *cmd)
 {
-	int check;
+	int	check;
 
 	check = 0;
 	if (cmd->cmd_lst->append == 1 || cmd->cmd_lst->redir_in == 1
