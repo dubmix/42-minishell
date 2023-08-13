@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:46:21 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/13 14:02:42 by pdelanno         ###   ########.fr       */
+/*   Updated: 2023/08/13 15:24:46 by pdelanno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ char	*check_access(char **envp, char **command)
 	return (path_cmd);
 }
 
-char *check_access_sub(char **path_arr, char **command, char *path_cmd, char *tmp)
+char	*check_acc_sub(char **path_arr, char **cmd, char *path_cmd, char *tmp)
 {
 	int	i;
 
@@ -69,7 +69,7 @@ char *check_access_sub(char **path_arr, char **command, char *path_cmd, char *tm
 	while (path_arr[i] != (void *) '\0')
 	{
 		tmp = ft_strjoin(path_arr[i], "/");
-		path_cmd = ft_strjoin(tmp, command[0]);
+		path_cmd = ft_strjoin(tmp, cmd[0]);
 		free(tmp);
 		if (access(path_cmd, F_OK | X_OK) != 0)
 			free(path_cmd);

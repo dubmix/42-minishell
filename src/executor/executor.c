@@ -63,21 +63,6 @@ int	exec_single_command_sub(t_shell *cmd)
 		}
 		else if (exec_single_command_sub_sub(cmd) == 1)
 			return (1);
-		// else if (ft_strncmp(cmd->cmd_lst->command[0], "export", ft_strlen(cmd->cmd_lst->command[0])) == 0)
-		// {
-		// 	export(cmd, cmd->cmd_lst->command);
-		// 	return (1);
-		// }
-		// else if (ft_strncmp(cmd->cmd_lst->command[0], "unset", ft_strlen(cmd->cmd_lst->command[0])) == 0)
-		// {
-		// 	unset(cmd, cmd->cmd_lst->command);
-		// 	return (1);
-		// }
-		// else if (ft_strncmp(cmd->cmd_lst->command[0], "cd", ft_strlen(cmd->cmd_lst->command[0])) == 0)
-		// {
-		// 	cd(cmd);
-		// 	return (1);
-		// }
 		return (0);
 	}
 	return (0);

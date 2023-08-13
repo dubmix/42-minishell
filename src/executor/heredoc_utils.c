@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 16:44:56 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/13 12:07:14 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/13 15:23:05 by pdelanno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ char	*double_quote_env_heredoc(t_shell *cmd, char *string)
 {
 	char	**arr_var;
 	char	*new_string;
-	char 	*temp;
-	int i;
+	char	*temp;
+	int		i;
 
 	i = 0;
 	arr_var = string_variables_heredoc(cmd, string);

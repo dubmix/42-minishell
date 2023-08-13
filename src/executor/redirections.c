@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 14:30:49 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/12 14:08:15 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/13 15:23:29 by pdelanno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,13 @@ int	redir_error(char *str)
 int	check_redirections(t_shell *cmd)
 {
 	if (cmd->nb_of_heredocs != 0)
-		return(exec_heredoc(cmd));
+		return (exec_heredoc(cmd));
 	else if (cmd->cmd_lst->redir_in == 1)
-		return(exec_infile(cmd->cmd_lst->redir_in_str));
+		return (exec_infile(cmd->cmd_lst->redir_in_str));
 	if (cmd->cmd_lst->append == 1)
-		return(exec_outfile(cmd));
+		return (exec_outfile(cmd));
 	else if (cmd->cmd_lst->redir_out == 1)
-		return(exec_outfile(cmd));
+		return (exec_outfile(cmd));
 	return (EXIT_SUCCESS);
 }
 
