@@ -12,11 +12,6 @@
 
 #include "../../minishell.h"
 
-char	**var_arr(t_shell *cmd, char *command);
-char	*look_into_envir_export(t_shell *cmd, char *string);
-void	unset_if_export(t_shell *cmd, char *command);
-char	**new_line(char *line);
-
 int	export_variable(t_shell *cmd)
 {
 	t_shell	**tmp;

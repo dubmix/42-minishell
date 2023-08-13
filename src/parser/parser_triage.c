@@ -6,13 +6,11 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 11:56:11 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/12 16:01:04 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/13 15:39:21 by pdelanno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-
-void	triage_quotes_bis(t_token **temp, char **cmd_splitted);
 
 void	triage_space_bis(t_shell *cmd, t_token **temp, t_token *node_to_delete, 
 	int state)
@@ -66,7 +64,8 @@ void	triage_space_redir_pipe(t_shell *cmd)
 			&& ((*temp)->next->type == REDIRECT_INPUT
 				|| (*temp)->next->type == REDIRECT_OUTPUT
 				|| (*temp)->next->type == APPEND 
-				|| (*temp)->next->type == PIPE || (*temp)->next->type == HEREDOC))
+				|| (*temp)->next->type == PIPE
+				|| (*temp)->next->type == HEREDOC))
 		{
 			node_to_delete = *temp;
 			delete_node_tok(&(cmd->tok_lst), node_to_delete);
