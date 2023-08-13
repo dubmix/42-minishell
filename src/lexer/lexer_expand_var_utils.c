@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 09:25:02 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/13 12:36:53 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/13 15:24:25 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void	look_into_envir(t_shell *cmd, t_token *var)
 	t_env	*tmp;
 	char	**string;
 	char	*str;
+
 	tmp = cmd->env_lst;
 	string = ft_split(var->command, '$');
 	free(var->command);
