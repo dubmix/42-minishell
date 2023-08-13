@@ -215,20 +215,26 @@ void	cd_sub(t_shell *cmd);
 int	    go_to_path(t_shell *cmd, char *str);
 char    *get_path_cd(t_shell *cmd, char *str);
 void   add_path_to_env(t_shell *cmd);
-int	add_path_to_env_sub(t_shell *cmd, t_env *tmp, int check);
+int	add_path_to_env_sub(t_env *tmp, int check);
+int	add_oldpath_to_env_sub(t_shell *cmd, t_env *tmp, int check);
+int	cd_tilde_folder(t_shell *cmd, char *string);
 
 /*exit*/
 int	    exxit(t_shell *cmd);
 void    get_exit_code(char **command);
 int     is_only_digits(char *str);
+
 /*echo*/
 void    echo(char **args, t_shell *cmd);
 int find_new_line(char **cmd, int i);
 int	echo_sub(char **cmd, int i, int check);
+
 /*env*/
 int     env(t_shell *cmd);
+
 /*pwd*/
 int     pwd(void);
+
 /*export*/
 int	export(t_shell *cmd, char **command);
 int	export_error(char *str);
@@ -242,12 +248,15 @@ void print_sorted_env(t_env **env_lst);
 void	assign_index(t_env **env_lst, char *string, int i);
 char *find_biggest(t_env **env_lst);
 void	sort_env(t_env **env_lst);
+void	export_variable_bis(t_shell *cmd, char **command, int i, t_shell **tmp);
+void	assign_back_to_zero(t_env **env_lst);
 
 /*unset*/
 int unset(t_shell *cmd, char **command);
 int	unset_error(char **command);
 void	delete_node_env(t_env **head, t_env *node_to_delete);
 void unset_sub(t_shell *cmd, char **command);
+void	unset_message_error(char *command);
 
 /////////////////////////////////// OTHERS //////////////////////////////////
 

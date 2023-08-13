@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emiliedrouot <emiliedrouot@student.42.f    +#+  +:+       +#+        */
+/*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 13:35:10 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/08 22:14:11 by emiliedrouo      ###   ########.fr       */
+/*   Updated: 2023/08/13 13:09:55 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,7 @@ int	unset_error(char **command)
 		{
 			if (command[i][j] == '/' || command[i][j] == '=')
 			{
-				ft_putstr_fd("minishell: unset: ", STDERR_FILENO);
-				ft_putstr_fd(command[i], STDERR_FILENO);
-				ft_putstr_fd(": invalid parameter name\n", STDERR_FILENO);
+				unset_message_error(command[i]);
 				return (1);
 			}
 			j++;
@@ -49,6 +47,13 @@ int	unset_error(char **command)
 		i++;
 	}
 	return (EXIT_SUCCESS);
+}
+
+void	unset_message_error(char *command)
+{
+	ft_putstr_fd("minishell: unset: ", STDERR_FILENO);
+	ft_putstr_fd(command, STDERR_FILENO);
+	ft_putstr_fd(": not a valid identifier\n", STDERR_FILENO);
 }
 
 void	unset_sub(t_shell *cmd, char **command)

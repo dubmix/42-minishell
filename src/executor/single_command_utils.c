@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 09:52:45 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/12 09:54:02 by pdelanno         ###   ########.fr       */
+/*   Updated: 2023/08/13 14:12:58 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,13 @@ int	single_command(t_shell *cmd)
 	}
 	else if (ft_strncmp(cmd->cmd_lst->command[0], "echo", 4) == 0)
 		echo(cmd->cmd_lst->command, cmd);
-	else if (ft_strncmp(cmd->cmd_lst->command[0], "env", 3) == 0 && g_xcode != 130)
+	else if (ft_strncmp(cmd->cmd_lst->command[0], "env", 3) == 0)
 		env(cmd);
-	else if (ft_strncmp(cmd->cmd_lst->command[0], "pwd", 3) == 0 && g_xcode != 130)
+	else if (ft_strncmp(cmd->cmd_lst->command[0], "pwd", 3) == 0)
 		pwd();
-	else if (ft_strncmp(cmd->cmd_lst->command[0], "cd", 2) == 0 && g_xcode != 130)
+	else if (ft_strncmp(cmd->cmd_lst->command[0], "cd", 2) == 0)
 		cd(cmd);
-	else if (ft_strncmp(cmd->cmd_lst->command[0], "exit", 4) == 0 && g_xcode != 130)
+	else if (ft_strncmp(cmd->cmd_lst->command[0], "exit", 4) == 0)
 		exxit(cmd);
 	exit(g_xcode);
 }

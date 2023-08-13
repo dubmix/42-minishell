@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 11:55:39 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/11 16:46:05 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/13 13:08:22 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,9 @@ void	echo(char **commands, t_shell *cmd)
 	i = 1;
 	if (commands[i] != NULL)
 	{
-		if (ft_strncmp(commands[i], "", ft_strlen(commands[i])) == 0)
-			check = 1;
 		if (ft_strncmp(commands[i], " ", ft_strlen(commands[i])) == 0)
 			i++;
-		else if (commands[i][0] == '-')
+		if (commands[i][0] == '-')
 		{
 			k = i;
 			i = find_new_line(commands, i);

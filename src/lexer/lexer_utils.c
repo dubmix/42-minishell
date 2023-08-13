@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:46:03 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/11 16:09:57 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/13 14:36:25 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	print_list(t_env *env)
 	while (tmp != NULL)
 	{
 		printf("%s\n", tmp->full_string);
+		printf("%d\n", tmp->index);
 		tmp = tmp->next;
 	}
 }

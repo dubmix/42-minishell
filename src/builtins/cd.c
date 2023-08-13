@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 12:21:08 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/12 09:45:59 by pdelanno         ###   ########.fr       */
+/*   Updated: 2023/08/13 13:23:22 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,29 +33,37 @@ int	cd(t_shell *cmd)
 {
 	int		ret;
 	t_shell	**tmp;
-	char	*path;
 
-	path = NULL;
 	ret = 42;
 	tmp = &cmd;
-	if (ft_strncmp((*tmp)->cmd_lst->command[1], "-", ft_strlen((*tmp)->cmd_lst->command[1])) == 0)
+	if (ft_strncmp((*tmp)->cmd_lst->command[1], "-", 
+			ft_strlen((*tmp)->cmd_lst->command[1])) == 0)
 		ret = chdir(cmd->oldpwd);
 	find_old_pwd(cmd);
 	if (!(*tmp)->cmd_lst->command[1])
 		ret = go_to_path(cmd, "HOME");
-	else if ((*tmp)->cmd_lst->command[1][0] == '~' && (*tmp)->cmd_lst->command[1][1] == '/')
-	{
-		go_to_path(cmd, "HOME");
-		path = ft_substr((*tmp)->cmd_lst->command[1], 2, ft_strlen((*tmp)->cmd_lst->command[1]) - 2);
-		ret = chdir(path);
-		free(path);
-	}
+	else if ((*tmp)->cmd_lst->command[1][0] == '~' 
+		&& (*tmp)->cmd_lst->command[1][1] == '/')
+		ret = cd_tilde_folder(cmd, (*tmp)->cmd_lst->command[1]);
 	else if (ret == 42)
 		ret = chdir((*tmp)->cmd_lst->command[1]);
 	if (ret != 0)
 		return (cd_error((*tmp)->cmd_lst->command[1]));
 	add_path_to_env(cmd);
 	return (EXIT_SUCCESS);
+}
+
+int	cd_tilde_folder(t_shell *cmd, char *string)
+{
+	char	*path;
+	int		ret;
+
+	path = NULL;
+	ret = go_to_path(cmd, "HOME");
+	path = ft_substr(string, 2, ft_strlen(string) - 2);
+	ret = chdir(path);
+	free(path);
+	return (ret);
 }
 
 char	*get_path_cd(t_shell *cmd, char *str)
