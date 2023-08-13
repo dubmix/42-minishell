@@ -12,8 +12,6 @@
 
 #include "../../minishell.h"
 
-void	triage_quotes_bis(t_token **temp, char **cmd_splitted);
-
 void	triage_space_bis(t_shell *cmd, t_token **temp, t_token *node_to_delete, 
 	int state)
 {

@@ -95,12 +95,14 @@ typedef struct s_shell
 /*debugging*/
 void print_chararr(char **envp);
 
-/* main.c */
-int     minishell_start(t_shell *cmd);
+/* minishell.c */
 void	init_shell(t_shell *cmd);
-void    minishell_start_sub(char *str);
-void	clear_line_space(t_shell *cmd);
+int     minishell_start_null(t_shell *cmd);
+int     minishell_start(t_shell *cmd);
 t_shell	*main_bis(t_shell *cmd);
+
+/* minishell_utils.c */
+void	clear_line_space(t_shell *cmd);
 
 /////////////////////////////////// LEXER //////////////////////////////////
 
@@ -109,18 +111,20 @@ t_env *init_envp(char **envp, t_shell *cmd);
 void add_stack_back_env(t_env **env_lst, t_env *new);
 void	new_node_env(t_shell *cmd, t_env **env_list, char **string, char *full_string);
 
-/* lexer_expand_var.c */
+/* lexer_expand_var_utils.c */
 void expand_var(t_shell *cmd);
 void	look_into_envir(t_shell *cmd, t_token *var);
-char	**string_variables(t_shell *cmd, t_token *var);
-void	double_quote_env(t_shell *cmd, t_token *var);
 char	*look_into_envir_quote(t_shell *cmd, char *string);
 char *look_into_envir_quote_sub(char *string);
-void	look_into_envir_sub(char **string, t_token *var, t_env *tmp);
-char	*double_quote_env_bis(char *command, char *new_string, 
-			char **arr_var, int i);
-int	double_quote_env_bis_sub(char *command, int i);
+
+/* lexer_expand_var.c */
+char	**string_variables(t_shell *cmd, t_token *var);
 char	**string_variables_bis(t_shell *cmd, char *command,
+void	double_quote_env(t_shell *cmd, t_token *var);
+char	*double_quote_env_bis(char *command, char *new_string, 
+int	double_quote_env_bis_sub(char *command, int i);
+void	look_into_envir_sub(char **string, t_token *var, t_env *tmp);
+			char **arr_var, int i);
 			char **arr_string, int i);
 
 /* lexer_utils.c */
@@ -131,34 +135,41 @@ int         length_arr_var(char **arr_var, t_shell *cmd);
 int         length_string_without_var(char *string);
 
 /* lexer_token.c */
-void add_stack_back_tok(t_token **tok_lst, t_token *new);
-void new_token(t_token **tokens, char *command, int nb, enum e_type type);
 int new_token_var_words(t_token **tokens, char *string, int i, int nb_token);
 int new_token_quote(t_token **tokens, char *string, int i, int nb_token);
-t_token *tokenization(t_shell *shell);
-int	tokenization_sub(t_shell *cmd, int i, t_token *tok_lst, int nb_token);
+t_token	*tokenization_bis(t_shell *cmd, int *i, t_token *tok_lst, int nb_token);
+t_token	*tokenization_simple_char(t_shell *cmd, int i, 
 t_token	*tokenization_special_char(t_shell *cmd, int *i, 
 	t_token *tok_lst, int nb_token);
-t_token	*tokenization_simple_char(t_shell *cmd, int i, 
+t_token *tokenization(t_shell *shell);
 	t_token *tok_lst, int nb_token);
-t_token	*tokenization_bis(t_shell *cmd, int *i, t_token *tok_lst, int nb_token);
+
+/* lexer_token_utils.c */
+t_token	*tokenization(t_shell *cmd);
+int	tokenization_sub(t_shell *cmd, int i, t_token *tok_lst, int nb_token);
+void add_stack_back_tok(t_token **tok_lst, t_token *new);
+void new_token(t_token **tokens, char *command, int nb, enum e_type type);
 
 /////////////////////////////////// PARSER //////////////////////////////////
 
 /*parser_main.c*/
 int    parser(t_shell *cmd);
-void	number_words_per_pipe(t_shell *cmd);
 int	error_syntax(t_shell *cmd);
-void init_words_per_pipe(t_shell *cmd);
-void	number_heredocs(t_shell *cmd);
 int	test_tok_lst(t_shell *cmd);
 void	space_commands(t_shell *cmd);
 
+/*parser_main_utilsc*/
+void	number_heredocs(t_shell *cmd);
+void init_words_per_pipe(t_shell *cmd);
+void	number_words_per_pipe(t_shell *cmd);
 
 /*parser_triage.c*/
+void	triage_space_bis(t_shell *cmd, t_token **temp, 
+		t_token *node_to_delete, int state);
 void    triage_space(t_shell *cmd);
 void	triage_space_redir_pipe(t_shell *cmd);
 void	triage_quotes(t_shell *cmd);
+void	triage_quotes_bis(t_token **temp, char **cmd_splitted);
 
 /*parser_cmd_lst.c*/
 t_single_cmd    *triage_cmd_redir(t_shell *cmd);
@@ -179,111 +190,134 @@ void	print_list_commands(t_single_cmd *cmd, t_shell *shell);
 
 /////////////////////////////////// EXECUTOR //////////////////////////////////
 
-/*single_command.c*/
-int   single_command(t_shell *cmd);
-char	**get_path(char **envp);
-char	*check_access(char **envp, char **command);
-int	check_redirections(t_shell *cmd);
-int exec_single_command(t_shell *cmd);
+/* executor.c */
 int pre_executor(t_shell *cmd);
-int exec_piped_command(t_shell *cmd);
-int ft_fork(t_shell *cmd, int pipefd[2], int fd, int i);
-void dup_cmd(t_shell *cmd, int pipefd[2], int fd);
-int exec_command(t_shell *cmd);
-int check_redirections(t_shell *cmd);
-int exec_infile(char *file);
-int exec_outfile(t_shell *cmd);
-int pipe_wait(t_shell *cmd);
-int exec_heredoc(t_shell *cmd);
-int   exec_piped_command_sub(t_shell *cmd, int pipefd[], int fd, int i);
+int exec_single_command(t_shell *cmd);
 int    exec_single_command_sub(t_shell *cmd);
 int	exec_single_command_sub_sub(t_shell *cmd);
-void	single_command_sub(t_shell *cmd, char *path, t_single_cmd *temp);
+int exec_command(t_shell *cmd);
+
+/* single_command.c */
+char	**get_path(char **envp);
+char	*check_access(char **envp, char **command);
 char *check_acc_sub(char **path_arr, char **cmd, char *path_cmd, char *tmp);
+
+/* single_command_utils.c */
+int	is_builtins(char *string);
+int   single_command(t_shell *cmd);
+void	single_command_sub(t_shell *cmd, char *path, t_single_cmd *temp);
 void	single_command_sub_sub(t_shell *cmd, char *path, t_single_cmd *temp);
 void	single_command_error(char *str, t_single_cmd *temp);
 
+/* redirections.c */
+int	redir_error(char *str);
+int	check_redirections(t_shell *cmd);
+int exec_heredoc(t_shell *cmd);
+int exec_outfile(t_shell *cmd);
+int exec_infile(char *file);
 
-/*heredoc.c*/
+/* piped_command.c */
+int exec_piped_command(t_shell *cmd);
+int   exec_piped_command_sub(t_shell *cmd, int pipefd[], int fd, int i);
+int ft_fork(t_shell *cmd, int pipefd[2], int fd, int i);
+void dup_cmd(t_shell *cmd, int pipefd[2], int fd);
+int pipe_wait(t_shell *cmd);
+
+/* heredoc.c */
 void	grab_heredoc(t_shell *cmd);
-char	**string_variables_heredoc(t_shell *cmd, char *string);
-char *double_quote_env_heredoc(t_shell *cmd, char *string);
 char *grab_hd_sub(char *l_ipt, char *fir_l, char *fin_l, t_shell *c);
-char **string_var_hd_sub(t_shell *c, char *str, char **arr_str, int start);
 char	*grab_hd_sub_sub(char *l_ipt, char *fir_l, char *fin_l, t_shell *c);
+char	**string_variables_heredoc(t_shell *cmd, char *string);
+char **string_var_hd_sub(t_shell *c, char *str, char **arr_str, int start);
+
+/* heredoc_utils.c */
+char *double_quote_env_heredoc(t_shell *cmd, char *string);
 
 /////////////////////////////////// BUILTINS //////////////////////////////////
 
-/*cd*/
+/* cd */
+void	find_old_pwd(t_shell *cmd);
 int     cd(t_shell *cmd);
-void	cd_sub(t_shell *cmd);
-int	    go_to_path(t_shell *cmd, char *str);
+int	cd_tilde_folder(t_shell *cmd, char *string);
 char    *get_path_cd(t_shell *cmd, char *str);
+int	    go_to_path(t_shell *cmd, char *str);
+
+/* cd_utils */
 void   add_path_to_env(t_shell *cmd);
 int	add_path_to_env_sub(t_env *tmp, int check);
 int	add_oldpath_to_env_sub(t_shell *cmd, t_env *tmp, int check);
-int	cd_tilde_folder(t_shell *cmd, char *string);
 
-/*exit*/
+/* exit */
 int	    exxit(t_shell *cmd);
 void    get_exit_code(char **command);
 int     is_only_digits(char *str);
 
-/*echo*/
+/* echo */
 void    echo(char **args, t_shell *cmd);
-int find_new_line(char **cmd, int i);
 int	echo_sub(char **cmd, int i, int check);
+int find_new_line(char **cmd, int i);
 
-/*env*/
+/* env */
 int     env(t_shell *cmd);
 
-/*pwd*/
+/* pwd */
 int     pwd(void);
 
-/*export*/
+/* export.c */
+int	export_variable(t_shell *cmd);
+void	export_variable_bis(t_shell *cmd, char **command, int i, t_shell **tmp);
 int	export(t_shell *cmd, char **command);
+void	export_bis(char **command, t_shell **tmp, int i, t_shell *cmd);
+void	unset_if_export(t_shell *cmd, char *command);
+
+/* export_utils.c */
 int	export_error(char *str);
+int	ft_lstsize_env(t_env *lst);
 int check_valid_id(char c);
+char	**new_line(char *line);
+char	**var_arr(t_shell *cmd, char *command);
+
+/* export_utils_ext.c */
+char	*look_into_envir_export(t_shell *cmd, char *string);
+void	update_envp_copy(t_shell *cmd);
+int var_exists(t_env *env, char *str);
 int	check_param(char *str);
 int	ft_findchar(char *str, char c);
-int var_exists(t_env *env, char *str);
-int	ft_lstsize_env(t_env *lst);
-void	update_envp_copy(t_shell *cmd);
+
+/* export_env.c */
 int     print_sorted_env(t_env **env_lst);
+void	sort_env(t_env **env_lst);
+void	assign_back_to_zero(t_env **env_lst);
 void	assign_index(t_env **env_lst, char *string, int i);
 char *find_biggest(t_env **env_lst);
-void	sort_env(t_env **env_lst);
-void	export_variable_bis(t_shell *cmd, char **command, int i, t_shell **tmp);
-void	assign_back_to_zero(t_env **env_lst);
-void	export_bis(char **command, t_shell **tmp, int i, t_shell *cmd);
-char	*look_into_envir_export(t_shell *cmd, char *string);
 
-/*unset*/
+/* unset */
 int unset(t_shell *cmd, char **command);
 int	unset_error(char **command);
-void	delete_node_env(t_env **head, t_env *node_to_delete);
-void unset_sub(t_shell *cmd, char **command);
 void	unset_message_error(char *command);
+void unset_sub(t_shell *cmd, char **command);
+void	delete_node_env(t_env **head, t_env *node_to_delete);
 
 /////////////////////////////////// OTHERS //////////////////////////////////
 
 /*signals*/
 void init_signals();
-void sigquit_handler(int sig);
-void sigint_handler(int sig);
 void	sigint_heredoc(int sig);
 void sigint_child(int sig);
-void	sigterm_handler(int sig);
+void sigint_handler(int sig);
+void sigquit_handler(int sig);
 
-/*errors.c*/
+/* errors.c */
 void    free_arr(char **arr);
 void	free_all_inside_loop(t_shell *cmd);
 void	free_all_exit(t_shell *cmd);
+void	ft_error(t_shell *cmd, char *string, int exit_code);
 void	free_tok_lst(t_token **tok_lst);
-void	delete_node_cmd(t_single_cmd **head, t_single_cmd *node_to_delete);
+
+/* errors_utils.c */
 void	free_cmd_lst(t_single_cmd **cmd_lst);
 void	free_env_lst(t_env **env_lst);
-void	ft_error(t_shell *cmd, char *string, int exit_code);
+void	delete_node_cmd(t_single_cmd **head, t_single_cmd *node_to_delete);
 int cd_error(char *str);
 
 /* libft */
