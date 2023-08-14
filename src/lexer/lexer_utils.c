@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:46:03 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/13 14:36:25 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/14 09:47:38 by pdelanno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	print_list(t_env *env)
 	}
 }
 
-void	print_list_tok(t_token *tok)
+/*void	print_list_tok(t_token *tok)
 {
 	t_token	*tmp;
 
@@ -35,7 +35,7 @@ void	print_list_tok(t_token *tok)
 		printf("node is '%s' , nb is %d, state is %d, type is %d\n", tmp->command, tmp->index, tmp->state, tmp->type);
 		tmp = tmp->next;
 	}
-}
+}*/
 
 int	special_char(int c)
 {

@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:45:38 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/13 17:34:45 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/14 09:48:20 by pdelanno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,13 +102,12 @@ char	*double_quote_env_bis(char *command, char *new_string,
 int	double_quote_env_bis_sub(char *command, int i)
 {
 	if (command[i] == '$')
-		return (i+1);
+		return (i + 1);
 	while (command[i] != '\0' && !check_valid_id(command[i])
 		&& command[i] != '$')
 		i++;
 	if ((command[i] == '?' && (command[i + 1] == ' ' 
 				|| command[i + 1] == '\0')))
 		i++;
-	
 	return (i);
 }
