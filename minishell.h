@@ -14,7 +14,7 @@
 # include <fcntl.h>
 # include <limits.h>
 # include <sys/ioctl.h>
-//# include <linux/limits.h> to put again
+# include <linux/limits.h>
 # include <termios.h>
 
 # define READLINE_MSG "\033[1;32m\U0001F308 minishell> \033[0m"

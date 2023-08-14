@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emiliedrouot <emiliedrouot@student.42.f    +#+  +:+       +#+        */
+/*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 11:32:47 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/13 23:00:53 by emiliedrouo      ###   ########.fr       */
+/*   Updated: 2023/08/14 09:53:16 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,9 @@ char	*grab_hd_sub(char *l_ipt, char *fir_l, char *fin_l, t_shell *c)
 		else if (i == (c->nb_of_heredocs - 1))
 		{
 			fir_l = double_quote_env_heredoc(c, l_ipt);
-			// free(l_ipt);
 			temp = ft_strjoin(fin_l, fir_l);
 			free(fin_l);
 			fin_l = ft_strdup(temp);
-			// free(temp);
-			// free(fir_l);
 			grab_hd_sub_sub(l_ipt, fir_l, temp);	
 		}
 		if (g_xcode == 130)
