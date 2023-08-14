@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:45:56 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/12 13:56:58 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/14 09:46:48 by pdelanno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,14 +90,14 @@ t_token	*tokenization_bis(t_shell *cmd, int *i, t_token *tok_lst, int nb_token)
 t_token	*tokenization_simple_char(t_shell *cmd, int i, 
 	t_token *tok_lst, int nb_token)
 {
-	char *string;
-	
+	char	*string;
+
 	if (cmd->line[i + 1] == '\0')
 		new_token(&tok_lst, &cmd->line[i], nb_token, WORD);
 	else if (cmd->line[i + 2] == '\0')
 	{
 		string = ft_substr(cmd->line, 0, 2);
-		new_token(&tok_lst, string , nb_token, WORD);
+		new_token(&tok_lst, string, nb_token, WORD);
 		free(string);
 	}
 	return (tok_lst);

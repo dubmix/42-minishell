@@ -6,7 +6,7 @@
 /*   By: emiliedrouot <emiliedrouot@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 09:07:17 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/13 22:27:00 by emiliedrouo      ###   ########.fr       */
+/*   Updated: 2023/08/14 09:49:37 by pdelanno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ t_token	*tokenization(t_shell *cmd)
 	return (tok_lst);
 }
 
-t_token *token_loop(t_shell *cmd, int i, int nb_token, t_token *tok_lst)
+t_token	*token_loop(t_shell *cmd, int i, int nb_token, t_token *tok_lst)
 {
 	while (cmd->line[i] != '\0')
 	{
