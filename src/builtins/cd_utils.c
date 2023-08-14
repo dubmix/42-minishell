@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 17:10:21 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/13 13:32:20 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/14 11:36:29 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	add_path_to_env_sub(t_env *tmp, int check)
 	free(tmp->full_string);
 	tmp->value = ft_strdup(getcwd(cwd, sizeof(cwd)));
 	if (tmp->value == NULL)
-		ft_putstr_fd("ERRROR\n", 2);
+		ft_putstr_fd("Error in cd\n", 2);
 	temp = ft_strjoin(tmp->name, "=");
 	full_string_pwd = ft_strjoin(temp, tmp->value);
 	free(temp);

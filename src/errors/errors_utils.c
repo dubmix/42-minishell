@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 16:22:42 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/13 12:54:44 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/14 11:37:34 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,5 +105,6 @@ int	cd_error(char *str)
 	ft_putstr_fd("minishell: cd: ", STDERR_FILENO);
 	ft_putstr_fd(str, STDERR_FILENO);
 	ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
+	g_xcode = 1;
 	return (EXIT_FAILURE);
 }
