@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_token_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emiliedrouot <emiliedrouot@student.42.f    +#+  +:+       +#+        */
+/*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 09:07:17 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/14 09:49:37 by pdelanno         ###   ########.fr       */
+/*   Updated: 2023/08/14 09:58:02 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,17 +30,17 @@ t_token	*token_loop(t_shell *cmd, int i, int nb_token, t_token *tok_lst)
 {
 	while (cmd->line[i] != '\0')
 	{
-		if (cmd->line[i] == '~' && (cmd->line[i + 1] == '\0' || cmd->line[i + 1] == ' '))
+		if (cmd->line[i] == '~' && (cmd->line[i + 1] == '\0' 
+				|| cmd->line[i + 1] == ' '))
 		{
 			new_token(&tok_lst, "$HOME", nb_token, VARIABLE);
 			i++;
 		}
 		else if (i == 0 && (cmd->line[i + 1] == '\0' 
 				|| ((cmd->line[i] == cmd->line[i + 1] 
-				&& cmd->line[i + 2] == '\0'))))
+						&& cmd->line[i + 2] == '\0'))))
 			tok_lst = tokenization_simple_char(cmd, i, tok_lst, nb_token);
-		else if
-		 (cmd->line[i] == 39 || cmd->line[i] == 34 
+		else if (cmd->line[i] == 39 || cmd->line[i] == 34
 			|| cmd->line[i] == '$')
 			tok_lst = tokenization_special_char(cmd, &i, tok_lst, nb_token);
 		else if (cmd->line[i] == '>' || cmd->line[i] == '<' || 

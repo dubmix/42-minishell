@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 16:44:56 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/13 15:23:05 by pdelanno         ###   ########.fr       */
+/*   Updated: 2023/08/14 10:15:52 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,4 +32,30 @@ char	*double_quote_env_heredoc(t_shell *cmd, char *string)
 	if (ft_strncmp(temp, "\n", 1) == 0)
 		return (NULL);
 	return (temp);
+}
+
+char	**string_var_hd_sub(t_shell *cmd, char *str, char **arr_str, int start)
+{
+	int		i;
+	int		j;
+	char	*string;
+
+	i = 0;
+	j = 0;
+	while (str[i] != '\0')
+	{
+		if (str[i] == '$')
+		{
+			start = i + 1;
+			while (str[i] != '\0' && str[i] != ' ')
+				i++;
+			string = ft_substr(str, start, i - start);
+			arr_str[j] = look_into_envir_quote(cmd, string);
+			j++;
+		}
+		if (str[i] != '\0')
+			i++;
+	}
+	arr_str[j] = 0;
+	return (arr_str);
 }

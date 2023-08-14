@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 11:32:47 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/14 09:53:16 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/14 10:15:58 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ char	*grab_hd_sub(char *l_ipt, char *fir_l, char *fin_l, t_shell *c)
 			temp = ft_strjoin(fin_l, fir_l);
 			free(fin_l);
 			fin_l = ft_strdup(temp);
-			grab_hd_sub_sub(l_ipt, fir_l, temp);	
+			grab_hd_sub_sub(l_ipt, fir_l, temp);
 		}
 		if (g_xcode == 130)
 			break ;
@@ -77,6 +77,7 @@ int	grab_heredoc_tri(int i, char *l_ipt)
 	free(l_ipt);
 	return (i);
 }
+
 char	**string_variables_heredoc(t_shell *cmd, char *string)
 {
 	char	**arr_string;
@@ -89,30 +90,4 @@ char	**string_variables_heredoc(t_shell *cmd, char *string)
 		return (NULL);
 	arr_string = string_var_hd_sub(cmd, string, arr_string, start);
 	return (arr_string);
-}
-
-char	**string_var_hd_sub(t_shell *cmd, char *str, char **arr_str, int start)
-{
-	int		i;
-	int		j;
-	char	*string;
-
-	i = 0;
-	j = 0;
-	while (str[i] != '\0')
-	{
-		if (str[i] == '$')
-		{
-			start = i + 1;
-			while (str[i] != '\0' && str[i] != ' ')
-				i++;
-			string = ft_substr(str, start, i - start);
-			arr_str[j] = look_into_envir_quote(cmd, string);
-			j++;
-		}
-		if (str[i] != '\0')
-			i++;
-	}
-	arr_str[j] = 0;
-	return (arr_str);
 }

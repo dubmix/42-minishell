@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 13:24:27 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/11 16:03:20 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/14 10:14:05 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,30 +56,21 @@ void	adjust_number(t_shell *cmd)
 	}
 }
 
-void	print_list_commands(t_single_cmd *cmd, t_shell *shell)
+void	add_stack_back_cmd(t_single_cmd **cmd_lst, t_single_cmd *new)
 {
-	t_single_cmd	*tmp;
-	int				i;
-	int				j;
+	t_single_cmd	*tail;
 
-	i = 0;
-	j = 0;
-	tmp = cmd;
-	printf("printing commands %d\n", shell->nb_of_pipes);
-	while (tmp)
+	if (!new)
+		return ;
+	if (!(*cmd_lst))
 	{
-		printf("node is %d : \n", tmp->index);
-		printf("redir_in is %d : %s\n", tmp->redir_in, tmp->redir_in_str);
-		printf("redir_out is %d : %s\n", tmp->redir_out, tmp->redir_out_str);
-		printf("append is %d : %s,\n", tmp->append, tmp->append_str);
-		while (tmp->command[i] != NULL)
-		{
-			// ft_putstr_fd(tmp->command[i], STDERR_FILENO);
-			printf("Command are %s \n", tmp->command[i]);
-			i++;
-		}
-		j++;
-		i = 0;
-		tmp = tmp->next;
+		*cmd_lst = new;
+		return ;
 	}
+	tail = *cmd_lst;
+	while (tail->next != NULL)
+	{
+		tail = tail->next;
+	}
+	tail->next = new;
 }
