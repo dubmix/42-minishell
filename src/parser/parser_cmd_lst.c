@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 16:04:33 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/14 10:13:24 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/14 10:56:49 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ t_single_cmd	*triage_cmd_redir(t_shell *cmd)
 	return (cmd_lst);
 }
 
-int	init_node_cmd(t_single_cmd **new, t_shell *cmd, int index, int i)
+void	init_node_cmd(t_single_cmd **new, t_shell *cmd, int index)
 {
 	(*new) = (t_single_cmd *)malloc(sizeof(t_single_cmd));
 	(*new)->command = (char **)malloc(sizeof(char *) * 
@@ -48,38 +48,38 @@ int	init_node_cmd(t_single_cmd **new, t_shell *cmd, int index, int i)
 	(*new)->append = 0;
 	(*new)->redir_in = 0;
 	(*new)->redir_out = 0;
-	i = 0;
-	return (i);
 }
 
 t_token	*new_node_cmd(t_single_cmd **cmd_lst, int index, 
 	t_token *tok_lst, t_shell *cmd)
 {
 	t_single_cmd	*new;
-	t_token			*temp;
+	t_token			*t;
 	int				i;
 
-	temp = tok_lst;
-	i = init_node_cmd(&new, cmd, index, i);
-	while (temp != NULL && temp->type != PIPE)
+	i = 0;
+	t = tok_lst;
+	init_node_cmd(&new, cmd, index);
+	while (t != NULL && t->type != PIPE)
 	{
-		if ((temp->type == WORD) && i < cmd->words_per_pipe[index])
-			i = new_node_word(temp, new, i);
-		else if (temp->type == 7 || temp->type == 6 
-			|| temp->type == 8 || (temp->type == 9 && temp->next != NULL))
+		if ((t->type == WORD) && i < cmd->words_per_pipe[index])
+			i = new_node_word(t, new, i);
+		// else if (temp->type == 7 || temp->type == 6 
+		// 	|| temp->type == 8 || (temp->type == 9 && temp->next != NULL))
+		else if ((t->type > 5 && t->type < 9) || (t->type == 9 && t->next != 0))
 		{
-			if (temp->type == 7 || temp->type == 6 || temp->type == 8)
-				handle_redir_in_out(new, temp);
-			temp = temp->next;
-			if (temp->next != NULL && !ft_strncmp(temp->next->command, " ", 
-					ft_strlen(temp->next->command)))
-				temp = temp->next;
+			if (t->type == 7 || t->type == 6 || t->type == 8)
+				handle_redir_in_out(new, t);
+			t = t->next;
+			if (t->next != NULL && !ft_strncmp(t->next->command, " ", 
+					ft_strlen(t->next->command)))
+				t = t->next;
 		}
-		if (temp != NULL)
-			temp = temp->next;
+		if (t != NULL)
+			t = t->next;
 	}
 	new_node_cmd_sub(new, i, index, cmd_lst);
-	return (temp);
+	return (t);
 }
 
 int	new_node_word(t_token *temp, t_single_cmd *new, int i)
