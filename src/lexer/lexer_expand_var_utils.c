@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 09:25:02 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/13 15:24:25 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/13 17:28:00 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,20 +37,30 @@ void	look_into_envir(t_shell *cmd, t_token *var)
 {
 	t_env	*tmp;
 	char	**string;
-	char	*str;
 
 	tmp = cmd->env_lst;
+	if (ft_strncmp(var->command, "$$", ft_strlen(var->command)) == 0)
+	{
+		free(var->command);
+		var->command = ft_strdup("Process ID ");
+		return ;
+	}
 	string = ft_split(var->command, '$');
 	free(var->command);
-	// look_into_envir_sub(string, var, tmp);
+	look_into_envir_sub(string, var, tmp);
+	free_arr(string);
+	if (tmp == NULL)
+		var->command = ft_strdup("");
+	return ;
+}
+
+void	look_into_envir_sub(char **string, t_token *var, t_env *tmp)
+{
+	char	*str;
+
 	while (tmp != NULL)
 	{
-		if (ft_strncmp(string[0], "$", ft_strlen(string[0])) == 0)
-		{
-			var->command = ft_strdup("Process ID ");
-			break ;
-		}
-		else if (ft_strncmp(string[0], "?", 1) == 0)
+		if (ft_strncmp(string[0], "?", 1) == 0)
 		{
 			str = ft_itoa(g_xcode);
 			var->command = ft_strdup(str);
@@ -64,51 +74,17 @@ void	look_into_envir(t_shell *cmd, t_token *var)
 		}
 		tmp = tmp->next;
 	}
-	free_arr(string);
-	if (tmp == NULL)
-		var->command = ft_strdup("");
-	return ;
 }
-
-// void	look_into_envir_sub(char **string, t_token *var, t_env *tmp)
-// {
-// 	char *str;
-// 	while (tmp != NULL)
-// 	{
-// 		if (ft_strncmp(string[0], "$", ft_strlen(string[0])) == 0)
-// 		{
-// 			var->command = ft_strdup("Process ID ");
-// 			return ;
-// 		}
-// 		else if (ft_strncmp(string[0], "?", 1) == 0)
-// 		{
-			
-// 			var->command = ft_strdup(ft_itoa(g_xcode));
-// 			return ;
-// 		}
-// 		else if (ft_strncmp(string[0], tmp->name, ft_strlen(string[0])) == 0)
-// 		{
-// 			var->command = ft_strdup(tmp->value);
-// 			return ;
-// 		}
-// 		tmp = tmp->next;
-// 	}
-// }
 
 char	*look_into_envir_quote(t_shell *cmd, char *string)
 {
 	t_env	*tmp;
-	char 	*str;
+	char	*str;
+
 	tmp = cmd->env_lst;
 	while (tmp != NULL)
 	{
-		if (ft_strncmp(string, "$", ft_strlen(string)) == 0)
-		{
-			free(string);
-			string = look_into_envir_quote_sub(string);
-			return (string);
-		}
-		else if (ft_strncmp(string, "?", ft_strlen(string)) == 0)
+		if (ft_strncmp(string, "?", ft_strlen(string)) == 0)
 		{
 			free(string);
 			str = ft_itoa(g_xcode);
@@ -129,9 +105,12 @@ char	*look_into_envir_quote(t_shell *cmd, char *string)
 	return (string);
 }
 
-char	*look_into_envir_quote_sub(char *string)
+int	string_variables_tri(char *command, int i)
 {
-	free(string);
-	string = ft_strdup("Process ID ");
-	return (string);
+	while (command[i] != '\0' && !check_valid_id(command[i])
+		&& command[i] != '$')
+		i++;
+	if (command[i] == '$' && command[i - 1] != '$')
+		i = i - 1;
+	return (i);
 }
