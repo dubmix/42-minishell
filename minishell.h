@@ -124,8 +124,6 @@ void	double_quote_env(t_shell *cmd, t_token *var);
 char	*double_quote_env_bis(char *command, char *new_string, 
 int	double_quote_env_bis_sub(char *command, int i);
 void	look_into_envir_sub(char **string, t_token *var, t_env *tmp);
-			char **arr_var, int i);
-			char **arr_string, int i);
 int		string_variables_tri(char *command, int i);
 int	string_variables_bis_bis(t_shell *cmd, char *command, int i, char **arr_string);
 
@@ -323,7 +321,7 @@ void	delete_node_cmd(t_single_cmd **head, t_single_cmd *node_to_delete);
 int cd_error(char *str);
 
 /* libft */
-int	countsubstr(char const *s, char c);
+int     countsubstr(char const *s, char c);
 char	**ft_split(char const *s, char c);
 char	*ft_strdup(const char *s);
 size_t	ft_strlen(const char *s);
