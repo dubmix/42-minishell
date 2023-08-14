@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pdelanno <pdelanno@student.42berlin.d      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/08/13 16:26:40 by pdelanno          #+#    #+#             */
+/*   Updated: 2023/08/13 16:26:44 by pdelanno         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
     #define MINISHELL_H
 
@@ -120,12 +132,12 @@ char *look_into_envir_quote_sub(char *string);
 /* lexer_expand_var.c */
 char	**string_variables(t_shell *cmd, t_token *var);
 char	**string_variables_bis(t_shell *cmd, char *command,
+			char **arr_var, int i);
 void	double_quote_env(t_shell *cmd, t_token *var);
 char	*double_quote_env_bis(char *command, char *new_string, 
+			char **arr_string, int i);
 int	double_quote_env_bis_sub(char *command, int i);
 void	look_into_envir_sub(char **string, t_token *var, t_env *tmp);
-			char **arr_var, int i);
-			char **arr_string, int i);
 
 /* lexer_utils.c */
 void    print_list(t_env *env);
@@ -139,10 +151,10 @@ int new_token_var_words(t_token **tokens, char *string, int i, int nb_token);
 int new_token_quote(t_token **tokens, char *string, int i, int nb_token);
 t_token	*tokenization_bis(t_shell *cmd, int *i, t_token *tok_lst, int nb_token);
 t_token	*tokenization_simple_char(t_shell *cmd, int i, 
-t_token	*tokenization_special_char(t_shell *cmd, int *i, 
-	t_token *tok_lst, int nb_token);
+	        t_token *tok_lst, int nb_token);
+t_token	*tokenization_special_char(t_shell *cmd, int *i,
+	        t_token *tok_lst, int nb_token);
 t_token *tokenization(t_shell *shell);
-	t_token *tok_lst, int nb_token);
 
 /* lexer_token_utils.c */
 t_token	*tokenization(t_shell *cmd);
