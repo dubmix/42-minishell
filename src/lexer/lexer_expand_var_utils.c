@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 09:25:02 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/13 17:28:00 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/14 11:25:18 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,6 @@ void	look_into_envir(t_shell *cmd, t_token *var)
 	free(var->command);
 	look_into_envir_sub(string, var, tmp);
 	free_arr(string);
-	if (tmp == NULL)
-		var->command = ft_strdup("");
 	return ;
 }
 
@@ -74,6 +72,8 @@ void	look_into_envir_sub(char **string, t_token *var, t_env *tmp)
 		}
 		tmp = tmp->next;
 	}
+	if (tmp == NULL)
+		var->command = ft_strdup("");
 }
 
 char	*look_into_envir_quote(t_shell *cmd, char *string)
