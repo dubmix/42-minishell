@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_cmd_lst.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emiliedrouot <emiliedrouot@student.42.f    +#+  +:+       +#+        */
+/*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 16:04:33 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/14 09:50:55 by pdelanno         ###   ########.fr       */
+/*   Updated: 2023/08/14 10:13:24 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ t_single_cmd	*triage_cmd_redir(t_shell *cmd)
 	return (cmd_lst);
 }
 
-void	init_node_cmd(t_single_cmd **new, t_shell *cmd, int index)
+int	init_node_cmd(t_single_cmd **new, t_shell *cmd, int index, int i)
 {
 	(*new) = (t_single_cmd *)malloc(sizeof(t_single_cmd));
 	(*new)->command = (char **)malloc(sizeof(char *) * 
@@ -48,9 +48,9 @@ void	init_node_cmd(t_single_cmd **new, t_shell *cmd, int index)
 	(*new)->append = 0;
 	(*new)->redir_in = 0;
 	(*new)->redir_out = 0;
+	i = 0;
+	return (i);
 }
-
-int	new_node_word(t_token *temp, t_single_cmd *new, int i);
 
 t_token	*new_node_cmd(t_single_cmd **cmd_lst, int index, 
 	t_token *tok_lst, t_shell *cmd)
@@ -59,26 +59,26 @@ t_token	*new_node_cmd(t_single_cmd **cmd_lst, int index,
 	t_token			*temp;
 	int				i;
 
-	i = 0;
 	temp = tok_lst;
-	init_node_cmd(&new, cmd, index);
+	i = init_node_cmd(&new, cmd, index, i);
 	while (temp != NULL && temp->type != PIPE)
 	{
 		if ((temp->type == WORD) && i < cmd->words_per_pipe[index])
 			i = new_node_word(temp, new, i);
-		else if (temp->type == REDIRECT_INPUT || temp->type == REDIRECT_OUTPUT || temp->type == APPEND || (temp->type == HEREDOC && temp->next != NULL))
+		else if (temp->type == 7 || temp->type == 6 
+			|| temp->type == 8 || (temp->type == 9 && temp->next != NULL))
 		{
-			if	(temp->type == REDIRECT_INPUT || temp->type == REDIRECT_OUTPUT || temp->type == APPEND)
+			if (temp->type == 7 || temp->type == 6 || temp->type == 8)
 				handle_redir_in_out(new, temp);
 			temp = temp->next;
-			if (temp->next != NULL && !ft_strncmp(temp->next->command, " ", ft_strlen(temp->next->command)))
+			if (temp->next != NULL && !ft_strncmp(temp->next->command, " ", 
+					ft_strlen(temp->next->command)))
 				temp = temp->next;
 		}
 		if (temp != NULL)
 			temp = temp->next;
 	}
-	new_node_cmd_sub(new, i, index);
-	add_stack_back_cmd(cmd_lst, new);
+	new_node_cmd_sub(new, i, index, cmd_lst);
 	return (temp);
 }
 
@@ -92,28 +92,11 @@ int	new_node_word(t_token *temp, t_single_cmd *new, int i)
 	return (i);
 }
 
-void	new_node_cmd_sub(t_single_cmd *new, int i, int index)
+void	new_node_cmd_sub(t_single_cmd *new, int i, int index, 
+	t_single_cmd **cmd_lst)
 {
 	new->next = NULL;
 	new->command[i] = 0;
 	new->index = index;
-}
-
-void	add_stack_back_cmd(t_single_cmd **cmd_lst, t_single_cmd *new)
-{
-	t_single_cmd	*tail;
-
-	if (!new)
-		return ;
-	if (!(*cmd_lst))
-	{
-		*cmd_lst = new;
-		return ;
-	}
-	tail = *cmd_lst;
-	while (tail->next != NULL)
-	{
-		tail = tail->next;
-	}
-	tail->next = new;
+	add_stack_back_cmd(cmd_lst, new);
 }

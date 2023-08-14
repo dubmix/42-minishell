@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_redir.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emiliedrouot <emiliedrouot@student.42.f    +#+  +:+       +#+        */
+/*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 16:13:54 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/13 22:58:52 by emiliedrouo      ###   ########.fr       */
+/*   Updated: 2023/08/14 10:00:24 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	handle_redir_in_out(t_single_cmd *new, t_token *temp)
 			new->redir_in_str = ft_strdup(temp->next->command);
 			fd = open(new->redir_in_str, O_RDONLY, 0644);
 			new->redir_in = 1;
-		}		
+		}
 		if (fd < 0)
 			g_xcode = 1;
 		if (fd > 0)
