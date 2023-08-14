@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 16:04:33 by edrouot           #+#    #+#             */
-/*   Updated: 2023/08/14 10:56:49 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/14 11:08:49 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,6 @@ t_token	*new_node_cmd(t_single_cmd **cmd_lst, int index,
 	{
 		if ((t->type == WORD) && i < cmd->words_per_pipe[index])
 			i = new_node_word(t, new, i);
-		// else if (temp->type == 7 || temp->type == 6 
-		// 	|| temp->type == 8 || (temp->type == 9 && temp->next != NULL))
 		else if ((t->type > 5 && t->type < 9) || (t->type == 9 && t->next != 0))
 		{
 			if (t->type == 7 || t->type == 6 || t->type == 8)

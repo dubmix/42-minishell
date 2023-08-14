@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 09:56:38 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/14 10:47:24 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/14 11:08:42 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,7 +188,7 @@ void			triage_quotes_bis(t_token **temp, char **cmd_splitted);
 
 /*parser_cmd_lst.c*/
 t_single_cmd	*triage_cmd_redir(t_shell *cmd);
-void				init_node_cmd(t_single_cmd **new, t_shell *cmd, int index);
+void			init_node_cmd(t_single_cmd **new, t_shell *cmd, int index);
 t_token			*new_node_cmd(t_single_cmd **cmd_lst, int index,
 					t_token *temp, t_shell *cmd);
 int				new_node_word(t_token *temp, t_single_cmd *new, int i);

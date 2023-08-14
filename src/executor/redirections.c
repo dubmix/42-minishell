@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 14:30:49 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/13 15:23:29 by pdelanno         ###   ########.fr       */
+/*   Updated: 2023/08/14 11:05:30 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ int	exec_infile(char *file)
 		ft_putstr_fd("minishell: ", STDERR_FILENO);
 		ft_putstr_fd(file, STDERR_FILENO);
 		ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
-		return (EXIT_FAILURE);
+		exit (EXIT_FAILURE);
 	}
 	dup = dup2(fd, STDIN_FILENO);
 	if (fd > 0 && dup < 0)
