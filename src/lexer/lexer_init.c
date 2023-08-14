@@ -12,14 +12,6 @@
 
 #include "../../minishell.h"
 
-static int	size_envp(char **envp);
-
-/* Take the size of the environnement
-alloc char **
-while loop -> alloc each line and
-create a new node with name and value of each line
-free the split */
-
 t_env	*init_envp(char **envp, t_shell *cmd)
 {
 	int		i;
@@ -48,7 +40,7 @@ t_env	*init_envp(char **envp, t_shell *cmd)
 	return (env_lst);
 }
 
-static int	size_envp(char **envp)
+int	size_envp(char **envp)
 {
 	int	i;
 
@@ -76,9 +68,6 @@ void	add_stack_back_env(t_env **env_lst, t_env *new)
 	}
 	tail->next = new;
 }
-
-/*create a new node, copy in name and value and 
-add it to the back of the list */
 
 void	new_node_env(t_shell *cmd, t_env **env_list, 
 	char **string, char *full_string)

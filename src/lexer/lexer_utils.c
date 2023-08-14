@@ -12,31 +12,6 @@
 
 #include "../../minishell.h"
 
-void	print_list(t_env *env)
-{
-	t_env	*tmp;
-
-	tmp = env;
-	while (tmp != NULL)
-	{
-		printf("%s\n", tmp->full_string);
-		printf("%d\n", tmp->index);
-		tmp = tmp->next;
-	}
-}
-
-/*void	print_list_tok(t_token *tok)
-{
-	t_token	*tmp;
-
-	tmp = tok;
-	while (tmp)
-	{
-		printf("node is '%s' , nb is %d, state is %d, type is %d\n", tmp->command, tmp->index, tmp->state, tmp->type);
-		tmp = tmp->next;
-	}
-}*/
-
 int	special_char(int c)
 {
 	if (c == '|' || c == 34 || c == ' ' || c == '<' || c == '>' || c == 39
