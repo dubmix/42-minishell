@@ -90,7 +90,7 @@ int	exec_infile(char *file)
 		ft_putstr_fd("minishell: ", STDERR_FILENO);
 		ft_putstr_fd(file, STDERR_FILENO);
 		ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
-		return (EXIT_FAILURE);
+		exit (EXIT_FAILURE);
 	}
 	dup = dup2(fd, STDIN_FILENO);
 	if (fd > 0 && dup < 0)
