@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pdelanno <pdelanno@student.42berlin.d      +#+  +:+       +#+        */
+/*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 09:56:38 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/14 10:36:52 by pdelanno         ###   ########.fr       */
+/*   Updated: 2023/08/14 10:42:22 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,10 +167,11 @@ void			new_token(t_token **tokens, char *command,
 /////////////////////////////////// PARSER //////////////////////////////////
 
 /*parser_main.c*/
-int				parser(t_shell *cmd);
-int				error_syntax(t_shell *cmd);
 int				test_tok_lst(t_shell *cmd);
+int				test_cmd_lst(t_shell *cmd);
+int				parser(t_shell *cmd);
 void			space_commands(t_shell *cmd);
+int				error_syntax(t_shell *cmd);
 
 /*parser_main_utilsc*/
 void			number_heredocs(t_shell *cmd);
@@ -187,12 +188,13 @@ void			triage_quotes_bis(t_token **temp, char **cmd_splitted);
 
 /*parser_cmd_lst.c*/
 t_single_cmd	*triage_cmd_redir(t_shell *cmd);
-void			init_node_cmd(t_single_cmd **new, t_shell *cmd, int index);
+int				init_node_cmd(t_single_cmd **new, t_shell *cmd, 
+					int index, int i);
 t_token			*new_node_cmd(t_single_cmd **cmd_lst, int index,
 					t_token *temp, t_shell *cmd);
-void			new_node_cmd_sub(t_single_cmd *new, int i, int index);
-void			add_stack_back_cmd(t_single_cmd **cmd_lst, t_single_cmd *new);
 int				new_node_word(t_token *temp, t_single_cmd *new, int i);
+void			new_node_cmd_sub(t_single_cmd *new, int i, int index, 
+					t_single_cmd **cmd_lst);
 
 /*parser_redir.c*/
 int				handle_redir_in(int fd, t_single_cmd *new, t_token *temp);
@@ -203,7 +205,7 @@ int				handle_redir_in_out_sub(t_single_cmd *new,
 /*parser_utils.c*/
 void			delete_node_tok(t_token **head, t_token *nodeToDelete);
 void			adjust_number(t_shell *cmd);
-void			print_list_commands(t_single_cmd *cmd, t_shell *shell);
+void			add_stack_back_cmd(t_single_cmd **cmd_lst, t_single_cmd *new);
 
 /////////////////////////////////// EXECUTOR //////////////////////////////////
 
