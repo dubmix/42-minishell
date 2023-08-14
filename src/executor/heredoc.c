@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
+/*   By: emiliedrouot <emiliedrouot@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 11:32:47 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/13 15:03:15 by pdelanno         ###   ########.fr       */
+/*   Updated: 2023/08/13 23:00:53 by emiliedrouo      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,20 +49,17 @@ char	*grab_hd_sub(char *l_ipt, char *fir_l, char *fin_l, t_shell *c)
 			break ;
 		else if (ft_strncmp(l_ipt, c->heredoc_arr[i],
 				ft_strlen(l_ipt)) == 0 && l_ipt[0] != 0)
-		{
-			i++;
-			free(l_ipt);
-		}
+			i = grab_heredoc_tri(i, l_ipt);
 		else if (i == (c->nb_of_heredocs - 1))
 		{
-			//grab_hd_sub_sub(l_ipt, fir_l, fin_l, c);
 			fir_l = double_quote_env_heredoc(c, l_ipt);
-			free(l_ipt);
+			// free(l_ipt);
 			temp = ft_strjoin(fin_l, fir_l);
 			free(fin_l);
 			fin_l = ft_strdup(temp);
-			free(temp);
-			free(fir_l);
+			// free(temp);
+			// free(fir_l);
+			grab_hd_sub_sub(l_ipt, fir_l, temp);	
 		}
 		if (g_xcode == 130)
 			break ;
@@ -70,20 +67,19 @@ char	*grab_hd_sub(char *l_ipt, char *fir_l, char *fin_l, t_shell *c)
 	return (fin_l);
 }
 
-char	*grab_hd_sub_sub(char *l_ipt, char *fir_l, char *fin_l, t_shell *c)
+void	grab_hd_sub_sub(char *l_ipt, char *fir_l, char *temp)
 {
-	char *temp;
-
-	fir_l = double_quote_env_heredoc(c, l_ipt);
 	free(l_ipt);
-	temp = ft_strjoin(fin_l, fir_l);
-	free(fin_l);
-	fin_l = ft_strdup(temp);
 	free(temp);
 	free(fir_l);
-	return (fin_l);
 }
 
+int	grab_heredoc_tri(int i, char *l_ipt)
+{
+	i++;
+	free(l_ipt);
+	return (i);
+}
 char	**string_variables_heredoc(t_shell *cmd, char *string)
 {
 	char	**arr_string;

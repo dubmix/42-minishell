@@ -14,7 +14,7 @@
 # include <fcntl.h>
 # include <limits.h>
 # include <sys/ioctl.h>
-# include <linux/limits.h>
+//# include <linux/limits.h> to put again
 # include <termios.h>
 
 # define READLINE_MSG "\033[1;32m\U0001F308 minishell> \033[0m"
@@ -120,8 +120,10 @@ char *look_into_envir_quote_sub(char *string);
 /* lexer_expand_var.c */
 char	**string_variables(t_shell *cmd, t_token *var);
 char	**string_variables_bis(t_shell *cmd, char *command,
+		char **arr_string, int i);
 void	double_quote_env(t_shell *cmd, t_token *var);
 char	*double_quote_env_bis(char *command, char *new_string, 
+		char **arr_var, int i);
 int	double_quote_env_bis_sub(char *command, int i);
 void	look_into_envir_sub(char **string, t_token *var, t_env *tmp);
 int		string_variables_tri(char *command, int i);
@@ -138,11 +140,10 @@ int         length_string_without_var(char *string);
 int new_token_var_words(t_token **tokens, char *string, int i, int nb_token);
 int new_token_quote(t_token **tokens, char *string, int i, int nb_token);
 t_token	*tokenization_bis(t_shell *cmd, int *i, t_token *tok_lst, int nb_token);
-t_token	*tokenization_simple_char(t_shell *cmd, int i, 
-t_token	*tokenization_special_char(t_shell *cmd, int *i, 
-	t_token *tok_lst, int nb_token);
-t_token *tokenization(t_shell *shell);
-	t_token *tok_lst, int nb_token);
+t_token	*tokenization_simple_char(t_shell *cmd, int i, t_token *tok_lst, int nb_token);
+t_token	*tokenization_special_char(t_shell *cmd, int *i, t_token *tok_lst, int nb_token);
+t_token *token_loop(t_shell *cmd, int i, int nb_token, t_token *tok_lst);
+
 
 /* lexer_token_utils.c */
 t_token	*tokenization(t_shell *cmd);
@@ -177,6 +178,7 @@ void init_node_cmd(t_single_cmd **new, t_shell *cmd, int index);
 t_token	*new_node_cmd(t_single_cmd **cmd_lst, int index, t_token *temp, t_shell *cmd);
 void	new_node_cmd_sub(t_single_cmd *new, int i, int index);
 void	add_stack_back_cmd(t_single_cmd **cmd_lst, t_single_cmd *new);
+int new_node_word(t_token *temp, t_single_cmd *new, int i);
 
 /*parser_redir.c*/
 int     handle_redir_in(int fd, t_single_cmd *new, t_token *temp);
@@ -225,10 +227,11 @@ int pipe_wait(t_shell *cmd);
 
 /* heredoc.c */
 void	grab_heredoc(t_shell *cmd);
-char *grab_hd_sub(char *l_ipt, char *fir_l, char *fin_l, t_shell *c);
-char	*grab_hd_sub_sub(char *l_ipt, char *fir_l, char *fin_l, t_shell *c);
+char	*grab_hd_sub(char *l_ipt, char *fir_l, char *fin_l, t_shell *c);
+void	grab_hd_sub_sub(char *l_ipt, char *fir_l, char *temp);
 char	**string_variables_heredoc(t_shell *cmd, char *string);
 char **string_var_hd_sub(t_shell *c, char *str, char **arr_str, int start);
+int	grab_heredoc_tri(int i, char *l_ipt);
 
 /* heredoc_utils.c */
 char *double_quote_env_heredoc(t_shell *cmd, char *string);
@@ -321,7 +324,7 @@ void	delete_node_cmd(t_single_cmd **head, t_single_cmd *node_to_delete);
 int cd_error(char *str);
 
 /* libft */
-int     countsubstr(char const *s, char c);
+int	countsubstr(char const *s, char c);
 char	**ft_split(char const *s, char c);
 char	*ft_strdup(const char *s);
 size_t	ft_strlen(const char *s);

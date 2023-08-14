@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
+/*   By: emiliedrouot <emiliedrouot@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 13:14:26 by pdelanno          #+#    #+#             */
-/*   Updated: 2023/08/10 12:35:43 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/08/13 21:08:27 by emiliedrouo      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	exxit(t_shell *cmd)
 		return (EXIT_FAILURE);
 	}
 	get_exit_code(cmd->cmd_lst->command);
-	rl_clear_history();
+	//rl_clear_history(); // to put again
 	free_all_inside_loop(cmd);
 	free_all_exit(cmd);
 	free(cmd);
