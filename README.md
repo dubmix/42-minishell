@@ -1,53 +1,31 @@
-RESOURCES
+# Minishell
 
+This 42 group project is about creating a simple shell, just like _bash_. Thanks to **Minishell**, we were able to travel through time and come back to problems people faced when _Windows_ didn't exist.
 
-Writing your own shell : https://www.cs.purdue.edu/homes/grr/SystemsProgrammingBook/Book/Chapter5-WritingYourOwnShell.pdf
+Coded in C with [edrouot](https://github.com/EmilieD8) @42Berlin
 
+![minishell1](https://github.com/dubmix/42-minishell/assets/104844198/49a56031-f5d4-43b9-b576-8dd9a08fd84a)
 
-https://cs61.seas.harvard.edu/site/2019/Section7/
-https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html
-https://www.youtube.com/watch?v=07Q9oqNLXB4
-https://craftinginterpreters.com/
-https://www.gnu.org/software/bash/manual/bash.html
-https://aosabook.org/en/v1/bash.html
+## Usage
 
-Links:
+Warning: `Makefile` is configured for `Linux` use only.
 
-[https://brennan.io/2015/01/16/write-a-shell-in-c/](https://brennan.io/2015/01/16/write-a-shell-in-c/)
+> - Compile with `make`
+> - Run with `./minishell`
+> - Try out any command you would use in bash
+> - Close with `ctrl + d` or the `exit` command
 
-[https://www.cs.purdue.edu/homes/grr/SystemsProgrammingBook/Book/Chapter4-IntroductiontoUNIXSystemsProgramming.pdf](https://www.cs.purdue.edu/homes/grr/SystemsProgrammingBook/Book/Chapter4-IntroductiontoUNIXSystemsProgramming.pdf)
+## Restrictions
 
-[https://www.cs.purdue.edu/homes/grr/SystemsProgrammingBook/Book/Chapter5-WritingYourOwnShell.pdf](https://www.cs.purdue.edu/homes/grr/SystemsProgrammingBook/Book/Chapter5-WritingYourOwnShell.pdf)
+This project is written in C and 42 norm compliant:
 
-[https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html)
+> - All variables have to be declared and aligned at the top of each function
+> - One function cannot have more than 25 lines
+> - One file cannot have more than 5 functions
+> - It is considering cheating to use functions that are forbidden in the subject
 
-these look like good tutorials:
+## Main resources
 
-[https://indradhanush.github.io/blog/writing-a-unix-shell-part-1/](https://indradhanush.github.io/blog/writing-a-unix-shell-part-1/)
-
-[http://www.dmulholl.com/lets-build/a-command-line-shell.html](http://www.dmulholl.com/lets-build/a-command-line-shell.html)
-
-https://brennan.io/2015/01/16/write-a-shell-in-c/
-
-
-Parsing:
-
-[https://stackoverflow.com/questions/2842809/lexers-vs-parsers](https://stackoverflow.com/questions/2842809/lexers-vs-parsers)
-
-[https://en.wikipedia.org/wiki/Recursive_descent_parser](https://en.wikipedia.org/wiki/Recursive_descent_parser)
-
-(best I've read) [https://mywiki.wooledge.org/BashParser](https://mywiki.wooledge.org/BashParser)
-
-(chart of this approach:) [https://stuff.lhunath.com/parser.png](https://stuff.lhunath.com/parser.png)
-
-
-SIMILAR TO (?)
-
-[https://pubs.opengroup.org/onlinepubs/7908799/xcu/chap2.html#tag_001_003](https://pubs.opengroup.org/onlinepubs/7908799/xcu/chap2.html#tag_001_003)
-
-
-OR
-
-[https://mywiki.wooledge.org/BashParser](https://mywiki.wooledge.org/BashParser)
-
-signal handling: [https://docs.rtems.org/releases/4.5.1-pre3/toolsdoc/gdb-5.0-docs/readline/readline00030.html](https://docs.rtems.org/releases/4.5.1-pre3/toolsdoc/gdb-5.0-docs/readline/readline00030.html)
+- Writing your own shell: https://www.cs.purdue.edu/homes/grr/SystemsProgrammingBook/Book/Chapter5-WritingYourOwnShell.pdf
+- Excellent tutorial: https://brennan.io/2015/01/16/write-a-shell-in-c/
+- For the parser: https://mywiki.wooledge.org/BashParser
